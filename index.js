@@ -25,10 +25,7 @@ var ScrollableTabView = React.createClass({
     // Initialize the spring that will drive animations
     this.springSystem = new rebound.SpringSystem();
     this._scrollSpring = this.springSystem.createSpring();
-    var springConfig = this._scrollSpring.getSpringConfig();
-    springConfig.tension = rebound.OrigamiValueConverter.tensionFromOrigamiValue(25);
-    springConfig.friction = rebound.OrigamiValueConverter.frictionFromOrigamiValue(8);
-    this._scrollSpring.setOvershootClampingEnabled(false);
+    this._updateSpringConfig(this.props);
 
     this._scrollSpring.addListener({
       onSpringUpdate: () => {
@@ -88,6 +85,18 @@ var ScrollableTabView = React.createClass({
         }
       },
     });
+  },
+
+  componentWillReceiveProps(nextProps) {
+    this._updateSpringConfig(nextProps);
+  },
+
+  _updateSpringConfig(props) {
+    var springConfig = this._scrollSpring.getSpringConfig();
+    springConfig.tension = rebound.OrigamiValueConverter.tensionFromOrigamiValue(props.springTension || 25);
+    springConfig.friction = rebound.OrigamiValueConverter.frictionFromOrigamiValue(props.springFriction || 8);
+
+    this._scrollSpring.setOvershootClampingEnabled((typeof props.clampSpring === 'undefined') ? true : props.clampSpring);
   },
 
   goToPage(pageNumber) {
