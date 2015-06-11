@@ -20,7 +20,7 @@ var ScrollableTabView = React.createClass({
   },
 
   componentWillMount() {
-    this.currentPage = 0;
+    this._currentPage = 0;
 
     // Initialize the spring that will drive animations
     this.springSystem = new rebound.SpringSystem();
@@ -62,13 +62,13 @@ var ScrollableTabView = React.createClass({
             lastPageIndex = this.props.children.length - 1,
             vx = gestureState.vx;
 
-        if (this.currentPage != lastPageIndex && (relativeGestureDistance < -0.5 || (relativeGestureDistance < 0 && vx <= 0.5))) {
-          this.currentPage = this.currentPage + 1;
-        } else if (this.currentPage != 0 && (relativeGestureDistance > 0.5 || (relativeGestureDistance > 0 && vx >= 0.5))) {
-          this.currentPage = this.currentPage - 1;
+        if (this._currentPage != lastPageIndex && (relativeGestureDistance < -0.5 || (relativeGestureDistance < 0 && vx <= 0.5))) {
+          this._currentPage = this._currentPage + 1;
+        } else if (this._currentPage != 0 && (relativeGestureDistance > 0.5 || (relativeGestureDistance > 0 && vx >= 0.5))) {
+          this._currentPage = this._currentPage - 1;
         }
 
-        this._scrollSpring.setEndValue(this.currentPage);
+        this._scrollSpring.setEndValue(this._currentPage);
       },
 
       // Dragging, move the view with the touch
@@ -76,14 +76,14 @@ var ScrollableTabView = React.createClass({
         var dx = gestureState.dx;
         var lastPageIndex = this.props.children.length - 1;
 
-        if (this.currentPage == 0 && dx > 0) {
+        if (this._currentPage == 0 && dx > 0) {
           // Don't set the spring if we're on the first page and trying to move before it
-        } else if (this.currentPage == lastPageIndex && dx < 0) {
+        } else if (this._currentPage == lastPageIndex && dx < 0) {
           // Don't set the spring if we're already on the last page and trying to move to the next
         } else {
           // This is awkward because when we are scrolling we are offsetting the underlying view
           // to the left (-x)
-          var offsetX = dx - (this.currentPage * deviceWidth);
+          var offsetX = dx - (this._currentPage * deviceWidth);
           this._scrollSpring.setCurrentValue(-1 * offsetX / deviceWidth);
         }
       },
@@ -92,6 +92,7 @@ var ScrollableTabView = React.createClass({
 
   goToPage(pageNumber) {
     this._scrollSpring.setEndValue(pageNumber);
+    this._currentPage = pageNumber;
     this.props.onChangeTab &&
       this.props.onChangeTab({i: pageNumber, ref: this.props.children[pageNumber]});
   },
