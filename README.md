@@ -11,7 +11,8 @@ implementation of it for React Native.
 
 ## Demo
 
-![Demo](https://raw.githubusercontent.com/brentvatne/react-native-scrollable-tab-view/master/demo.gif)
+![](https://raw.githubusercontent.com/brentvatne/react-native-scrollable-tab-view/master/demo.gif)
+![](https://raw.githubusercontent.com/brentvatne/react-native-scrollable-tab-view/master/demo-fb.gif)
 
 [Try out a slightly out of date version here on rnplay.org](https://rnplay.org/apps/qHU_5w)
 
