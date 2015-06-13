@@ -126,7 +126,7 @@ var ScrollableTabView = React.createClass({
 
     return (
       <View style={{flex: 1}}>
-        {this.renderTabBar({goToPage: this.goToPage.bind(this),
+        {this.renderTabBar({goToPage: this.goToPage,
                             tabs: this.props.children.map((child) => child.props.tabLabel),
                             activeTab: this.state.currentPage,
                             ref: TAB_BAR_REF})}
