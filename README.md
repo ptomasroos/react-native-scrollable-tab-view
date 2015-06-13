@@ -1,5 +1,9 @@
 ## react-native-scrollable-tab-view
 
+This is probably my favorite navigation pattern on Android, I wish it
+were more common on iOS! This is a very simple JavaScript-only
+implementation of it for React Native.
+
 ## Add it to your project
 
 1. Run `npm install react-native-scrollable-tab-view --save`
