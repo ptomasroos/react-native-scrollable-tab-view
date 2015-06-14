@@ -1,6 +1,6 @@
 {
   "name": "react-native-scrollable-tab-view",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -11,7 +11,10 @@
     "url": "git+https://github.com/brentvatne/react-native-scrollable-tab-view.git"
   },
   "keywords": [
+    "react-native-component",
+    "react-component",
     "react-native",
+    "ios"
     "tab",
     "scrollable"
   ],
