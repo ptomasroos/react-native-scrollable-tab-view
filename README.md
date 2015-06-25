@@ -147,7 +147,7 @@ module.exports = CustomTabBar;
   the tab bar. The component has `goToPage`, `tabs`, `activeTab` and
   `ref` added to the props, and should implement `setAnimationValue` to
   be able to animate itself along with the tab content.
-- **`edgeHitWidth`** _(Integer) - region (in pixels) from the left & right edges of the screen that can trigger swipe. Default is 30, which is the same as the swipe-back gesture on iOS.
+- **`edgeHitWidth`** _(Integer)_ - region (in pixels) from the left & right edges of the screen that can trigger swipe. Default is 30, which is the same as the swipe-back gesture on iOS.
 - **`springTension`** _(Integer)_ - a number between `1` and `100`, controls the amount of tension on the spring that guides the scroll animation - see [example](http://facebook.github.io/rebound-js/examples/#graph-canvas).
 - **`springFriction`** _(Integer)_ - a number between `1` and `30`, controls the amount of friction on the spring that guides the scroll animation - see [example](http://facebook.github.io/rebound-js/examples/#graph-canvas).
 - **`clampSpring`** _(Bool)_ - if `true`, the spring will not bounce at all - if `false`, it will oscillate around the target value before settling.
