@@ -16,6 +16,12 @@ var precomputeStyle = require('precomputeStyle');
 var TAB_BAR_REF = 'TAB_BAR';
 
 var ScrollableTabView = React.createClass({
+  getDefaultProps() {
+    return {
+      edgeHitWidth: 30,
+    }
+  },
+
   getInitialState() {
     return { currentPage: 0 };
   },
@@ -50,7 +56,10 @@ var ScrollableTabView = React.createClass({
       // Claim responder if it's a horizontal pan
       onMoveShouldSetPanResponder: (e, gestureState) => {
         if (Math.abs(gestureState.dx) > Math.abs(gestureState.dy)) {
-          return true;
+          if (gestureState.moveX <= this.props.edgeHitWidth ||
+              gestureState.moveX >= deviceWidth - this.props.edgeHitWidth) {
+            return true;
+          }
         }
       },
 
