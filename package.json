@@ -26,5 +26,8 @@
   "homepage": "https://github.com/brentvatne/react-native-scrollable-tab-view#readme",
   "peerDependencies": {
     "react-native": "> 0.4.2"
+  },
+  "dependencies": {
+    "rebound": "0.0.13"
   }
 }
