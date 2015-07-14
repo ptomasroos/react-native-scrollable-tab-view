@@ -12,7 +12,7 @@ var {
 
 var DefaultTabBar = require('./DefaultTabBar');
 var deviceWidth = Dimensions.get('window').width;
-var rebound = require('rebound/rebound.js');
+var rebound = require('rebound');
 var precomputeStyle = require('precomputeStyle');
 var TAB_BAR_REF = 'TAB_BAR';
 
