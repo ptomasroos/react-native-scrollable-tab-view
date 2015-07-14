@@ -2,6 +2,7 @@
 
 var React = require('react-native');
 var {
+  Dimensions,
   Text,
   View,
   ScrollView,
@@ -10,8 +11,8 @@ var {
 } = React;
 
 var DefaultTabBar = require('./DefaultTabBar');
-var deviceWidth = require('Dimensions').get('window').width;
-var rebound = require('rebound');
+var deviceWidth = Dimensions.get('window').width;
+var rebound = require('rebound/rebound.js');
 var precomputeStyle = require('precomputeStyle');
 var TAB_BAR_REF = 'TAB_BAR';
 

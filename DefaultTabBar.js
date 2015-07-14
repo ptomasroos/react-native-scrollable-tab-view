@@ -2,13 +2,14 @@
 
 var React = require('react-native');
 var {
+  Dimensions,
   StyleSheet,
   Text,
-  View,
   TouchableOpacity,
+  View,
 } = React;
 
-var deviceWidth = require('Dimensions').get('window').width;
+var deviceWidth = Dimensions.get('window').width;
 var precomputeStyle = require('precomputeStyle');
 var TAB_UNDERLINE_REF = 'TAB_UNDERLINE';
 
