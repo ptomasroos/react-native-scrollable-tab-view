@@ -1,6 +1,6 @@
 {
   "name": "react-native-scrollable-tab-view",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -25,7 +25,7 @@
   },
   "homepage": "https://github.com/brentvatne/react-native-scrollable-tab-view#readme",
   "peerDependencies": {
-    "react-native": "> 0.4.2"
+    "react-native": ">=0.8.0 || 0.8.0-rc"
   },
   "dependencies": {
     "rebound": "0.0.13"
