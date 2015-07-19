@@ -57,8 +57,9 @@ var ScrollableTabView = React.createClass({
       // Claim responder if it's a horizontal pan
       onMoveShouldSetPanResponder: (e, gestureState) => {
         if (Math.abs(gestureState.dx) > Math.abs(gestureState.dy)) {
-          if (gestureState.moveX <= this.props.edgeHitWidth ||
-              gestureState.moveX >= deviceWidth - this.props.edgeHitWidth) {
+          if ((gestureState.moveX <= this.props.edgeHitWidth ||
+              gestureState.moveX >= deviceWidth - this.props.edgeHitWidth) && 
+                this.props.locked !== true) {
             return true;
           }
         }
