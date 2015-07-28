@@ -1,7 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- */
 'use strict';
 
 var React = require('react-native');
@@ -11,11 +7,12 @@ var {
   Text,
   View,
   ScrollView,
+  Dimensions,
 } = React;
 
 var ScrollableTabView = require('react-native-scrollable-tab-view');
 var FacebookTabBar = require('./FacebookTabBar');
-var deviceWidth = require('Dimensions').get('window').width;
+var deviceWidth = Dimensions.get('window').width;
 
 var FacebookTabsExample = React.createClass({
   render() {

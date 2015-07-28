@@ -6,10 +6,11 @@ var {
   Text,
   View,
   TouchableOpacity,
+  Dimensions,
 } = React;
 
-var Icon = require('FAKIconImage');
-var deviceWidth = require('Dimensions').get('window').width;
+var { Icon, } = require('react-native-icons');
+var deviceWidth = Dimensions.get('window').width;
 
 var styles = StyleSheet.create({
   tab: {
@@ -20,7 +21,7 @@ var styles = StyleSheet.create({
   },
 
   tabs: {
-    height: 40,
+    height: 45,
     flexDirection: 'row',
     paddingTop: 5,
     borderWidth: 1,
