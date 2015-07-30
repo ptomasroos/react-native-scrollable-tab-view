@@ -60,9 +60,7 @@ var ScrollableTabView = React.createClass({
           if ((gestureState.moveX <= this.props.edgeHitWidth ||
               gestureState.moveX >= deviceWidth - this.props.edgeHitWidth) && 
                 this.props.locked !== true) {
-            if(this.props.hasTouch){
-              this.props.hasTouch(true);
-            }
+            this.props.hasTouch && this.props.hasTouch(true);
             
             return true;
           }
