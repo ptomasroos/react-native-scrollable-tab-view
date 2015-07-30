@@ -5,15 +5,13 @@ var {
   Dimensions,
   Text,
   View,
-  ScrollView,
   TouchableOpacity,
   PanResponder,
+  Animated,
 } = React;
 
 var DefaultTabBar = require('./DefaultTabBar');
 var deviceWidth = Dimensions.get('window').width;
-var rebound = require('rebound');
-var precomputeStyle = require('precomputeStyle');
 var TAB_BAR_REF = 'TAB_BAR';
 
 var ScrollableTabView = React.createClass({
@@ -24,68 +22,49 @@ var ScrollableTabView = React.createClass({
   },
 
   getInitialState() {
-    return { currentPage: 0 };
-  },
-
-  componentDidMount() {
-    this._scrollSpring.setCurrentValue(0);
+    return { currentPage: 0, scrollValue: new Animated.Value(0) };
   },
 
   componentWillMount() {
-    // Initialize the spring that will drive animations
-    this.springSystem = new rebound.SpringSystem();
-    this._scrollSpring = this.springSystem.createSpring();
-    this._updateSpringConfig(this.props);
-
-    this._scrollSpring.addListener({
-      onSpringUpdate: () => {
-        if (!this.scrollView) { return; }
-
-        var currentValue = this._scrollSpring.getCurrentValue();
-        var offsetX = deviceWidth * currentValue;
-
-        this.scrollView.setNativeProps(precomputeStyle({
-          transform: [{translateX: -1 * offsetX}],
-        }));
-
-        // Pass the currentValue on to the tabBar component
-        this.refs[TAB_BAR_REF].setAnimationValue(currentValue);
-      },
+    this.state.scrollValue.addListener(({value}) => {
+      this.refs[TAB_BAR_REF].setAnimationValue(value);
     });
+
+    var release = (e, gestureState) => {
+      var relativeGestureDistance = gestureState.dx / deviceWidth,
+          lastPageIndex = this.props.children.length - 1,
+          vx = gestureState.vx,
+          newPage = this.state.currentPage;
+
+      if (this.state.currentPage !== lastPageIndex &&
+          (relativeGestureDistance < -0.5 || (relativeGestureDistance < 0 && vx <= 0.5))) {
+        newPage = newPage + 1;
+      } else if (this.state.currentPage !== 0 &&
+                 (relativeGestureDistance > 0.5 || (relativeGestureDistance > 0 && vx >= 0.5))) {
+        newPage = newPage - 1;
+      }
+
+      this.props.hasTouch && this.props.hasTouch(false);
+      this.goToPage(newPage);
+    }
+
 
     this._panResponder = PanResponder.create({
       // Claim responder if it's a horizontal pan
       onMoveShouldSetPanResponder: (e, gestureState) => {
         if (Math.abs(gestureState.dx) > Math.abs(gestureState.dy)) {
           if ((gestureState.moveX <= this.props.edgeHitWidth ||
-              gestureState.moveX >= deviceWidth - this.props.edgeHitWidth) && 
+              gestureState.moveX >= deviceWidth - this.props.edgeHitWidth) &&
                 this.props.locked !== true) {
             this.props.hasTouch && this.props.hasTouch(true);
-            
             return true;
           }
         }
       },
 
       // Touch is released, scroll to the one that you're closest to
-      onPanResponderRelease: (e, gestureState) => {
-        var relativeGestureDistance = gestureState.dx / deviceWidth,
-            lastPageIndex = this.props.children.length - 1,
-            vx = gestureState.vx,
-            newPage = this.state.currentPage;
-
-        if (this.state.currentPage !== lastPageIndex && (relativeGestureDistance < -0.5 || (relativeGestureDistance < 0 && vx <= 0.5))) {
-          newPage = newPage + 1;
-        } else if (this.state.currentPage !== 0 && (relativeGestureDistance > 0.5 || (relativeGestureDistance > 0 && vx >= 0.5))) {
-          newPage = newPage - 1;
-        }
-        
-        if(this.props.hasTouch){
-          this.props.hasTouch(false);
-        }
-
-        this.goToPage(newPage);
-      },
+      onPanResponderRelease: release,
+      onPanResponderTerminate: release,
 
       // Dragging, move the view with the touch
       onPanResponderMove: (e, gestureState) => {
@@ -100,34 +79,29 @@ var ScrollableTabView = React.createClass({
           // This is awkward because when we are scrolling we are offsetting the underlying view
           // to the left (-x)
           var offsetX = dx - (this.state.currentPage * deviceWidth);
-          this._scrollSpring.setCurrentValue(-1 * offsetX / deviceWidth);
+          this.state.scrollValue.setValue(-1 * offsetX / deviceWidth);
         }
       },
     });
   },
 
-  componentWillReceiveProps(nextProps) {
-    this._updateSpringConfig(nextProps);
-  },
-
-  _updateSpringConfig(props) {
-    var springConfig = this._scrollSpring.getSpringConfig();
-    springConfig.tension = rebound.OrigamiValueConverter.tensionFromOrigamiValue(props.springTension || 25);
-    springConfig.friction = rebound.OrigamiValueConverter.frictionFromOrigamiValue(props.springFriction || 8);
-
-    this._scrollSpring.setOvershootClampingEnabled((typeof props.clampSpring === 'undefined') ? true : props.clampSpring);
-  },
-
   goToPage(pageNumber) {
-    this.props.currentPage !== pageNumber && this.props.onChangeTab &&
-      this.props.onChangeTab({i: pageNumber, ref: this.props.children[pageNumber]});
+    if (this.props.currentPage == pageNumber) {
+      return;
+    }
 
-    this._scrollSpring.setEndValue(pageNumber);
+    this.props.onChangeTab && this.props.onChangeTab({
+      i: pageNumber, ref: this.props.children[pageNumber]
+    });
+
+    Animated.spring(this.state.scrollValue, {toValue: pageNumber, friction: 10, tension: 50}).start();
     this.setState({currentPage: pageNumber});
   },
 
   renderTabBar(props) {
-    if (this.props.renderTabBar) {
+    if (this.props.renderTabBar === false) {
+      return null;
+    else if (this.props.renderTabBar) {
       return React.cloneElement(this.props.renderTabBar(), props);
     } else {
       return <DefaultTabBar {...props} />;
@@ -141,6 +115,10 @@ var ScrollableTabView = React.createClass({
       flexDirection: 'row'
     };
 
+    var translateX = this.state.scrollValue.interpolate({
+      inputRange: [0, 1], outputRange: [0, -deviceWidth]
+    });
+
     return (
       <View style={{flex: 1}}>
         {this.renderTabBar({goToPage: this.goToPage,
@@ -148,10 +126,10 @@ var ScrollableTabView = React.createClass({
                             activeTab: this.state.currentPage,
                             ref: TAB_BAR_REF})}
 
-        <View style={sceneContainerStyle} {...this._panResponder.panHandlers}
-              ref={view => { this.scrollView = view; }}>
+        <Animated.View style={[sceneContainerStyle, {transform: [{translateX}]}]}
+          {...this._panResponder.panHandlers}>
           {this.props.children}
-        </View>
+        </Animated.View>
       </View>
     );
   }
