@@ -12,7 +12,6 @@ var {
 
 var DefaultTabBar = require('./DefaultTabBar');
 var deviceWidth = Dimensions.get('window').width;
-var TAB_BAR_REF = 'TAB_BAR';
 
 var ScrollableTabView = React.createClass({
   getDefaultProps() {
@@ -26,15 +25,11 @@ var ScrollableTabView = React.createClass({
   },
 
   componentWillMount() {
-    this.state.scrollValue.addListener(({value}) => {
-      this.refs[TAB_BAR_REF] &&
-        this.refs[TAB_BAR_REF].setAnimationValue(value);
-    });
-
     var release = (e, gestureState) => {
       var relativeGestureDistance = gestureState.dx / deviceWidth,
           lastPageIndex = this.props.children.length - 1,
-          vx = gestureState.vx;
+          vx = gestureState.vx,
+          newPage = this.state.currentPage;
 
       if (relativeGestureDistance < -0.5 || (relativeGestureDistance < 0 && vx <= 0.5)) {
         newPage = newPage + 1;
@@ -43,7 +38,7 @@ var ScrollableTabView = React.createClass({
       }
 
       this.props.hasTouch && this.props.hasTouch(false);
-      this.goToPage(newPage);
+      this.goToPage(Math.max(0, Math.min(newPage, this.props.children.length - 1)));
     }
 
     this._panResponder = PanResponder.create({
@@ -77,12 +72,12 @@ var ScrollableTabView = React.createClass({
   },
 
   goToPage(pageNumber) {
-    if (this.props.currentPage == pageNumber) {
-      return;
-    }
-
     this.props.onChangeTab && this.props.onChangeTab({
       i: pageNumber, ref: this.props.children[pageNumber]
+    });
+
+    this.setState({
+      currentPage: pageNumber
     });
 
     Animated.spring(this.state.scrollValue, {toValue: pageNumber, friction: 10, tension: 50}).start();
@@ -114,7 +109,7 @@ var ScrollableTabView = React.createClass({
         {this.renderTabBar({goToPage: this.goToPage,
                             tabs: this.props.children.map((child) => child.props.tabLabel),
                             activeTab: this.state.currentPage,
-                            ref: TAB_BAR_REF})}
+                            scrollValue: this.state.scrollValue})}
 
         <Animated.View style={[sceneContainerStyle, {transform: [{translateX}]}]}
           {...this._panResponder.panHandlers}>

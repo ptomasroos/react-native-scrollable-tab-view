@@ -7,11 +7,10 @@ var {
   Text,
   TouchableOpacity,
   View,
+  Animated,
 } = React;
 
 var deviceWidth = Dimensions.get('window').width;
-var precomputeStyle = require('precomputeStyle');
-var TAB_UNDERLINE_REF = 'TAB_UNDERLINE';
 
 var styles = StyleSheet.create({
   tab: {
@@ -52,12 +51,6 @@ var DefaultTabBar = React.createClass({
     );
   },
 
-  setAnimationValue(value) {
-    this.refs[TAB_UNDERLINE_REF].setNativeProps(precomputeStyle({
-      left: (deviceWidth * value) / this.props.tabs.length
-    }));
-  },
-
   render() {
     var numberOfTabs = this.props.tabs.length;
     var tabUnderlineStyle = {
@@ -68,10 +61,14 @@ var DefaultTabBar = React.createClass({
       bottom: 0,
     };
 
+    var left = this.props.scrollValue.interpolate({
+      inputRange: [0, 1], outputRange: [0, deviceWidth / numberOfTabs]
+    });
+
     return (
       <View style={styles.tabs}>
         {this.props.tabs.map((tab, i) => this.renderTabOption(tab, i))}
-        <View style={tabUnderlineStyle} ref={TAB_UNDERLINE_REF} />
+        <Animated.View style={[tabUnderlineStyle, {left}]} />
       </View>
     );
   },
