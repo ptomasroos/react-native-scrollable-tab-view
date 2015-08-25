@@ -25,7 +25,7 @@
   },
   "homepage": "https://github.com/brentvatne/react-native-scrollable-tab-view#readme",
   "peerDependencies": {
-    "react-native": ">=0.8.0 || 0.8.0-rc || 0.8.0-rc.2"
+    "react-native": ">=0.8.0 || 0.8.0-rc || 0.8.0-rc.2 || 0.9.0-rc || 0.10.0-rc"
   },
   "dependencies": {
     "rebound": "0.0.13"
