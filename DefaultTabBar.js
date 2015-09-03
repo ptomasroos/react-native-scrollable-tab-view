@@ -23,6 +23,7 @@ var styles = StyleSheet.create({
   tabs: {
     height: 50,
     flexDirection: 'row',
+    justifyContent: 'space-around',
     marginTop: 20,
     borderWidth: 1,
     borderTopWidth: 0,
