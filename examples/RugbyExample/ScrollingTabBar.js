@@ -47,10 +47,8 @@ var ScrollingTabBar = React.createClass({
                                              extrapolate: 'clamp'});
 
     return (
-      <TouchableOpacity key={name} onPress={() => this.props.goToPage(page)}>
-        <Animated.View style={[styles.tab]}>
-          <Animated.Text style={{color}}>{name}</Animated.Text>
-        </Animated.View>
+      <TouchableOpacity key={name} onPress={() => this.props.goToPage(page)} style={[styles.tab]}>
+        <Animated.Text style={{color}}>{name}</Animated.Text>
       </TouchableOpacity>
     );
   },
