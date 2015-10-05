@@ -47,13 +47,11 @@ var FacebookTabBar = React.createClass({
     console.log(name);
 
     return (
-      <TouchableOpacity key={name} onPress={() => this.props.goToPage(page)}>
-        <View style={[styles.tab]}>
-          <Icon name={name} size={30} color='#3B5998' style={{width: 30, height: 30, position: 'absolute', top: 0, left: 20}}
-                ref={(icon) => { this.selectedTabIcons[page] = icon }}/>
-          <Icon name={name} size={30} color='#ccc' style={{width: 30, height: 30, position: 'absolute', top: 0, left: 20}}
-                ref={(icon) => { this.unselectedTabIcons[page] = icon }}/>
-        </View>
+      <TouchableOpacity key={name} onPress={() => this.props.goToPage(page)} style={[styles.tab]}>
+        <Icon name={name} size={30} color='#3B5998' style={{width: 30, height: 30, position: 'absolute', top: 0, left: 20}}
+              ref={(icon) => { this.selectedTabIcons[page] = icon }}/>
+        <Icon name={name} size={30} color='#ccc' style={{width: 30, height: 30, position: 'absolute', top: 0, left: 20}}
+              ref={(icon) => { this.unselectedTabIcons[page] = icon }}/>
       </TouchableOpacity>
     );
   },
@@ -62,11 +60,16 @@ var FacebookTabBar = React.createClass({
     var currentPage = this.props.activeTab;
 
     this.unselectedTabIcons.forEach((icon, i) => {
+      var iconRef = icon;
+
+      if(!icon.setNativeProps && icon !== null) {
+        iconRef = icon.refs.icon_image
+      }
       if (value - i >= 0 && value - i <= 1) {
-        icon.setNativeProps({opacity: value - i});
+        iconRef.setNativeProps({opacity: value - i});
       }
       if (i - value >= 0 &&  i - value <= 1) {
-        icon.setNativeProps({opacity: i - value});
+        iconRef.setNativeProps({opacity: i - value});
       }
     });
   },
