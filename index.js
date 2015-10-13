@@ -14,6 +14,9 @@ var DefaultTabBar = require('./DefaultTabBar');
 var deviceWidth = Dimensions.get('window').width;
 
 var ScrollableTabView = React.createClass({
+  statics: {
+    DefaultTabBar: DefaultTabBar 
+  },
   getDefaultProps() {
     return {
       edgeHitWidth: 30,
