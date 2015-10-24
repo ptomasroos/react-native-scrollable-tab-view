@@ -17,6 +17,7 @@ var ScrollableTabView = React.createClass({
   getDefaultProps() {
     return {
       edgeHitWidth: 30,
+      tabBarPosition: 'top'
     }
   },
 
@@ -104,17 +105,21 @@ var ScrollableTabView = React.createClass({
       inputRange: [0, 1], outputRange: [0, -deviceWidth]
     });
 
+    var tabBarProps = {
+      goToPage: this.goToPage,
+      tabs: this.props.children.map((child) => child.props.tabLabel),
+      activeTab: this.state.currentPage,
+      scrollValue: this.state.scrollValue
+    };
+
     return (
       <View style={{flex: 1}}>
-        {this.renderTabBar({goToPage: this.goToPage,
-                            tabs: this.props.children.map((child) => child.props.tabLabel),
-                            activeTab: this.state.currentPage,
-                            scrollValue: this.state.scrollValue})}
-
+        {this.props.tabBarPosition === 'top' ? this.renderTabBar(tabBarProps) : null}
         <Animated.View style={[sceneContainerStyle, {transform: [{translateX}]}]}
           {...this._panResponder.panHandlers}>
           {this.props.children}
         </Animated.View>
+        {this.props.tabBarPosition === 'bottom' ? this.renderTabBar(tabBarProps) : null}
       </View>
     );
   }
