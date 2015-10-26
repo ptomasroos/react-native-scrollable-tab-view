@@ -31,7 +31,7 @@ var ScrollableTabView = React.createClass({
           vx = gestureState.vx,
           newPage = this.state.currentPage;
 
-      if (relativeGestureDistance < -0.5 || (relativeGestureDistance < 0 && vx <= 0.5)) {
+      if (relativeGestureDistance < -0.5 || (relativeGestureDistance < 0 && vx <= -0.5)) {
         newPage = newPage + 1;
       } else if (relativeGestureDistance > 0.5 || (relativeGestureDistance > 0 && vx >= 0.5)) {
         newPage = newPage - 1;
