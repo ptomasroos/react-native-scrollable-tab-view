@@ -16,8 +16,10 @@ var deviceWidth = Dimensions.get('window').width;
 var ScrollableTabView = React.createClass({
   getDefaultProps() {
     return {
+      tabBarPosition: 'top',
       edgeHitWidth: 30,
-      tabBarPosition: 'top'
+      springTension: 50,
+      springFriction: 10
     }
   },
 
@@ -32,7 +34,7 @@ var ScrollableTabView = React.createClass({
           vx = gestureState.vx,
           newPage = this.state.currentPage;
 
-      if (relativeGestureDistance < -0.5 || (relativeGestureDistance < 0 && vx <= 0.5)) {
+      if (relativeGestureDistance < -0.5 || (relativeGestureDistance < 0 && vx <= -0.5)) {
         newPage = newPage + 1;
       } else if (relativeGestureDistance > 0.5 || (relativeGestureDistance > 0 && vx >= 0.5)) {
         newPage = newPage - 1;
@@ -81,7 +83,7 @@ var ScrollableTabView = React.createClass({
       currentPage: pageNumber
     });
 
-    Animated.spring(this.state.scrollValue, {toValue: pageNumber, friction: 10, tension: 50}).start();
+    Animated.spring(this.state.scrollValue, {toValue: pageNumber, friction: this.props.springFriction, tension: this.props.springTension}).start();
   },
 
   renderTabBar(props) {
