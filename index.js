@@ -17,6 +17,8 @@ var ScrollableTabView = React.createClass({
   getDefaultProps() {
     return {
       edgeHitWidth: 30,
+      springTension: 50,
+      springFriction: 10
     }
   },
 
@@ -80,7 +82,7 @@ var ScrollableTabView = React.createClass({
       currentPage: pageNumber
     });
 
-    Animated.spring(this.state.scrollValue, {toValue: pageNumber, friction: 10, tension: 50}).start();
+    Animated.spring(this.state.scrollValue, {toValue: pageNumber, friction: this.props.springFriction, tension: this.props.springTension}).start();
   },
 
   renderTabBar(props) {
