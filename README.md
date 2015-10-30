@@ -143,6 +143,7 @@ module.exports = CustomTabBar;
   the tab bar. The component has `goToPage`, `tabs`, `activeTab` and
   `ref` added to the props, and should implement `setAnimationValue` to
   be able to animate itself along with the tab content.
+- **`tabBarPosition`** _(String)_ - if `"top"`, the tab bar will render above the tabs. If `"bottom"`, the tab bar will render below the tabs. Defaults to `"top"`.
 - **`onChangeTab`** _(Function)_ - function to call when tab changes, should accept 1 argument which is an Object containing two keys: `i`: the index of the tab that is selected, `ref`: the ref of the tab that is selected
 - **`edgeHitWidth`** _(Integer)_ - region (in pixels) from the left & right edges of the screen that can trigger swipe. Default is 30, which is the same as the swipe-back gesture on iOS.
 - **`hasTouch`** _(Function)_ - returns `true` when ScrollableTabView starts being panned and `false` when it is released. Not triggered when `locked` (Bool) is true.
