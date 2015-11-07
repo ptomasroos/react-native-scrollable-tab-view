@@ -24,7 +24,8 @@ var ScrollableTabView = React.createClass({
   },
 
   getInitialState() {
-    return { currentPage: 0, scrollValue: new Animated.Value(0) };
+    var currentPage = this.props.initialPage || 0;
+    return { currentPage: currentPage, scrollValue: new Animated.Value(currentPage) };
   },
 
   componentWillMount() {
