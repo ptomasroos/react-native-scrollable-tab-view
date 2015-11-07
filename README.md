@@ -151,6 +151,7 @@ module.exports = CustomTabBar;
 - **`springTension`** _(Integer)_ - a number between `1` and `100`, controls the amount of tension on the spring that guides the scroll animation - see [example](http://facebook.github.io/rebound-js/examples/#graph-canvas).
 - **`springFriction`** _(Integer)_ - a number between `1` and `30`, controls the amount of friction on the spring that guides the scroll animation - see [example](http://facebook.github.io/rebound-js/examples/#graph-canvas).
 - **`clampSpring`** _(Bool)_ - if `true`, the spring will not bounce at all - if `false`, it will oscillate around the target value before settling.
+- **`initialPage`** _(Integer)_ - the index of the initially selected tab, defaults to 0 === first tab.
 - **`children`** _(ReactComponents)_ - each top-level child component should have a `tabLabel` prop that can be used by the tab bar component to render out the labels. The default tab bar expects it to be a string, but you can use anything you want if you make a custom tab bar.
 
 ---
