@@ -29,6 +29,9 @@ var ScrollableTabView = React.createClass({
   },
 
   componentWillMount() {
+    if(!this.props.children.length) {
+      throw new Error('You need more than one page to use this plugin!');
+    }
     var release = (e, gestureState) => {
       var relativeGestureDistance = gestureState.dx / deviceWidth,
           lastPageIndex = this.props.children.length - 1,
