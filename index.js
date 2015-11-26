@@ -116,7 +116,7 @@ var ScrollableTabView = React.createClass({
     };
 
     return (
-      <View style={{flex: 1}}>
+      <View style={{flex: 1, overflow: 'hidden'}}>
         {this.props.tabBarPosition === 'top' ? this.renderTabBar(tabBarProps) : null}
         <Animated.View style={[sceneContainerStyle, {transform: [{translateX}]}]}
           {...this._panResponder.panHandlers}>
