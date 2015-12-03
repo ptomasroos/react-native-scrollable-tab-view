@@ -134,10 +134,14 @@ var ScrollableTabView = React.createClass({
 
   render() {
     var sceneContainerStyle = {
-      width: deviceWidth * this.props.children.length,
       flex: 1,
       flexDirection: 'row'
     };
+    
+    // Adjust size only on iOS
+    if( Platform.OS == 'ios' || this.props.useAlwaysScrollView ) {
+      sceneContainerStyle.width = deviceWidth * this.props.children.length;
+    }
 
     var translateX = this.state.scrollValue.interpolate({
       inputRange: [0, 1], outputRange: [0, -deviceWidth]
