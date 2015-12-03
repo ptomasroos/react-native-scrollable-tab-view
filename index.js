@@ -8,19 +8,27 @@ var {
   TouchableOpacity,
   PanResponder,
   Animated,
+  Platform,
+  ViewPagerAndroid
 } = React;
 
 var DefaultTabBar = require('./DefaultTabBar');
 var deviceWidth = Dimensions.get('window').width;
 
 var ScrollableTabView = React.createClass({
+  // Export DefaultTabBar
+  statics: {
+    DefaultTabBar: DefaultTabBar
+  },
+
   getDefaultProps() {
     return {
       tabBarPosition: 'top',
       edgeHitWidth: 30,
       springTension: 50,
-      springFriction: 10
-    }
+      springFriction: 10,
+      useAlwaysScrollView: false
+    };
   },
 
   getInitialState() {
@@ -77,14 +85,41 @@ var ScrollableTabView = React.createClass({
 
   goToPage(pageNumber) {
     this.props.onChangeTab && this.props.onChangeTab({
-      i: pageNumber, ref: this.props.children[pageNumber]
+      i: pageNumber,
+      ref: this.props.children[pageNumber]
     });
 
     this.setState({
-      currentPage: pageNumber
+      currentPage: pageNumber,
     });
 
+    if( Platform.OS == 'android' && !this.props.useAlwaysScrollView )  {
+      this.viewPager.setPage(pageNumber);
+    }
+
     Animated.spring(this.state.scrollValue, {toValue: pageNumber, friction: this.props.springFriction, tension: this.props.springTension}).start();
+  },
+
+  /**
+   * Method to handle ViewPager on Android
+   *
+   * @param  {Object} e
+   */
+  onPageScroll: function(e){
+    var pageNumber = this.viewPager.state.selectedPage;
+
+    if( pageNumber != this.state.currentPage ) {
+      this.props.onChangeTab && this.props.onChangeTab({
+        i: pageNumber,
+        ref: this.props.children[pageNumber]
+      });
+
+      this.setState({
+        currentPage: pageNumber,
+      });
+
+      Animated.spring(this.state.scrollValue, {toValue: pageNumber, friction: this.props.springFriction, tension: this.props.springTension}).start();
+    }
   },
 
   renderTabBar(props) {
@@ -99,10 +134,14 @@ var ScrollableTabView = React.createClass({
 
   render() {
     var sceneContainerStyle = {
-      width: deviceWidth * this.props.children.length,
       flex: 1,
       flexDirection: 'row'
     };
+    
+    // Adjust size only on iOS
+    if( Platform.OS == 'ios' || this.props.useAlwaysScrollView ) {
+      sceneContainerStyle.width = deviceWidth * this.props.children.length;
+    }
 
     var translateX = this.state.scrollValue.interpolate({
       inputRange: [0, 1], outputRange: [0, -deviceWidth]
@@ -115,13 +154,30 @@ var ScrollableTabView = React.createClass({
       scrollValue: this.state.scrollValue
     };
 
+    var component = (
+      <Animated.View style={[sceneContainerStyle, {transform: [{translateX}]}]}
+        {...this._panResponder.panHandlers}>
+        {this.props.children}
+      </Animated.View>
+    );
+
+    // Use ViewPager on Android
+    if( Platform.OS == 'android' && !this.props.useAlwaysScrollView )  {
+      component = (
+        <ViewPagerAndroid ref={(vp) => { this.viewPager = vp; }}
+          onPageScroll={this.onPageScroll}
+          style={sceneContainerStyle}
+          initialPage={this.state.currentPage}
+          >
+          {this.props.children}
+        </ViewPagerAndroid>
+      );
+    }
+
     return (
       <View style={{flex: 1}}>
         {this.props.tabBarPosition === 'top' ? this.renderTabBar(tabBarProps) : null}
-        <Animated.View style={[sceneContainerStyle, {transform: [{translateX}]}]}
-          {...this._panResponder.panHandlers}>
-          {this.props.children}
-        </Animated.View>
+        {component}
         {this.props.tabBarPosition === 'bottom' ? this.renderTabBar(tabBarProps) : null}
       </View>
     );
