@@ -7,6 +7,7 @@ var {
   View,
   TouchableOpacity,
   Dimensions,
+  Animated,
 } = React;
 
 var { Icon, } = require('react-native-icons');
@@ -75,11 +76,25 @@ var FacebookTabBar = React.createClass({
   },
 
   render() {
-    return (
+    var numberOfTabs = this.props.tabs.length;
+    var tabUnderlineStyle = {
+      position: 'absolute',
+      width: deviceWidth / numberOfTabs,
+      height: 3,
+      backgroundColor: '#00A7E6',
+      bottom: 0,
+    };
+
+    var left = this.props.scrollValue.interpolate({
+      inputRange: [0, 1], outputRange: [0, deviceWidth / numberOfTabs]
+    });
+
+    return <View>
       <View style={styles.tabs}>
         {this.props.tabs.map((tab, i) => this.renderTabOption(tab, i))}
       </View>
-    );
+      <Animated.View style={[tabUnderlineStyle, {left}]} />
+    </View>;
   },
 });
 
