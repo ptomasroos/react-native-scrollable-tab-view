@@ -62,7 +62,7 @@ var ScrollableTabView = React.createClass({
     };
 
     return (
-      <View style={{flex: 1}}>
+      <View style={{flex: 1, overflow: 'hidden'}}>
         {this.props.tabBarPosition === 'top' ? this.renderTabBar(tabBarProps) : null}
         <ScrollView
           style={{flexDirection: 'row'}}
