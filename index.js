@@ -15,6 +15,10 @@ var DefaultTabBar = require('./DefaultTabBar');
 var deviceWidth = Dimensions.get('window').width;
 
 var ScrollableTabView = React.createClass({
+  statics: {
+    DefaultTabBar,
+  },
+
   getDefaultProps() {
     return {
       tabBarPosition: 'top',
