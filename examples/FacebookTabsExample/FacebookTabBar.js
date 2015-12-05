@@ -45,7 +45,6 @@ var FacebookTabBar = React.createClass({
 
   renderTabOption(name, page) {
     var isTabActive = this.props.activeTab === page;
-    console.log(name);
 
     return (
       <TouchableOpacity key={name} onPress={() => this.props.goToPage(page)} style={[styles.tab]}>
@@ -57,15 +56,21 @@ var FacebookTabBar = React.createClass({
     );
   },
 
-  setAnimationValue(value) {
+  componentDidMount() {
+    this.setAnimationValue({value: this.props.activeTab});
+    this._listener = this.props.scrollValue.addListener(this.setAnimationValue.bind(this));
+  },
+
+  setAnimationValue({value}) {
     var currentPage = this.props.activeTab;
 
     this.unselectedTabIcons.forEach((icon, i) => {
       var iconRef = icon;
 
-      if(!icon.setNativeProps && icon !== null) {
+      if (!icon.setNativeProps && icon !== null) {
         iconRef = icon.refs.icon_image
       }
+
       if (value - i >= 0 && value - i <= 1) {
         iconRef.setNativeProps({opacity: value - i});
       }
@@ -81,7 +86,7 @@ var FacebookTabBar = React.createClass({
       position: 'absolute',
       width: deviceWidth / numberOfTabs,
       height: 3,
-      backgroundColor: '#00A7E6',
+      backgroundColor: '#3b5998',
       bottom: 0,
     };
 
@@ -89,12 +94,14 @@ var FacebookTabBar = React.createClass({
       inputRange: [0, 1], outputRange: [0, deviceWidth / numberOfTabs]
     });
 
-    return <View>
-      <View style={styles.tabs}>
-        {this.props.tabs.map((tab, i) => this.renderTabOption(tab, i))}
+    return (
+      <View>
+        <View style={styles.tabs}>
+          {this.props.tabs.map((tab, i) => this.renderTabOption(tab, i))}
+        </View>
+        <Animated.View style={[tabUnderlineStyle, {left}]} />
       </View>
-      <Animated.View style={[tabUnderlineStyle, {left}]} />
-    </View>;
+    );
   },
 });
 

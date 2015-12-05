@@ -26,7 +26,11 @@ var ScrollableTabView = React.createClass({
 
   getInitialState() {
     var currentPage = this.props.initialPage || 0;
-    return { currentPage: currentPage, scrollValue: new Animated.Value(currentPage) };
+
+    return {
+      currentPage: currentPage,
+      scrollValue: new Animated.Value(currentPage),
+    };
   },
 
   goToPage(pageNumber) {
@@ -40,6 +44,7 @@ var ScrollableTabView = React.createClass({
     } else {
       this.scrollView.setPage(pageNumber);
     }
+
     this.setState({currentPage: pageNumber});
   },
 
@@ -54,35 +59,41 @@ var ScrollableTabView = React.createClass({
   },
 
   renderScrollableContent() {
-    if(Platform.OS === 'ios') {
-      return <ScrollView
-        style={styles.scrollableContentIOS}
-        horizontal={true}
-        ref={(scrollView) => { this.scrollView = scrollView }}
-        onScroll={(e) => {
-          var offsetX = e.nativeEvent.contentOffset.x;
-          this.state.scrollValue.setValue(offsetX / deviceWidth);
-        }}
-        scrollEventThrottle={16}
-        directionalLockEnabled={true}
-        pagingEnabled={true}>
-
-        {this.props.children}
-      </ScrollView>
+    if (Platform.OS === 'ios') {
+      return (
+        <ScrollView
+          style={styles.scrollableContentIOS}
+          horizontal={true}
+          ref={(scrollView) => { this.scrollView = scrollView }}
+          onScroll={(e) => {
+            var offsetX = e.nativeEvent.contentOffset.x;
+            this._updateScrollValue(offsetX / deviceWidth);
+          }}
+          scrollEventThrottle={16}
+          directionalLockEnabled={true}
+          pagingEnabled={true}>
+          {this.props.children}
+        </ScrollView>
+      );
     } else {
-      return <ViewPagerAndroid
-        style={styles.scrollableContentAndroid}
-        onPageScroll={(e) => {
-          const {offset, position} = e.nativeEvent;
-          this.state.scrollValue.setValue(position + offset);
-        }}
-        ref={(scrollView) => { this.scrollView = scrollView }}>
-
-        {this.props.children.map((child) => {
-          return <View style={{width: deviceWidth}}>{child}</View>
-        })}
-      </ViewPagerAndroid>
+      return (
+        <ViewPagerAndroid
+         style={styles.scrollableContentAndroid}
+         onPageScroll={(e) => {
+           const {offset, position} = e.nativeEvent;
+           this._updateScrollValue(position + offset);
+         }}
+         ref={(scrollView) => { this.scrollView = scrollView }}>
+         {this.props.children.map((child) => {
+           return <View style={{width: deviceWidth}}>{child}</View>
+         })}
+        </ViewPagerAndroid>
+      );
     }
+  },
+
+  _updateScrollValue(value) {
+    this.state.scrollValue.setValue(value);
   },
 
   render() {
