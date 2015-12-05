@@ -3,12 +3,12 @@
 var React = require('react-native');
 var {
   Dimensions,
-  Text,
   View,
-  TouchableOpacity,
-  PanResponder,
   Animated,
   ScrollView,
+  Platform,
+  StyleSheet,
+  ViewPagerAndroid,
 } = React;
 
 var DefaultTabBar = require('./DefaultTabBar');
@@ -34,8 +34,12 @@ var ScrollableTabView = React.createClass({
       i: pageNumber, ref: this.props.children[pageNumber]
     });
 
-    var offset = pageNumber * deviceWidth
-    this.scroolView.scrollTo(0, offset);
+    if(Platform.OS === 'ios') {
+      var offset = pageNumber * deviceWidth
+      this.scrollView.scrollTo(0, offset);
+    } else {
+      this.scrollView.setPage(pageNumber);
+    }
     this.setState({currentPage: pageNumber});
   },
 
@@ -46,6 +50,38 @@ var ScrollableTabView = React.createClass({
       return React.cloneElement(this.props.renderTabBar(), props);
     } else {
       return <DefaultTabBar {...props} />;
+    }
+  },
+
+  renderScrollableContent() {
+    if(Platform.OS === 'ios') {
+      return <ScrollView
+        style={styles.scrollableContentIOS}
+        horizontal={true}
+        ref={(scrollView) => { this.scrollView = scrollView }}
+        onScroll={(e) => {
+          var offsetX = e.nativeEvent.contentOffset.x;
+          this.state.scrollValue.setValue(offsetX / deviceWidth);
+        }}
+        scrollEventThrottle={16}
+        directionalLockEnabled={true}
+        pagingEnabled={true}>
+
+        {this.props.children}
+      </ScrollView>
+    } else {
+      return <ViewPagerAndroid
+        style={styles.scrollableContentAndroid}
+        onPageScroll={(e) => {
+          const {offset, position} = e.nativeEvent;
+          this.state.scrollValue.setValue(position + offset);
+        }}
+        ref={(scrollView) => { this.scrollView = scrollView }}>
+
+        {this.props.children.map((child) => {
+          return <View style={{width: deviceWidth}}>{child}</View>
+        })}
+      </ViewPagerAndroid>
     }
   },
 
@@ -62,21 +98,9 @@ var ScrollableTabView = React.createClass({
     };
 
     return (
-      <View style={{flex: 1}}>
+      <View style={styles.container}>
         {this.props.tabBarPosition === 'top' ? this.renderTabBar(tabBarProps) : null}
-        <ScrollView
-          style={{flexDirection: 'row'}}
-          horizontal={true}
-          ref={(scroolView) => { this.scroolView = scroolView }}
-          onScroll={(e) => {
-            var offsetX = e.nativeEvent.contentOffset.x;
-            this.state.scrollValue.setValue(offsetX / deviceWidth);
-          }}
-          scrollEventThrottle={16}
-          pagingEnabled={true}>
-
-          {this.props.children}
-        </ScrollView>
+        {this.renderScrollableContent()}
         {this.props.tabBarPosition === 'bottom' ? this.renderTabBar(tabBarProps) : null}
       </View>
     );
@@ -84,3 +108,15 @@ var ScrollableTabView = React.createClass({
 });
 
 module.exports = ScrollableTabView;
+
+var styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  scrollableContentIOS: {
+    flexDirection: 'row',
+  },
+  scrollableContentAndroid: {
+    flex: 1,
+  },
+});
