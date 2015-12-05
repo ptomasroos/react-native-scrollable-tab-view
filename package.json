@@ -23,8 +23,5 @@
   "bugs": {
     "url": "https://github.com/brentvatne/react-native-scrollable-tab-view/issues"
   },
-  "homepage": "https://github.com/brentvatne/react-native-scrollable-tab-view#readme",
-  "dependencies": {
-    "rebound": "0.0.13"
-  }
+  "homepage": "https://github.com/brentvatne/react-native-scrollable-tab-view#readme"
 }
