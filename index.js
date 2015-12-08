@@ -74,6 +74,7 @@ var ScrollableTabView = React.createClass({
             this._updateScrollValue(offsetX / deviceWidth);
           }}
           scrollEventThrottle={16}
+          showsHorizontalScrollIndicator={false}
           directionalLockEnabled={true}
           pagingEnabled={true}>
           {this.props.children}
