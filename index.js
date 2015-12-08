@@ -88,8 +88,12 @@ var ScrollableTabView = React.createClass({
            this._updateScrollValue(position + offset);
          }}
          ref={(scrollView) => { this.scrollView = scrollView }}>
-         {this.props.children.map((child) => {
-           return <View style={{width: deviceWidth}}>{child}</View>
+         {this.props.children.map((child,idx) => {
+           return <View
+                    key={child.props.tabLabel + '_' + idx}
+                    style={{width: deviceWidth}}>
+                    {child}
+                  </View>
          })}
         </ViewPagerAndroid>
       );
