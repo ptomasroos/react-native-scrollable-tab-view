@@ -66,16 +66,26 @@ var ScrollableTabView = React.createClass({
     if (Platform.OS === 'ios') {
       return (
         <ScrollView
+          horizontal
+          pagingEnabled
           style={styles.scrollableContentIOS}
-          horizontal={true}
           ref={(scrollView) => { this.scrollView = scrollView }}
           onScroll={(e) => {
             var offsetX = e.nativeEvent.contentOffset.x;
             this._updateScrollValue(offsetX / deviceWidth);
           }}
+          onMomentumScrollBegin={(e) => {
+            var offsetX = e.nativeEvent.contentOffset.x;
+            this._updateSelectedPage(parseInt(offsetX / deviceWidth));
+          }}
+          onMomentumScrollEnd={(e) => {
+            var offsetX = e.nativeEvent.contentOffset.x;
+            this._updateSelectedPage(parseInt(offsetX / deviceWidth));
+          }}
           scrollEventThrottle={16}
-          directionalLockEnabled={true}
-          pagingEnabled={true}>
+          showsHorizontalScrollIndicator={false}
+          directionalLockEnabled
+          alwaysBounceVertical={false}>
           {this.props.children}
         </ScrollView>
       );
@@ -83,6 +93,7 @@ var ScrollableTabView = React.createClass({
       return (
         <ViewPagerAndroid
          style={styles.scrollableContentAndroid}
+         onPageSelected={this._updateSelectedPage}
          onPageScroll={(e) => {
            const {offset, position} = e.nativeEvent;
            this._updateScrollValue(position + offset);
@@ -94,6 +105,13 @@ var ScrollableTabView = React.createClass({
         </ViewPagerAndroid>
       );
     }
+  },
+
+  _updateSelectedPage(currentPage) {
+    if (typeof currentPage === 'object') {
+      currentPage = currentPage.nativeEvent.position;
+    }
+    this.setState({currentPage});
   },
 
   _updateScrollValue(value) {
