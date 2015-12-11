@@ -9,6 +9,7 @@ var {
   Platform,
   StyleSheet,
   ViewPagerAndroid,
+  PropTypes,
 } = React;
 
 var DefaultTabBar = require('./DefaultTabBar');
@@ -19,21 +20,25 @@ var ScrollableTabView = React.createClass({
     DefaultTabBar,
   },
 
+  propTypes: {
+    tabBarPosition: PropTypes.oneOf(['top', 'bottom']),
+    initialPage: PropTypes.number,
+    onChangeTab: PropTypes.func,
+    renderTabBar: PropTypes.any,
+  },
+
   getDefaultProps() {
     return {
       tabBarPosition: 'top',
-      edgeHitWidth: 30,
-      springTension: 50,
-      springFriction: 10
+      initialPage: 0,
+      onChangeTab: () => {},
     }
   },
 
   getInitialState() {
-    var currentPage = this.props.initialPage || 0;
-
     return {
-      currentPage: currentPage,
-      scrollValue: new Animated.Value(currentPage),
+      currentPage: this.props.initialPage,
+      scrollValue: new Animated.Value(this.props.initialPage),
     };
   },
 
@@ -44,9 +49,7 @@ var ScrollableTabView = React.createClass({
   },
 
   goToPage(pageNumber) {
-    this.props.onChangeTab && this.props.onChangeTab({
-      i: pageNumber, ref: this.props.children[pageNumber]
-    });
+    this.props.onChangeTab({ i: pageNumber, ref: this.props.children[pageNumber] });
 
     if(Platform.OS === 'ios') {
       var offset = pageNumber * deviceWidth
