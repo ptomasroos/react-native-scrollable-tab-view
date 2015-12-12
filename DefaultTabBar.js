@@ -24,7 +24,6 @@ var styles = StyleSheet.create({
     height: 50,
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginTop: 20,
     borderWidth: 1,
     borderTopWidth: 0,
     borderLeftWidth: 0,
@@ -37,16 +36,22 @@ var DefaultTabBar = React.createClass({
   propTypes: {
     goToPage: React.PropTypes.func,
     activeTab: React.PropTypes.number,
-    tabs: React.PropTypes.array
+    tabs: React.PropTypes.array,
+    underlineColor : React.PropTypes.string,
+    backgroundColor : React.PropTypes.string,
+    activeTextColor : React.PropTypes.string,
+    inactiveTextColor : React.PropTypes.string,
   },
 
   renderTabOption(name, page) {
     var isTabActive = this.props.activeTab === page;
-
+    var activeTextColor = this.props.activeTextColor || "navy";
+    var inactiveTextColor = this.props.inactiveTextColor || "black";
     return (
       <TouchableOpacity style={[styles.tab]} key={name} onPress={() => this.props.goToPage(page)}>
         <View>
-          <Text style={{color: isTabActive ? 'navy' : 'black', fontWeight: isTabActive ? 'bold' : 'normal'}}>{name}</Text>
+          <Text style={{color: isTabActive ? activeTextColor : inactiveTextColor,
+            fontWeight: isTabActive ? 'bold' : 'normal'}}>{name}</Text>
         </View>
       </TouchableOpacity>
     );
@@ -58,7 +63,7 @@ var DefaultTabBar = React.createClass({
       position: 'absolute',
       width: deviceWidth / numberOfTabs,
       height: 4,
-      backgroundColor: 'navy',
+      backgroundColor: this.props.underlineColor || "navy",
       bottom: 0,
     };
 
@@ -67,7 +72,7 @@ var DefaultTabBar = React.createClass({
     });
 
     return (
-      <View style={styles.tabs}>
+      <View style={[styles.tabs, {backgroundColor : this.props.backgroundColor || null}]}>
         {this.props.tabs.map((tab, i) => this.renderTabOption(tab, i))}
         <Animated.View style={[tabUnderlineStyle, {left}]} />
       </View>

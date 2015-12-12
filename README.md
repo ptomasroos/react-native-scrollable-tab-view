@@ -79,7 +79,10 @@ See
 - **`clampSpring`** _(Bool)_ - if `true`, the spring will not bounce at all - if `false`, it will oscillate around the target value before settling.
 - **`initialPage`** _(Integer)_ - the index of the initially selected tab, defaults to 0 === first tab.
 - **`children`** _(ReactComponents)_ - each top-level child component should have a `tabLabel` prop that can be used by the tab bar component to render out the labels. The default tab bar expects it to be a string, but you can use anything you want if you make a custom tab bar.
-
+- **`tabBarUnderlineColor`** _(String)_ - color of the default tab bar's underline, defaults to `navy`
+- **`tabBarBackgroundColor`** _(String)_ - color of the default tab bar's background, defaults to `white`
+- **`tabBarActiveTextColor`** _(String)_ - color of the default tab bar's text when active, defaults to `navy`
+- **`tabBarInactiveTextColor`** _(String)_ - color of the default tab bar's text when inactive, defaults to `black`
 ---
 
 **MIT Licensed**
