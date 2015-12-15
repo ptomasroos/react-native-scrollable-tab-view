@@ -72,6 +72,7 @@ var ScrollableTabView = React.createClass({
   },
 
   renderScrollableContent() {
+    if (this.props.children instanceof Object) { throw "Need to have more then one child element."; }
     if (Platform.OS === 'ios') {
       return (
         <ScrollView
