@@ -6,12 +6,10 @@ var {
   Text,
   View,
   ScrollView,
-  Dimensions,
 } = React;
 
 var ScrollableTabView = require('react-native-scrollable-tab-view');
 var FacebookTabBar = require('./FacebookTabBar');
-var deviceWidth = Dimensions.get('window').width;
 
 var FacebookTabsExample = React.createClass({
   render() {
@@ -57,7 +55,7 @@ var styles = StyleSheet.create({
     marginTop: 30,
   },
   tabView: {
-    width: deviceWidth,
+    flex: 1,
     padding: 10,
     backgroundColor: 'rgba(0,0,0,0.01)',
   },
