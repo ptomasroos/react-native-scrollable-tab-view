@@ -47,6 +47,19 @@ var FacebookTabsExample = React.createClass({
   }
 });
 
+var SimpleExample = React.createClass({
+  render() {
+    return (
+      <ScrollableTabView style={{marginTop: 20}}>
+        <Text tabLabel='Tab #1'>My</Text>
+        <Text tabLabel='Tab #2'>favorite</Text>
+        <Text tabLabel='Tab #3'>project</Text>
+      </ScrollableTabView>
+    )
+  }
+});
+
+//module.exports = SimpleExample;
 module.exports = FacebookTabsExample;
 
 var styles = StyleSheet.create({
