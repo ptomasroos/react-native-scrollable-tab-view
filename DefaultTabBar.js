@@ -2,7 +2,6 @@
 
 var React = require('react-native');
 var {
-  Dimensions,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -10,7 +9,6 @@ var {
   Animated,
 } = React;
 
-var deviceWidth = Dimensions.get('window').width;
 
 var styles = StyleSheet.create({
   tab: {
@@ -58,17 +56,18 @@ var DefaultTabBar = React.createClass({
   },
 
   render() {
+    var containerWidth = this.props.containerWidth;
     var numberOfTabs = this.props.tabs.length;
     var tabUnderlineStyle = {
       position: 'absolute',
-      width: deviceWidth / numberOfTabs,
+      width: containerWidth / numberOfTabs,
       height: 4,
       backgroundColor: this.props.underlineColor || "navy",
       bottom: 0,
     };
 
     var left = this.props.scrollValue.interpolate({
-      inputRange: [0, 1], outputRange: [0, deviceWidth / numberOfTabs]
+      inputRange: [0, 1], outputRange: [0,  containerWidth / numberOfTabs]
     });
 
     return (

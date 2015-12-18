@@ -8,6 +8,6 @@
   "dependencies": {
     "react-native": "^0.16.0",
     "react-native-icons": "^0.7.0",
-    "react-native-scrollable-tab-view": "brentvatne/react-native-scrollable-tab-view"
+    "react-native-scrollable-tab-view": "../.."
   }
 }

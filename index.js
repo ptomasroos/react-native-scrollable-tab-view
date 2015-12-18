@@ -10,10 +10,12 @@ var {
   StyleSheet,
   ViewPagerAndroid,
   PropTypes,
+  InteractionManager,
 } = React;
 
 var DefaultTabBar = require('./DefaultTabBar');
 var deviceWidth = Dimensions.get('window').width;
+var deviceHeight = Dimensions.get('window').height;
 
 var ScrollableTabView = React.createClass({
   statics: {
@@ -39,6 +41,10 @@ var ScrollableTabView = React.createClass({
     return {
       currentPage: this.props.initialPage,
       scrollValue: new Animated.Value(this.props.initialPage),
+      container: {
+        width: deviceWidth,
+        height: deviceHeight,
+      }
     };
   },
 
@@ -52,7 +58,7 @@ var ScrollableTabView = React.createClass({
     this.props.onChangeTab({ i: pageNumber, ref: this.props.children[pageNumber] });
 
     if(Platform.OS === 'ios') {
-      var offset = pageNumber * deviceWidth
+      var offset = pageNumber * this.state.container.width;
       this.scrollView.scrollTo(0, offset);
     } else {
       this.scrollView.setPage(pageNumber);
@@ -78,26 +84,32 @@ var ScrollableTabView = React.createClass({
           horizontal
           pagingEnabled
           style={styles.scrollableContentIOS}
-          contentOffset={{x:this.props.initialPage * deviceWidth}}
+          contentOffset={{x:this.props.initialPage * this.state.container.width}}
           ref={(scrollView) => { this.scrollView = scrollView }}
           onScroll={(e) => {
             var offsetX = e.nativeEvent.contentOffset.x;
-            this._updateScrollValue(offsetX / deviceWidth);
+            this._updateScrollValue(offsetX / this.state.container.width);
           }}
           onMomentumScrollBegin={(e) => {
             var offsetX = e.nativeEvent.contentOffset.x;
-            this._updateSelectedPage(parseInt(offsetX / deviceWidth));
+            this._updateSelectedPage(parseInt(offsetX / this.state.container.width));
           }}
           onMomentumScrollEnd={(e) => {
             var offsetX = e.nativeEvent.contentOffset.x;
-            this._updateSelectedPage(parseInt(offsetX / deviceWidth));
+            this._updateSelectedPage(parseInt(offsetX / this.state.container.width));
           }}
           scrollEventThrottle={16}
           showsHorizontalScrollIndicator={false}
           scrollEnabled={!this.props.locked}
           directionalLockEnabled
           alwaysBounceVertical={false}>
-          {this.props.children}
+          {this.props.children.map((child,idx) => {
+            return <View
+              key={child.props.tabLabel + '_' + idx}
+              style={{width: this.state.container.width}}>
+              {child}
+            </View>
+            })}
         </ScrollView>
       );
     } else {
@@ -113,10 +125,10 @@ var ScrollableTabView = React.createClass({
          ref={(scrollView) => { this.scrollView = scrollView }}>
          {this.props.children.map((child,idx) => {
            return <View
-                    key={child.props.tabLabel + '_' + idx}
-                    style={{width: deviceWidth}}>
-                    {child}
-                  </View>
+             key={child.props.tabLabel + '_' + idx}
+             style={{width: this.state.container.width}}>
+             {child}
+           </View>
          })}
         </ViewPagerAndroid>
       );
@@ -136,11 +148,19 @@ var ScrollableTabView = React.createClass({
     this.state.scrollValue.setValue(value);
   },
 
-  render() {
-    var translateX = this.state.scrollValue.interpolate({
-      inputRange: [0, 1], outputRange: [0, -deviceWidth]
-    });
+  _handleLayout(e) {
+    var {width, height} = e.nativeEvent.layout;
+    var container = this.state.container;
 
+    if (width !== container.width || height !== container.height) {
+      this.setState({container: e.nativeEvent.layout});
+      InteractionManager.runAfterInteractions(() => {
+        this.goToPage(this.state.currentPage);
+      });
+    }
+  },
+
+  render() {
     var tabBarProps = {
       goToPage: this.goToPage,
       tabs: this.props.children.map((child) => child.props.tabLabel),
@@ -150,10 +170,11 @@ var ScrollableTabView = React.createClass({
       backgroundColor : this.props.tabBarBackgroundColor,
       activeTextColor : this.props.tabBarActiveTextColor,
       inactiveTextColor : this.props.tabBarInactiveTextColor,
+      containerWidth: this.state.container.width,
     };
 
     return (
-      <View style={styles.container}>
+      <View style={styles.container} onLayout={this._handleLayout}>
         {this.props.tabBarPosition === 'top' ? this.renderTabBar(tabBarProps) : null}
         {this.renderScrollableContent()}
         {this.props.tabBarPosition === 'bottom' ? this.renderTabBar(tabBarProps) : null}
