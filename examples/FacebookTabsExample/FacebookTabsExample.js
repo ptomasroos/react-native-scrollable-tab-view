@@ -17,7 +17,7 @@ var FacebookTabsExample = React.createClass({
   render() {
     return (
       <View style={styles.container}>
-        <ScrollableTabView renderTabBar={() => <FacebookTabBar />}>
+        <ScrollableTabView initialPage={1} renderTabBar={() => <FacebookTabBar />}>
           <ScrollView tabLabel="ion|ios-paper" style={styles.tabView}>
             <View style={styles.card}>
               <Text>News</Text>

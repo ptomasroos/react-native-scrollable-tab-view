@@ -78,6 +78,7 @@ var ScrollableTabView = React.createClass({
           horizontal
           pagingEnabled
           style={styles.scrollableContentIOS}
+          contentOffset={{x:this.props.initialPage * deviceWidth}}
           ref={(scrollView) => { this.scrollView = scrollView }}
           onScroll={(e) => {
             var offsetX = e.nativeEvent.contentOffset.x;
@@ -103,6 +104,7 @@ var ScrollableTabView = React.createClass({
       return (
         <ViewPagerAndroid
          style={styles.scrollableContentAndroid}
+         initialPage={this.props.initialPage}
          onPageSelected={this._updateSelectedPage}
          onPageScroll={(e) => {
            const {offset, position} = e.nativeEvent;
