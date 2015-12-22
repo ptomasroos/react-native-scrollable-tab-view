@@ -56,7 +56,7 @@ var FacebookTabBar = React.createClass({
 
   componentDidMount() {
     this.setAnimationValue({value: this.props.activeTab});
-    this._listener = this.props.scrollValue.addListener(this.setAnimationValue.bind(this));
+    this._listener = this.props.scrollValue.addListener(this.setAnimationValue);
   },
 
   setAnimationValue({value}) {
