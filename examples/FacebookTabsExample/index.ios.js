@@ -1,6 +1,5 @@
 var React = require('react-native');
 var { AppRegistry,  } = React;
-var Credit = require('./Credit')
+var FacebookTabsExample = require('./FacebookTabsExample');
 
-
-AppRegistry.registerComponent('FacebookTabsExample', () =>Credit);
+AppRegistry.registerComponent('FacebookTabsExample', () => FacebookTabsExample);
