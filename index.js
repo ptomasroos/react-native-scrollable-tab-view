@@ -56,7 +56,7 @@ var ScrollableTabView = React.createClass({
   },
 
   goToPage(pageNumber) {
-    this.props.onChangeTab({ i: pageNumber, ref: this.props.children[pageNumber] });
+    this.props.onChangeTab({ i: pageNumber, ref: this._children()[pageNumber] });
 
     if(Platform.OS === 'ios') {
       var offset = pageNumber * this.state.container.width;
@@ -105,7 +105,7 @@ var ScrollableTabView = React.createClass({
           scrollEnabled={!this.props.locked}
           directionalLockEnabled
           alwaysBounceVertical={false}>
-          {this.props.children.map((child,idx) => {
+          {this._children().map((child,idx) => {
             return <View
               key={child.props.tabLabel + '_' + idx}
               style={{width: this.state.container.width}}>
@@ -125,7 +125,7 @@ var ScrollableTabView = React.createClass({
            this._updateScrollValue(position + offset);
          }}
          ref={(scrollView) => { this.scrollView = scrollView }}>
-         {this.props.children.map((child,idx) => {
+         {this._children().map((child,idx) => {
            return <View
              key={child.props.tabLabel + '_' + idx}
              style={{width: this.state.container.width}}>
@@ -162,10 +162,14 @@ var ScrollableTabView = React.createClass({
     }
   },
 
+  _children() {
+    return React.Children.map(this.props.children, (child) => child);
+  },
+
   render() {
     var tabBarProps = {
       goToPage: this.goToPage,
-      tabs: this.props.children.map((child) => child.props.tabLabel),
+      tabs: this._children().map((child) => child.props.tabLabel),
       activeTab: this.state.currentPage,
       scrollValue: this.state.scrollValue,
       underlineColor : this.props.tabBarUnderlineColor,
