@@ -5,9 +5,8 @@
 'use strict';
 
 var React = require('react-native');
-
 var CreditSummary= require('./CreditSummary')
-var CreditDetail= require('./CreditDetail')
+var CreditDetail =require('./CreditDetail')
 var {
   AppRegistry,
   StyleSheet,
@@ -24,7 +23,7 @@ var {
 var ScrollableTabView = require('react-native-scrollable-tab-view');
 var screen = require('Dimensions').get('window');
 var ScrollTabbar =require('./ScrollTabbar')
-var FacebookTabsExample = React.createClass({
+var Credit = React.createClass({
   getInitialState: function() {
    return {
       loaded: false,
@@ -40,23 +39,23 @@ var FacebookTabsExample = React.createClass({
 
     return (
     <View style={styles.normal}>
-      <View style={styles.header} >
+  		<View style={styles.header} >
         <TouchableOpacity onPress={this.onPress}>
-        <Image style={styles.img} source={require('./images/left.png')}/>
+    		<Image style={styles.img} source={require('./images/left.png')}/>
         </TouchableOpacity>
-        <Text style={styles.headerText}>积分</Text>
-        <View />
-      </View>
+    		<Text style={styles.headerText}>积分</Text>
+  		  <View />
+		  </View>
       <ScrollableTabView style={styles.normal}  renderTabBar={() => <ScrollTabbar />} >
-        <ScrollView tabLabel="统计" style={styles.tabView} contentContainerStyle={{flex:1}}>
-            <CreditSummary  />
-        </ScrollView>
+    		<ScrollView tabLabel="统计" style={styles.tabView} contentContainerStyle={{flex:1}}>
+    		    <CreditSummary  />
+    		</ScrollView>
         
-        <ScrollView tabLabel="明细" style={styles.tabView}>
-          <CreditDetail  />
-        </ScrollView>
+    		<ScrollView tabLabel="明细" style={styles.tabView}>
+    			<CreditDetail  />
+    		</ScrollView>
       </ScrollableTabView>
-    </View>
+  	</View>
     );
   }
 });
@@ -134,4 +133,4 @@ var styles = StyleSheet.create({
   },
 });
 
-module.exports = FacebookTabsExample;
+module.exports = Credit;
