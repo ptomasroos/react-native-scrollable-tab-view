@@ -33,7 +33,7 @@ var App = React.createClass({
       </ScrollableTabView>
     );
   }
-}
+});
 ```
 
 ## Injecting a custom tab bar
@@ -55,7 +55,7 @@ var App = React.createClass({
       </ScrollableTabView>
     );
   }
-}
+});
 ```
 
 ## Example
