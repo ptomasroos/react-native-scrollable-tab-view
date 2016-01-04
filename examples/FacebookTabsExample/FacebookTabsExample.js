@@ -1,17 +1,17 @@
 'use strict';
 
-var React = require('react-native');
-var {
+import React, {
   StyleSheet,
   Text,
   View,
   ScrollView,
-} = React;
+  Component,
+} from 'react-native';
 
-var ScrollableTabView = require('react-native-scrollable-tab-view');
-var FacebookTabBar = require('./FacebookTabBar');
+const ScrollableTabView = require('react-native-scrollable-tab-view');
+const FacebookTabBar = require('./FacebookTabBar');
 
-var FacebookTabsExample = React.createClass({
+class FacebookTabsExample extends Component {
   render() {
     return (
       <View style={styles.container}>
@@ -45,9 +45,9 @@ var FacebookTabsExample = React.createClass({
       </View>
     );
   }
-});
+}
 
-var SimpleExample = React.createClass({
+class SimpleExample extends Component {
   render() {
     return (
       <ScrollableTabView style={{marginTop: 20}}>
@@ -57,7 +57,7 @@ var SimpleExample = React.createClass({
       </ScrollableTabView>
     )
   }
-});
+}
 
 //module.exports = SimpleExample;
 module.exports = FacebookTabsExample;

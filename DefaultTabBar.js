@@ -1,16 +1,15 @@
 'use strict';
 
-var React = require('react-native');
-var {
+import React, {
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
   Animated,
-} = React;
+} from 'react-native';
 
 
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
   tab: {
     flex: 1,
     alignItems: 'center',
@@ -42,9 +41,9 @@ var DefaultTabBar = React.createClass({
   },
 
   renderTabOption(name, page) {
-    var isTabActive = this.props.activeTab === page;
-    var activeTextColor = this.props.activeTextColor || "navy";
-    var inactiveTextColor = this.props.inactiveTextColor || "black";
+    let isTabActive = this.props.activeTab === page;
+    let activeTextColor = this.props.activeTextColor || "navy";
+    let inactiveTextColor = this.props.inactiveTextColor || "black";
     return (
       <TouchableOpacity style={[styles.tab]} key={name} onPress={() => this.props.goToPage(page)}>
         <View>
@@ -56,9 +55,9 @@ var DefaultTabBar = React.createClass({
   },
 
   render() {
-    var containerWidth = this.props.containerWidth;
-    var numberOfTabs = this.props.tabs.length;
-    var tabUnderlineStyle = {
+    let containerWidth = this.props.containerWidth;
+    let numberOfTabs = this.props.tabs.length;
+    let tabUnderlineStyle = {
       position: 'absolute',
       width: containerWidth / numberOfTabs,
       height: 4,
@@ -66,7 +65,7 @@ var DefaultTabBar = React.createClass({
       bottom: 0,
     };
 
-    var left = this.props.scrollValue.interpolate({
+    let left = this.props.scrollValue.interpolate({
       inputRange: [0, 1], outputRange: [0,  containerWidth / numberOfTabs]
     });
 
