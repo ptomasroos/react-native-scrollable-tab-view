@@ -177,13 +177,22 @@ var ScrollableTabView = React.createClass({
       tabs: this._children().map((child) => child.props.tabLabel),
       activeTab: this.state.currentPage,
       scrollValue: this.state.scrollValue,
-      underlineColor : this.props.tabBarUnderlineColor,
-      backgroundColor : this.props.tabBarBackgroundColor,
-      activeTextColor : this.props.tabBarActiveTextColor,
-      inactiveTextColor : this.props.tabBarInactiveTextColor,
       containerWidth: this.state.container.width,
     };
-
+    
+    if (this.props.tabBarUnderlineColor) {
+      tabBarProps.underlineColor = this.props.tabBarUnderlineColor;
+    }
+    if (this.props.tabBarBackgroundColor) {
+      tabBarProps.backgroundColor = this.props.tabBarBackgroundColor;
+    }
+    if (this.props.tabBarActiveTextColor) {
+      tabBarProps.activeTextColor = this.props.tabBarActiveTextColor;
+    }
+    if (this.props.tabBarInactiveTextColor) {
+      tabBarProps.inactiveTextColor = this.props.tabBarInactiveTextColor;
+    }
+    
     return (
       <View style={[styles.container, this.props.style]} onLayout={this._handleLayout}>
         {this.props.tabBarPosition === 'top' ? this.renderTabBar(tabBarProps) : null}
