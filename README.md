@@ -74,6 +74,7 @@ See
 - **`onScroll`** _(Function)_ - function to call when the pages are sliding, should accept 1 argument which is an Float number representing the page position in the slide frame. 
 - **`locked`** _(Bool)_ - disables horizontal dragging to scroll between tabs, default is false.
 - **`initialPage`** _(Integer)_ - the index of the initially selected tab, defaults to 0 === first tab.
+- **`page`** _(Integer)_ - set selected tab(can be buggy see  [#126](https://github.com/brentvatne/react-native-scrollable-tab-view/issues/126)
 - **`children`** _(ReactComponents)_ - each top-level child component should have a `tabLabel` prop that can be used by the tab bar component to render out the labels. The default tab bar expects it to be a string, but you can use anything you want if you make a custom tab bar.
 - **`tabBarUnderlineColor`** _(String)_ - color of the default tab bar's underline, defaults to `navy`
 - **`tabBarBackgroundColor`** _(String)_ - color of the default tab bar's background, defaults to `white`
