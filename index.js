@@ -168,7 +168,9 @@ var ScrollableTabView = React.createClass({
   },
 
   _children() {
-    return React.Children.map(this.props.children, (child) => child);
+    var result = [];
+    React.Children.forEach(this.props.children, (child) => result.push(child));
+    return result;
   },
 
   render() {
