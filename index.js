@@ -102,7 +102,7 @@ var ScrollableTabView = React.createClass({
           }}
           onMomentumScrollEnd={(e) => {
             var offsetX = e.nativeEvent.contentOffset.x;
-            this._updateSelectedPage(parseInt(offsetX / this.state.container.width));
+            this._updateSelectedPage(parseInt(offsetX / this.state.container.width + 0.5));
           }}
           scrollEventThrottle={16}
           showsHorizontalScrollIndicator={false}
