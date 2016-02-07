@@ -1,7 +1,6 @@
 'use strict';
 
-var React = require('react-native');
-var {
+import React, {
   Dimensions,
   View,
   Animated,
@@ -11,13 +10,28 @@ var {
   ViewPagerAndroid,
   PropTypes,
   InteractionManager,
-} = React;
+} from 'react-native';
 
-var DefaultTabBar = require('./DefaultTabBar');
-var deviceWidth = Dimensions.get('window').width;
-var deviceHeight = Dimensions.get('window').height;
+const DefaultTabBar = require('./DefaultTabBar');
+const deviceWidth = Dimensions.get('window').width;
+const deviceHeight = Dimensions.get('window').height;
 
-var ScrollableTabView = React.createClass({
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  scrollableContentContainerIOS: {
+    flex: 1,
+  },
+  scrollableContentIOS: {
+    flexDirection: 'column',
+  },
+  scrollableContentAndroid: {
+    flex: 1,
+  },
+});
+
+let ScrollableTabView = React.createClass({
   statics: {
     DefaultTabBar,
   },
@@ -63,7 +77,7 @@ var ScrollableTabView = React.createClass({
     this.props.onChangeTab({ i: pageNumber, ref: this._children()[pageNumber] });
 
     if(Platform.OS === 'ios') {
-      var offset = pageNumber * this.state.container.width;
+      let offset = pageNumber * this.state.container.width;
       this.scrollView.scrollTo(0, offset);
     } else {
       this.scrollView.setPage(pageNumber);
@@ -93,15 +107,15 @@ var ScrollableTabView = React.createClass({
           contentOffset={{x:this.props.initialPage * this.state.container.width}}
           ref={(scrollView) => { this.scrollView = scrollView }}
           onScroll={(e) => {
-            var offsetX = e.nativeEvent.contentOffset.x;
+            let offsetX = e.nativeEvent.contentOffset.x;
             this._updateScrollValue(offsetX / this.state.container.width);
           }}
           onMomentumScrollBegin={(e) => {
-            var offsetX = e.nativeEvent.contentOffset.x;
+            let offsetX = e.nativeEvent.contentOffset.x;
             this._updateSelectedPage(parseInt(offsetX / this.state.container.width));
           }}
           onMomentumScrollEnd={(e) => {
-            var offsetX = e.nativeEvent.contentOffset.x;
+            let offsetX = e.nativeEvent.contentOffset.x;
             this._updateSelectedPage(parseInt(offsetX / this.state.container.width));
           }}
           scrollEventThrottle={16}
@@ -156,8 +170,8 @@ var ScrollableTabView = React.createClass({
   },
 
   _handleLayout(e) {
-    var {width, height} = e.nativeEvent.layout;
-    var container = this.state.container;
+    let {width, height} = e.nativeEvent.layout;
+    let container = this.state.container;
 
     if (width !== container.width || height !== container.height) {
       this.setState({container: e.nativeEvent.layout});
@@ -177,7 +191,7 @@ var ScrollableTabView = React.createClass({
   },
 
   render() {
-    var tabBarProps = {
+    let tabBarProps = {
       goToPage: this.goToPage,
       tabs: this._children().map((child) => child.props.tabLabel),
       activeTab: this.state.currentPage,
@@ -209,18 +223,3 @@ var ScrollableTabView = React.createClass({
 });
 
 module.exports = ScrollableTabView;
-
-var styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  scrollableContentContainerIOS: {
-    flex: 1,
-  },
-  scrollableContentIOS: {
-    flexDirection: 'column',
-  },
-  scrollableContentAndroid: {
-    flex: 1,
-  },
-});

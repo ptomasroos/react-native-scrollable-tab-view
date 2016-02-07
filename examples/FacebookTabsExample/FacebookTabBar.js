@@ -1,17 +1,16 @@
 'use strict';
 
-var React = require('react-native');
-var {
+import React, {
   StyleSheet,
   Text,
   View,
   TouchableOpacity,
   Animated,
-} = React;
+} from 'react-native';
 
-var { Icon, } = require('react-native-icons');
+const { Icon, } = require('react-native-icons');
 
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
   tab: {
     flex: 1,
     alignItems: 'center',
