@@ -10,6 +10,8 @@ var {
 
 var ScrollableTabView = require('react-native-scrollable-tab-view');
 var FacebookTabBar = require('./FacebookTabBar');
+var DefaultTabBar = require('react-native-scrollable-tab-view/DefaultTabBar');
+var { Icon } = require('react-native-icons');
 
 var FacebookTabsExample = React.createClass({
   render() {
@@ -59,8 +61,34 @@ var SimpleExample = React.createClass({
   }
 });
 
-//module.exports = SimpleExample;
+// Adding the prop overlayTabs lets the content to show through a semitransparent tab bar.
+// Note that if you build a custom tab bar component, its outer container must consume a
+// style prop (e.g. <View style={[this.props.style, etc]}) to support this feature.
+var OverlayTabsExample = React.createClass({
+  render() {
+    return (
+      <ScrollableTabView
+        style={styles.container}
+        renderTabBar={()=><DefaultTabBar backgroundColor='rgba(255, 255, 255, 0.5)' />}
+        overlayTabs
+        >
+        <View tabLabel='Music' style={{flex:1, backgroundColor: '#CCFFFF'}}>
+          <Icon name='ion|android-volume-up' color='#2222CC' size={300} style={styles.icon} />
+        </View>
+        <View tabLabel='Food' style={{flex:1, backgroundColor: '#CCBBDD'}}>
+          <Icon name='ion|ios-nutrition' color='#22AACC' size={300} style={styles.icon} />
+        </View>
+        <View tabLabel='Drink' style={{flex:1, backgroundColor: '#EEFF33'}}>
+          <Icon name='ion|ios-pint' color='#22FFCC' size={300} style={styles.icon} />
+        </View>
+      </ScrollableTabView>
+    )
+  }
+});
+
 module.exports = FacebookTabsExample;
+// module.exports = SimpleExample;
+// module.exports = OverlayTabsExample;
 
 var styles = StyleSheet.create({
   container: {
@@ -84,4 +112,9 @@ var styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowRadius: 3,
   },
+  icon: {
+    width: 300,
+    height: 300,
+    alignSelf: 'center',
+  }
 });
