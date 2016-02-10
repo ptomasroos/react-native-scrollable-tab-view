@@ -14,10 +14,12 @@ var {
 } = React;
 
 var DefaultTabBar = require('./DefaultTabBar');
+var ScrollableTabBar = require('./ScrollableTabBar');
 
 var ScrollableTabView = React.createClass({
   statics: {
     DefaultTabBar,
+    ScrollableTabBar,
   },
 
   propTypes: {
