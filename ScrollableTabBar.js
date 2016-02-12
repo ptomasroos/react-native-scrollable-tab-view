@@ -11,37 +11,6 @@ var {
 
 const TAB_HEIGHT = 50;
 
-var styles = StyleSheet.create({
-  tab: {
-    height: TAB_HEIGHT - 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingBottom: 30,
-    paddingLeft: 20,
-    paddingRight: 20,
-  },
-
-  container: {
-    height: TAB_HEIGHT,
-    borderWidth: 1,
-    borderTopWidth: 0,
-    borderLeftWidth: 0,
-    borderRightWidth: 0,
-    borderBottomColor: '#ccc',
-  },
-
-  tabs: {
-    height: TAB_HEIGHT - 1,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-  },
-
-  scrollableContainer: {
-    height: TAB_HEIGHT,
-  }
-});
-
-
 var ScrollableTabBar = React.createClass({
 
   getDefaultProps: function() {
@@ -202,4 +171,34 @@ var ScrollableTabBar = React.createClass({
 });
 
 module.exports = ScrollableTabBar;
+
+var styles = StyleSheet.create({
+  tab: {
+    height: TAB_HEIGHT - 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingBottom: 30,
+    paddingLeft: 20,
+    paddingRight: 20,
+  },
+
+  container: {
+    height: TAB_HEIGHT,
+    borderWidth: 1,
+    borderTopWidth: 0,
+    borderLeftWidth: 0,
+    borderRightWidth: 0,
+    borderBottomColor: '#ccc',
+  },
+
+  tabs: {
+    height: TAB_HEIGHT - 1,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+
+  scrollableContainer: {
+    height: TAB_HEIGHT,
+  }
+});
 

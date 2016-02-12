@@ -81,7 +81,8 @@ var ScrollableTabsExample = React.createClass({
 });
 
 //module.exports = SimpleExample;
-module.exports = ScrollableTabsExample;
+//module.exports = ScrollableTabsExample;
+module.exports = FacebookTabsExample;
 
 var styles = StyleSheet.create({
   container: {
