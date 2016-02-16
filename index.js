@@ -120,6 +120,7 @@ var ScrollableTabView = React.createClass({
         <ViewPagerAndroid
          style={styles.scrollableContentAndroid}
          initialPage={this.props.initialPage}
+         keyboardDismissMode={'on-drag'}
          onPageSelected={this._updateSelectedPage}
          onPageScroll={(e) => {
            const {offset, position} = e.nativeEvent;
@@ -154,7 +155,7 @@ var ScrollableTabView = React.createClass({
 
   _handleLayout(e) {
     var { width } = e.nativeEvent.layout;
-    
+
     if (width !== this.state.containerWidth) {
       this.setState({containerWidth: width});
       InteractionManager.runAfterInteractions(() => {
@@ -180,7 +181,7 @@ var ScrollableTabView = React.createClass({
       scrollValue: this.state.scrollValue,
       containerWidth: this.state.containerWidth,
     };
-    
+
     if (this.props.tabBarUnderlineColor) {
       tabBarProps.underlineColor = this.props.tabBarUnderlineColor;
     }
@@ -193,7 +194,7 @@ var ScrollableTabView = React.createClass({
     if (this.props.tabBarInactiveTextColor) {
       tabBarProps.inactiveTextColor = this.props.tabBarInactiveTextColor;
     }
-    
+
     return (
       <View style={[styles.container, this.props.style]} onLayout={this._handleLayout}>
         {this.props.tabBarPosition === 'top' ? this.renderTabBar(tabBarProps) : null}
