@@ -33,7 +33,7 @@ var App = React.createClass({
       </ScrollableTabView>
     );
   }
-}
+});
 ```
 
 ## Injecting a custom tab bar
@@ -55,7 +55,7 @@ var App = React.createClass({
       </ScrollableTabView>
     );
   }
-}
+});
 ```
 
 ## Example
@@ -71,13 +71,16 @@ See
   be able to animate itself along with the tab content.
 - **`tabBarPosition`** _(String)_ - if `"top"`, the tab bar will render above the tabs. If `"bottom"`, the tab bar will render below the tabs. Defaults to `"top"`.
 - **`onChangeTab`** _(Function)_ - function to call when tab changes, should accept 1 argument which is an Object containing two keys: `i`: the index of the tab that is selected, `ref`: the ref of the tab that is selected
+- **`onScroll`** _(Function)_ - function to call when the pages are sliding, should accept 1 argument which is an Float number representing the page position in the slide frame. 
 - **`locked`** _(Bool)_ - disables horizontal dragging to scroll between tabs, default is false.
 - **`initialPage`** _(Integer)_ - the index of the initially selected tab, defaults to 0 === first tab.
+- **`page`** _(Integer)_ - set selected tab(can be buggy see  [#126](https://github.com/brentvatne/react-native-scrollable-tab-view/issues/126)
 - **`children`** _(ReactComponents)_ - each top-level child component should have a `tabLabel` prop that can be used by the tab bar component to render out the labels. The default tab bar expects it to be a string, but you can use anything you want if you make a custom tab bar.
 - **`tabBarUnderlineColor`** _(String)_ - color of the default tab bar's underline, defaults to `navy`
 - **`tabBarBackgroundColor`** _(String)_ - color of the default tab bar's background, defaults to `white`
 - **`tabBarActiveTextColor`** _(String)_ - color of the default tab bar's text when active, defaults to `navy`
 - **`tabBarInactiveTextColor`** _(String)_ - color of the default tab bar's text when inactive, defaults to `black`
+- **`style`** _([View.propTypes.style](https://facebook.github.io/react-native/docs/view.html#style))_
 
 ---
 
