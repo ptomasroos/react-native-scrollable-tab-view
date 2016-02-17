@@ -15,7 +15,7 @@ var ScrollableTabBar = React.createClass({
 
   getDefaultProps: function() {
     return {
-      scrollOffset: '52',
+      scrollOffset: 52,
     };
   },
 
