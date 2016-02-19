@@ -9,7 +9,7 @@ var {
   Animated,
 } = React;
 
-var { Icon, } = require('react-native-icons');
+const Icon = require('react-native-vector-icons/Ionicons');
 
 var styles = StyleSheet.create({
   tab: {
@@ -29,8 +29,6 @@ var styles = StyleSheet.create({
     borderBottomColor: 'rgba(0,0,0,0.05)',
   },
   icon: {
-    width: 30,
-    height: 30,
     position: 'absolute',
     top: 0,
     left: 20,
@@ -76,10 +74,10 @@ var FacebookTabBar = React.createClass({
       }
 
       if (value - i >= 0 && value - i <= 1) {
-        iconRef.setNativeProps({opacity: value - i});
+        iconRef.setNativeProps({ style: {opacity: value - i} });
       }
       if (i - value >= 0 &&  i - value <= 1) {
-        iconRef.setNativeProps({opacity: i - value});
+        iconRef.setNativeProps({ style: {opacity: i - value} });
       }
     });
   },

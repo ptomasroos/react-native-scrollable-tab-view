@@ -9,6 +9,7 @@ var {
 } = React;
 
 var FacebookTabBar = require('./FacebookTabBar');
+
 var ScrollableTabView = require('react-native-scrollable-tab-view');
 var {
   ScrollableTabBar,
@@ -21,27 +22,27 @@ var FacebookTabsExample = React.createClass({
     return (
       <View style={styles.container}>
         <ScrollableTabView initialPage={1} renderTabBar={() => <FacebookTabBar />}>
-          <ScrollView tabLabel="ion|ios-paper" style={styles.tabView}>
+          <ScrollView tabLabel="ios-paper" style={styles.tabView}>
             <View style={styles.card}>
               <Text>News</Text>
             </View>
           </ScrollView>
-          <ScrollView tabLabel="ion|person-stalker" style={styles.tabView}>
+          <ScrollView tabLabel="person-stalker" style={styles.tabView}>
             <View style={styles.card}>
               <Text>Friends</Text>
             </View>
           </ScrollView>
-          <ScrollView tabLabel="ion|ios-chatboxes" style={styles.tabView}>
+          <ScrollView tabLabel="ios-chatboxes" style={styles.tabView}>
             <View style={styles.card}>
               <Text>Messenger</Text>
             </View>
           </ScrollView>
-          <ScrollView tabLabel="ion|ios-world" style={styles.tabView}>
+          <ScrollView tabLabel="ios-world" style={styles.tabView}>
             <View style={styles.card}>
               <Text>Notifications</Text>
             </View>
           </ScrollView>
-          <ScrollView tabLabel="ion|navicon-round" style={styles.tabView}>
+          <ScrollView tabLabel="navicon-round" style={styles.tabView}>
             <View style={styles.card}>
               <Text>Other nav</Text>
             </View>
