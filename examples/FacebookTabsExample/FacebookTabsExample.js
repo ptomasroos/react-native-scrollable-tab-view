@@ -61,16 +61,16 @@ var SimpleExample = React.createClass({
   }
 });
 
-// Adding the prop overlayTabs lets the content to show through a semitransparent tab bar.
-// Note that if you build a custom tab bar component, its outer container must consume a
-// style prop (e.g. <View style={[this.props.style, etc]}) to support this feature.
-var OverlayTabsExample = React.createClass({
+// Using tabBarPosition='overlayTop' or 'overlayBottom' lets the content show through a
+// semitransparent tab bar. Note that if you build a custom tab bar component, its outer container
+// must consume a 'style' prop (e.g. <View style={this.props.style}) to support this feature.
+var OverlayExample = React.createClass({
   render() {
     return (
       <ScrollableTabView
         style={styles.container}
         renderTabBar={()=><DefaultTabBar backgroundColor='rgba(255, 255, 255, 0.5)' />}
-        overlayTabs
+        tabBarPosition='overlayTop'
         >
         <View tabLabel='Music' style={{flex:1, backgroundColor: '#CCFFFF'}}>
           <Icon name='ion|android-volume-up' color='#2222CC' size={300} style={styles.icon} />
@@ -88,7 +88,7 @@ var OverlayTabsExample = React.createClass({
 
 module.exports = FacebookTabsExample;
 // module.exports = SimpleExample;
-// module.exports = OverlayTabsExample;
+// module.exports = OverlayExample;
 
 var styles = StyleSheet.create({
   container: {

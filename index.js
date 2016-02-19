@@ -23,10 +23,9 @@ var ScrollableTabView = React.createClass({
   },
 
   propTypes: {
-    tabBarPosition: PropTypes.oneOf(['top', 'bottom']),
+    tabBarPosition: PropTypes.oneOf(['top', 'bottom', 'overlayTop', 'overlayBottom']),
     initialPage: PropTypes.number,
     page: PropTypes.number,
-    overlayTabs: PropTypes.bool,
     onChangeTab: PropTypes.func,
     onScroll: PropTypes.func,
     renderTabBar: PropTypes.any,
@@ -38,7 +37,6 @@ var ScrollableTabView = React.createClass({
       tabBarPosition: 'top',
       initialPage: 0,
       page: -1,
-      overlayTabs: false,
       onChangeTab: () => {},
       onScroll: () => {}
     }
@@ -174,6 +172,7 @@ var ScrollableTabView = React.createClass({
   },
 
   render() {
+    var overlayTabs = (this.props.tabBarPosition === 'overlayTop' || this.props.tabBarPosition === 'overlayBottom');
     var tabBarProps = {
       goToPage: this.goToPage,
       tabs: this._children().map((child) => child.props.tabLabel),
@@ -194,15 +193,20 @@ var ScrollableTabView = React.createClass({
     if (this.props.tabBarInactiveTextColor) {
       tabBarProps.inactiveTextColor = this.props.tabBarInactiveTextColor;
     }
-    if (this.props.overlayTabs) {
-      tabBarProps.style = {position: 'absolute', left: 0, right: 0, [this.props.tabBarPosition]: 0};
+    if (overlayTabs) {
+      tabBarProps.style = {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        [this.props.tabBarPosition === 'overlayTop' ? 'top' : 'bottom']: 0
+      };
     }
     
     return (
       <View style={[styles.container, this.props.style]} onLayout={this._handleLayout}>
-        {this.props.tabBarPosition === 'top' && !this.props.overlayTabs && this.renderTabBar(tabBarProps)}
+        {this.props.tabBarPosition === 'top' && this.renderTabBar(tabBarProps)}
         {this.renderScrollableContent()}
-        {(this.props.tabBarPosition === 'bottom' || this.props.overlayTabs) && this.renderTabBar(tabBarProps)}
+        {(this.props.tabBarPosition === 'bottom' || overlayTabs) && this.renderTabBar(tabBarProps)}
       </View>
     );
   }
