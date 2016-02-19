@@ -21,7 +21,7 @@ const ScrollableTabView = React.createClass({
   },
 
   propTypes: {
-    tabBarPosition: PropTypes.oneOf(['top', 'bottom', ]),
+    tabBarPosition: PropTypes.oneOf(['top', 'bottom', 'overlayTop', 'overlayBottom', ]),
     initialPage: PropTypes.number,
     page: PropTypes.number,
     onChangeTab: PropTypes.func,
@@ -172,6 +172,7 @@ const ScrollableTabView = React.createClass({
   },
 
   render() {
+    let overlayTabs = (this.props.tabBarPosition === 'overlayTop' || this.props.tabBarPosition === 'overlayBottom');
     let tabBarProps = {
       goToPage: this.goToPage,
       tabs: this._children().map((child) => child.props.tabLabel),
@@ -192,12 +193,20 @@ const ScrollableTabView = React.createClass({
     if (this.props.tabBarInactiveTextColor) {
       tabBarProps.inactiveTextColor = this.props.tabBarInactiveTextColor;
     }
+    if (overlayTabs) {
+      tabBarProps.style = {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        [this.props.tabBarPosition === 'overlayTop' ? 'top' : 'bottom']: 0
+      };
+    }
 
     return (
       <View style={[styles.container, this.props.style, ]} onLayout={this._handleLayout}>
-        {this.props.tabBarPosition === 'top' ? this.renderTabBar(tabBarProps) : null}
+        {this.props.tabBarPosition === 'top' && this.renderTabBar(tabBarProps)}
         {this.renderScrollableContent()}
-        {this.props.tabBarPosition === 'bottom' ? this.renderTabBar(tabBarProps) : null}
+        {(this.props.tabBarPosition === 'bottom' || overlayTabs) && this.renderTabBar(tabBarProps)}
       </View>
     );
   },
