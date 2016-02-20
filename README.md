@@ -1,3 +1,4 @@
+
 ## react-native-scrollable-tab-view
 
 This is probably my favorite navigation pattern on Android, I wish it
@@ -69,7 +70,9 @@ See
   the tab bar. The component has `goToPage`, `tabs`, `activeTab` and
   `ref` added to the props, and should implement `setAnimationValue` to
   be able to animate itself along with the tab content.
-- **`tabBarPosition`** _(String)_ - if `"top"`, the tab bar will render above the tabs. If `"bottom"`, the tab bar will render below the tabs. Defaults to `"top"`.
+- **`tabBarPosition`** _(String)_ Defaults to `"top"`.
+  - `"bottom"` to position the tab bar below content.
+  - `"overlayTop"` or `"overlayBottom"` for a semitransparent tab bar that overlays content. Custom tab bars must consume a style prop on their outer element to support this feature: `style={this.props.style}`.
 - **`onChangeTab`** _(Function)_ - function to call when tab changes, should accept 1 argument which is an Object containing two keys: `i`: the index of the tab that is selected, `ref`: the ref of the tab that is selected
 - **`onScroll`** _(Function)_ - function to call when the pages are sliding, should accept 1 argument which is an Float number representing the page position in the slide frame. 
 - **`locked`** _(Bool)_ - disables horizontal dragging to scroll between tabs, default is false.
