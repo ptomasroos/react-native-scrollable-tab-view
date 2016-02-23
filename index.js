@@ -81,6 +81,7 @@ const ScrollableTabView = React.createClass({
     if (Platform.OS === 'ios') {
       return (
         <ScrollView
+          automaticallyAdjustContentInsets={false}
           horizontal
           pagingEnabled
           style={styles.scrollableContentIOS}
