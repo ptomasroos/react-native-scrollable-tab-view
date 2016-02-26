@@ -38,6 +38,7 @@ const ScrollableTabView = React.createClass({
       page: -1,
       onChangeTab: () => {},
       onScroll: () => {},
+      contentProps: {}
     };
   },
 
