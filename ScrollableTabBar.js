@@ -65,11 +65,11 @@ var ScrollableTabBar = React.createClass({
     newScrollX = newScrollX >= 0 ? newScrollX : 0;
 
     if (Platform === 'android') {
-      this._scrollView.scrollWithoutAnimationTo(0, newScrollX);
+      this._scrollView.scrollTo(0, newScrollX);
     } else {
       const rightBoundScroll = this._tabContainerMeasurements.width - (this._containerMeasurements.width);
       newScrollX = newScrollX > rightBoundScroll ? rightBoundScroll : newScrollX;
-      this._scrollView.scrollWithoutAnimationTo(0, newScrollX);
+      this._scrollView.scrollTo(0, newScrollX);
     }
 
   },
@@ -201,4 +201,3 @@ var styles = StyleSheet.create({
     height: TAB_HEIGHT,
   }
 });
-
