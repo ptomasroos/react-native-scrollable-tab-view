@@ -169,13 +169,8 @@ const ScrollableTabView = React.createClass({
     }
   },
 
-  // The following implementation allows for compatibility with version
-  // of React Native that depend on React.Children prior to
-  // facebook/react#6013105a9cf625cac18851683adbf2fd19b6833c
   _children() {
-    let result = [];
-    React.Children.forEach(this.props.children, (child) => result.push(child));
-    return result;
+    return React.Children.map(this.props.children, (child) => child);
   },
 
   render() {
