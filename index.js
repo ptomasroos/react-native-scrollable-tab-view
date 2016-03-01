@@ -107,6 +107,7 @@ const ScrollableTabView = React.createClass({
           scrollEnabled={!this.props.locked}
           directionalLockEnabled
           alwaysBounceVertical={false}
+          keyboardDismissMode="on-drag"
           {...this.props.contentProps}>
           {this._children().map((child, idx) => {
             return <View
@@ -123,6 +124,7 @@ const ScrollableTabView = React.createClass({
          style={styles.scrollableContentAndroid}
          initialPage={this.props.initialPage}
          onPageSelected={this._updateSelectedPage}
+         keyboardDismissMode="on-drag"
          onPageScroll={(e) => {
            const { offset, position, } = e.nativeEvent;
            this._updateScrollValue(position + offset);
