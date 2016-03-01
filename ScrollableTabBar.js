@@ -7,11 +7,19 @@ var {
   TouchableOpacity,
   Text,
   Platform,
+  Dimensions,
 } = React;
+
+import Icon from 'react-native-vector-icons/Ionicons';
+
+const {height: HEIGHT, width: WIDTH} = Dimensions.get('window');
 
 const TAB_HEIGHT = 50;
 
+
 var ScrollableTabBar = React.createClass({
+  selectedTabIcons: [],
+  unselectedTabIcons: [],
 
   getDefaultProps: function() {
     return {
@@ -95,8 +103,11 @@ var ScrollableTabBar = React.createClass({
 
   renderTabOption(name, page) {
     const isTabActive = this.props.activeTab === page;
-    const activeTextColor = this.props.activeTextColor || "navy";
-    const inactiveTextColor = this.props.inactiveTextColor || "black";
+    const activeTextColor = this.props.activeTextColor || "#af1fae";
+    const inactiveTextColor = this.props.inactiveTextColor || "#b6b7ba";
+
+    if(this.props.useIcons) return this.renderIconTab(name, page, activeTextColor, inactiveTextColor)
+
     return (
       <TouchableOpacity
         style={[styles.tab]}
@@ -121,11 +132,64 @@ var ScrollableTabBar = React.createClass({
     });
   },
 
+
+  renderIconTab(name, page, activeTextColor, inactiveTextColor) {
+    var isTabActive = this.props.activeTab === page;
+
+    return (
+      <TouchableOpacity
+        style={[styles.tab, {width: this.iconTabWidth()}]}
+        key={name}
+        onPress={() => this.props.goToPage(page)}
+        ref={'tab_' + page}
+        onLayout={this.measureTab.bind(this, page)}
+        >
+        <Icon name={name} size={30} color={activeTextColor} style={styles.icon}
+              ref={(icon) => { this.selectedTabIcons[page] = icon }}/>
+
+        <Icon name={name} size={30} color={inactiveTextColor} style={styles.icon}
+          ref={(icon) => { this.unselectedTabIcons[page] = icon }}/>
+      </TouchableOpacity>
+    );
+  },
+
+  componentDidMount() {
+    if(!this.props.useIcons) return;
+
+    this.setAnimationValue({value: this.props.activeTab});
+    this._listener = this.props.scrollValue.addListener(this.setAnimationValue);
+  },
+
+  setAnimationValue({value}) {
+    var currentPage = this.props.activeTab;
+
+    this.unselectedTabIcons.forEach((icon, i) => {
+      var iconRef = icon;
+
+      if (!icon.setNativeProps && icon !== null) {
+        iconRef = icon.refs.icon_image
+      }
+
+      if (value - i >= 0 && value - i <= 1) {
+        iconRef.setNativeProps({ style: {opacity: value - i} });
+      }
+      if (i - value >= 0 &&  i - value <= 1) {
+        iconRef.setNativeProps({ style: {opacity: i - value} });
+      }
+    });
+  },
+
+  iconTabWidth() {
+    var containerWidth = this.props.containerWidth;
+    var numberOfTabs = this.props.tabs.length > 5 ? 5 : this.props.tabs.length;
+
+    return containerWidth / numberOfTabs;
+  },
   render() {
-    const tabUnderlineStyle = {
+    let tabUnderlineStyle = {
       position: 'absolute',
       height: 4,
-      backgroundColor: this.props.underlineColor || "navy",
+      backgroundColor: this.props.underlineColor || "#af1fae",
       bottom: 0,
     };
 
@@ -136,11 +200,14 @@ var ScrollableTabBar = React.createClass({
       width: this.state._widthTabUnderline,
     };
 
+    const bgColor = this.props.backgroundColor || '#111010';
+
     return  <View
-      style={[styles.container, {backgroundColor : this.props.backgroundColor || null}]}
+      style={[styles.container, {backgroundColor : bgColor, borderBottomColor: bgColor}]}
       onLayout={this.onContainerLayout}
     >
       <ScrollView
+        scrollEnabled={this.props.scrollEnabled ? true : false}
         ref={(scrollView) => { this._scrollView = scrollView; }}
         horizontal={true}
         showsHorizontalScrollIndicator={false}
@@ -155,8 +222,8 @@ var ScrollableTabBar = React.createClass({
           onLayout={this.onTabContainerLayout}
         >
           {this.props.tabs.map((tab, i) => this.renderTabOption(tab, i))}
-          <Animated.View style={[tabUnderlineStyle, dynamicTabUnderline]} />
         </View>
+        <Animated.View style={[tabUnderlineStyle, dynamicTabUnderline]} />
       </ScrollView>
     </View>
   },
@@ -174,12 +241,13 @@ module.exports = ScrollableTabBar;
 
 var styles = StyleSheet.create({
   tab: {
+    flex: 1,
     height: TAB_HEIGHT - 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingBottom: 30,
+    paddingBottom: 10,
     paddingLeft: 20,
-    paddingRight: 20,
+    paddingRight: 20
   },
 
   container: {
@@ -199,6 +267,11 @@ var styles = StyleSheet.create({
 
   scrollableContainer: {
     height: TAB_HEIGHT,
-  }
-});
+  },
 
+  icon: {
+    position: 'absolute',
+    top: 8,
+    left: 20,
+  },
+});
