@@ -28,7 +28,7 @@ const ScrollableTabView = React.createClass({
     onScroll: PropTypes.func,
     renderTabBar: PropTypes.any,
     style: View.propTypes.style,
-    contentProps: PropTypes.object
+    contentProps: PropTypes.object,
   },
 
   getDefaultProps() {
@@ -107,7 +107,8 @@ const ScrollableTabView = React.createClass({
           scrollEnabled={!this.props.locked}
           directionalLockEnabled
           alwaysBounceVertical={false}
-          {...this.props.contentProps}>
+          {...this.props.contentProps}
+          >
           {this._children().map((child, idx) => {
             return <View
               key={child.props.tabLabel + '_' + idx}
@@ -197,6 +198,12 @@ const ScrollableTabView = React.createClass({
     }
     if (this.props.tabBarInactiveTextColor) {
       tabBarProps.inactiveTextColor = this.props.tabBarInactiveTextColor;
+    }
+    if (this.props.tabBarUseIcons) {
+      tabBarProps.useIcons = this.props.tabBarUseIcons;
+    }
+    if (this.props.tabBarScrollEnabled) {
+      tabBarProps.scrollEnabled = this.props.tabBarScrollEnabled;
     }
     if (overlayTabs) {
       tabBarProps.style = {

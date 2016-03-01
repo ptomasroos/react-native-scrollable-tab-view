@@ -83,6 +83,8 @@ See
 - **`tabBarBackgroundColor`** _(String)_ - color of the default tab bar's background, defaults to `white`
 - **`tabBarActiveTextColor`** _(String)_ - color of the default tab bar's text when active, defaults to `navy`
 - **`tabBarInactiveTextColor`** _(String)_ - color of the default tab bar's text when inactive, defaults to `black`
+- **`tabBarUseIcons`** _(Bool)_ - instead of text tabs, tab bar will use `tabLabel` properties of ScrollableTabView children elements to select icons from *[react-native-vector-icons](https://github.com/oblador/react-native-vector-icons)*, defaults to `false`
+- **`tabBarScrollEnabled`** _(Bool)_ - enable scrolling of tab bar, defaults to `false`
 - **`style`** _([View.propTypes.style](https://facebook.github.io/react-native/docs/view.html#style))_
 - **`contentProps`** _(Object)_ - props that are applied to root `ScrollView`/`ViewPagerAndroid`. Note that overriding defaults set by the library may break functionality; see the source for details.
 
