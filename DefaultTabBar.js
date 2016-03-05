@@ -43,7 +43,7 @@ var DefaultTabBar = React.createClass({
   
   defaultProps: {
     underlineHeight : 4
-  }
+  },
 
   renderTabOption(name, page) {
     var isTabActive = this.props.activeTab === page;
