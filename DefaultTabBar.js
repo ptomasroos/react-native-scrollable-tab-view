@@ -39,6 +39,7 @@ var DefaultTabBar = React.createClass({
     backgroundColor : React.PropTypes.string,
     activeTextColor : React.PropTypes.string,
     inactiveTextColor : React.PropTypes.string,
+    underlineHeight: React.PropTypes.number
   },
 
   renderTabOption(name, page) {
