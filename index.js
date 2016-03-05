@@ -196,6 +196,9 @@ const ScrollableTabView = React.createClass({
     if (this.props.tabBarInactiveTextColor) {
       tabBarProps.inactiveTextColor = this.props.tabBarInactiveTextColor;
     }
+    if (this.props.underlineHeight) {
+      tabBarProps.underlineHeight = this.props.underlineHeight;
+    }
     if (overlayTabs) {
       tabBarProps.style = {
         position: 'absolute',
