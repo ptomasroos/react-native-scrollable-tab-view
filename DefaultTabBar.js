@@ -40,10 +40,6 @@ var DefaultTabBar = React.createClass({
     activeTextColor : React.PropTypes.string,
     inactiveTextColor : React.PropTypes.string,
   },
-  
-  defaultProps: {
-    underlineHeight : 4
-  },
 
   renderTabOption(name, page) {
     var isTabActive = this.props.activeTab === page;
@@ -65,7 +61,7 @@ var DefaultTabBar = React.createClass({
     var tabUnderlineStyle = {
       position: 'absolute',
       width: containerWidth / numberOfTabs,
-      height: this.props.underlineHeight,
+      height: this.props.underlineHeight || 4,
       backgroundColor: this.props.underlineColor || "navy",
       bottom: 0,
     };
