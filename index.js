@@ -113,7 +113,7 @@ const ScrollableTabView = React.createClass({
             return <View
               key={child.props.tabLabel + '_' + idx}
               style={{width: this.state.containerWidth, }}>
-              {child.props.hasOwnProperty('passGoToPage') ?
+              {child.props.passGoToPage ?
               React.cloneElement(child, {goToPage: this.goToPage}) : child}
             </View>;
           })}
@@ -136,7 +136,7 @@ const ScrollableTabView = React.createClass({
            return <View
              key={child.props.tabLabel + '_' + idx}
              style={{width: this.state.containerWidth, }}>
-             {child.props.hasOwnProperty('passGoToPage') ?
+             {child.props.passGoToPage ?
               React.cloneElement(child, {goToPage: this.goToPage}) : child}
            </View>;
          })}
