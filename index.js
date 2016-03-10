@@ -113,7 +113,7 @@ const ScrollableTabView = React.createClass({
             return <View
               key={child.props.tabLabel + '_' + idx}
               style={{width: this.state.containerWidth, }}>
-              {child}
+              { React.cloneElement(child, { isActiveTab:(idx === this.state.currentPage)}) }
             </View>;
           })}
         </ScrollView>
@@ -135,7 +135,7 @@ const ScrollableTabView = React.createClass({
            return <View
              key={child.props.tabLabel + '_' + idx}
              style={{width: this.state.containerWidth, }}>
-             {child}
+             { React.cloneElement(child, { isActiveTab:(idx === this.state.currentPage)}) }
            </View>;
          })}
         </ViewPagerAndroid>
