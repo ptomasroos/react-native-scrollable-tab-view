@@ -41,21 +41,21 @@ var DefaultTabBar = React.createClass({
     inactiveTextColor : React.PropTypes.string,
   },
 
-  renderTabOption(name, page) {
+  renderTabOption(tab, page) {
     var isTabActive = this.props.activeTab === page;
     var activeTextColor = this.props.activeTextColor || "navy";
     var inactiveTextColor = this.props.inactiveTextColor || "black";
     return (
       <TouchableOpacity
-        key={name}
+        key={tab.props.key || tab.props.tabLabel}
         accessible={true}
-        accessibilityLabel={name}
+        accessibilityLabel={tab.props.tabLabel}
         accessibilityTraits='button'
         style={[styles.tab]}
         onPress={() => this.props.goToPage(page)}>
         <View>
           <Text style={{color: isTabActive ? activeTextColor : inactiveTextColor,
-            fontWeight: isTabActive ? 'bold' : 'normal'}}>{name}</Text>
+            fontWeight: isTabActive ? 'bold' : 'normal'}}>{tab.props.tabLabel}</Text>
         </View>
       </TouchableOpacity>
     );
