@@ -85,7 +85,7 @@ See
 - **`tabBarInactiveTextColor`** _(String)_ - color of the default tab bar's text when inactive, defaults to `black`
 - **`style`** _([View.propTypes.style](https://facebook.github.io/react-native/docs/view.html#style))_
 - **`contentProps`** _(Object)_ - props that are applied to root `ScrollView`/`ViewPagerAndroid`. Note that overriding defaults set by the library may break functionality; see the source for details.
-
+- **`width`** defaults to window width, it's needed when ScrollableTabView width is smaller than window width [#143](https://github.com/brentvatne/react-native-scrollable-tab-view/issues/143)
 ---
 
 **MIT Licensed**
