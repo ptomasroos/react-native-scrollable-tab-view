@@ -28,7 +28,8 @@ const ScrollableTabView = React.createClass({
     onScroll: PropTypes.func,
     renderTabBar: PropTypes.any,
     style: View.propTypes.style,
-    contentProps: PropTypes.object
+    contentProps: PropTypes.object,
+    width: PropTypes.number
   },
 
   getDefaultProps() {
@@ -38,7 +39,8 @@ const ScrollableTabView = React.createClass({
       page: -1,
       onChangeTab: () => {},
       onScroll: () => {},
-      contentProps: {}
+      contentProps: {},
+      width: Dimensions.get('window').width
     };
   },
 
@@ -46,7 +48,7 @@ const ScrollableTabView = React.createClass({
     return {
       currentPage: this.props.initialPage,
       scrollValue: new Animated.Value(this.props.initialPage),
-      containerWidth: Dimensions.get('window').width,
+      containerWidth: this.props.width
     };
   },
 
