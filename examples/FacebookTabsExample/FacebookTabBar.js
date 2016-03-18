@@ -10,6 +10,7 @@ var {
 } = React;
 
 const Icon = require('react-native-vector-icons/Ionicons');
+const AnimatedIcon = Animated.createAnimatedComponent(Icon);
 
 var styles = StyleSheet.create({
   tab: {
@@ -19,7 +20,7 @@ var styles = StyleSheet.create({
     paddingBottom: 10,
   },
   tabs: {
-    height: 45,
+    height: 50,
     flexDirection: 'row',
     paddingTop: 5,
     borderWidth: 1,
@@ -30,7 +31,7 @@ var styles = StyleSheet.create({
   },
   icon: {
     position: 'absolute',
-    top: 0,
+    top: 4,
     left: 20,
   },
 });
@@ -42,18 +43,31 @@ var FacebookTabBar = React.createClass({
   propTypes: {
     goToPage: React.PropTypes.func,
     activeTab: React.PropTypes.number,
-    tabs: React.PropTypes.array
+    tabs: React.PropTypes.array,
+    underlineColor : React.PropTypes.string,
+    backgroundColor : React.PropTypes.string,
+    activeTextColor : React.PropTypes.string,
+    inactiveTextColor : React.PropTypes.string,
   },
 
   renderTabOption(name, page) {
     var isTabActive = this.props.activeTab === page;
 
+    let inputRange = [page -1, page, page+1];
+
+    var iconScale = this.props.scrollValue.interpolate({
+      inputRange: inputRange,
+      outputRange: [.95, 1.15, .95],
+      extrapolate: 'clamp'
+    });
+
     return (
       <TouchableOpacity key={name} onPress={() => this.props.goToPage(page)} style={styles.tab}>
-        <Icon name={name} size={30} color='#3B5998' style={styles.icon}
-              ref={(icon) => { this.selectedTabIcons[page] = icon }}/>
-        <Icon name={name} size={30} color='#ccc' style={styles.icon}
-              ref={(icon) => { this.unselectedTabIcons[page] = icon }}/>
+        <AnimatedIcon name={name} size={30} color={this.props.activeTextColor} style={[styles.icon, {transform:[{scale: iconScale}]}]}
+            ref={(icon) => { this.selectedTabIcons[page] = icon }}/>
+
+        <AnimatedIcon name={name} size={30} color={this.props.inactiveTextColor} style={[styles.icon, {transform:[{scale: iconScale}]}]}
+        ref={(icon) => { this.unselectedTabIcons[page] = icon }}/>
       </TouchableOpacity>
     );
   },
@@ -89,20 +103,20 @@ var FacebookTabBar = React.createClass({
       position: 'absolute',
       width: containerWidth / numberOfTabs,
       height: 3,
-      backgroundColor: '#3b5998',
+      backgroundColor: this.props.underlineColor,
       bottom: 0,
     };
 
-    var left = this.props.scrollValue.interpolate({
+    var translateX = this.props.scrollValue.interpolate({
       inputRange: [0, 1], outputRange: [0, containerWidth / numberOfTabs]
     });
 
     return (
       <View>
-        <View style={[styles.tabs, this.props.style, ]}>
+        <View style={[styles.tabs, this.props.style, {backgroundColor: this.props.backgroundColor}]}>
           {this.props.tabs.map((tab, i) => this.renderTabOption(tab, i))}
         </View>
-        <Animated.View style={[tabUnderlineStyle, {left}]} />
+        <Animated.View style={[tabUnderlineStyle, {transform:[{translateX: translateX}]}]} />
       </View>
     );
   },
