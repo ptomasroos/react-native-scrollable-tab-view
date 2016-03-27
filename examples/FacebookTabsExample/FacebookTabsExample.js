@@ -13,27 +13,27 @@ const FacebookTabsExample = React.createClass({
   render() {
     return <View style={styles.container}>
       <ScrollableTabView initialPage={1} renderTabBar={() => <FacebookTabBar />}>
-        <ScrollView tabLabel="ios-paper" style={styles.tabView}>
+        <ScrollView tabLabel="News" tabIcon="ios-paper" style={styles.tabView}>
           <View style={styles.card}>
             <Text>News</Text>
           </View>
         </ScrollView>
-        <ScrollView tabLabel="person-stalker" style={styles.tabView}>
+        <ScrollView tabLabel="Friends" tabIcon="person-stalker" style={styles.tabView}>
           <View style={styles.card}>
             <Text>Friends</Text>
           </View>
         </ScrollView>
-        <ScrollView tabLabel="ios-chatboxes" style={styles.tabView}>
+        <ScrollView tabLabel="Messenger" tabIcon="ios-chatboxes" style={styles.tabView}>
           <View style={styles.card}>
             <Text>Messenger</Text>
           </View>
         </ScrollView>
-        <ScrollView tabLabel="ios-world" style={styles.tabView}>
+        <ScrollView tabLabel="Notifications" tabIcon="ios-world" style={styles.tabView}>
           <View style={styles.card}>
             <Text>Notifications</Text>
           </View>
         </ScrollView>
-        <ScrollView tabLabel="navicon-round" style={styles.tabView}>
+        <ScrollView tabLabel="Other nav" tabIcon="navicon-round" style={styles.tabView}>
           <View style={styles.card}>
             <Text>Other nav</Text>
           </View>
