@@ -38,14 +38,8 @@ const FacebookTabBar = React.createClass({
 
   setAnimationValue({ value, }) {
     this.unselectedTabIcons.forEach((icon, i) => {
-      let iconRef = icon;
-
-      if (!icon.setNativeProps && icon !== null) {
-        iconRef = icon.refs.icon_image;
-      }
-
       const opacity = (value - i >= 0 && value - i <= 1) ? value - i : 1;
-      iconRef.setNativeProps({
+      icon.setNativeProps({
         style: {
           opacity,
         },
