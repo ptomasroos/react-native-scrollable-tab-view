@@ -99,10 +99,13 @@ var ScrollableTabBar = React.createClass({
     const inactiveTextColor = this.props.inactiveTextColor || "black";
     return (
       <TouchableOpacity
-        style={[styles.tab]}
         key={name}
-        onPress={() => this.props.goToPage(page)}
         ref={'tab_' + page}
+        accessible={true}
+        accessibilityLabel={name}
+        accessibilityTraits='button'
+        style={[styles.tab]}
+        onPress={() => this.props.goToPage(page)}
         onLayout={this.measureTab.bind(this, page)}
       >
         <View>

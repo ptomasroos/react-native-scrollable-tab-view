@@ -103,6 +103,7 @@ const ScrollableTabView = React.createClass({
             this._updateSelectedPage(parseInt(offsetX / this.state.containerWidth, 10));
           }}
           scrollEventThrottle={16}
+          scrollsToTop={false}
           showsHorizontalScrollIndicator={false}
           scrollEnabled={!this.props.locked}
           directionalLockEnabled
@@ -149,7 +150,7 @@ const ScrollableTabView = React.createClass({
       localCurrentPage = currentPage.nativeEvent.position;
     }
     this.setState({currentPage: localCurrentPage, }, () => {
-      this.props.onChangeTab({ i: localCurrentPage, });
+      this.props.onChangeTab({ i: localCurrentPage, ref: this._children()[localCurrentPage], });
     });
   },
 

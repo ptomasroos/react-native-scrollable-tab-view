@@ -90,10 +90,10 @@ const OverlayExample = React.createClass({
   },
 });
 
-module.exports = FacebookTabsExample;
-//module.exports = SimpleExample;
-//module.exports = ScrollableTabsExample;
-//module.exports = OverlayExample;
+export default FacebookTabsExample;
+//export default SimpleExample;
+//export default ScrollableTabsExample;
+//export default OverlayExample;
 
 const styles = StyleSheet.create({
   container: {

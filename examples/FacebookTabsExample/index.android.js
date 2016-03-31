@@ -1,5 +1,4 @@
-var React = require('react-native');
-var { AppRegistry,  } = React;
-var FacebookTabsExample = require('./FacebookTabsExample');
+import React, { AppRegistry, } from 'react-native';
+import FacebookTabsExample from './FacebookTabsExample';
 
 AppRegistry.registerComponent('FacebookTabsExample', () => FacebookTabsExample);
