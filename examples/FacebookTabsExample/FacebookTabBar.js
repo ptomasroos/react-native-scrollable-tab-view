@@ -44,12 +44,12 @@ const FacebookTabBar = React.createClass({
         iconRef = icon.refs.icon_image;
       }
 
-      if (value - i >= 0 && value - i <= 1) {
-        iconRef.setNativeProps({ style: { opacity: value - i, }, });
-      }
-      if (i - value >= 0 &&  i - value <= 1) {
-        iconRef.setNativeProps({ style: { opacity: i - value, }, });
-      }
+      const opacity = (value - i >= 0 && value - i <= 1) ? value - i : 1;
+      iconRef.setNativeProps({
+        style: {
+          opacity,
+        },
+      });
     });
   },
 
