@@ -17,18 +17,6 @@ const FacebookTabBar = React.createClass({
     tabs: React.PropTypes.array,
   },
 
-  renderTabOption(name, page) {
-    const isTabActive = this.props.activeTab === page;
-
-    return (
-      <TouchableOpacity key={name} onPress={() => this.props.goToPage(page)} style={styles.tab}>
-        <Icon name={name} size={30} color='#3B5998' style={styles.icon}/>
-        <Icon name={name} size={30} color='#ccc' style={styles.icon}
-              ref={(icon) => { this.unselectedTabIcons[page] = icon; }}/>
-      </TouchableOpacity>
-    );
-  },
-
   componentDidMount() {
     this.setAnimationValue({ value: this.props.activeTab, });
     this._listener = this.props.scrollValue.addListener(this.setAnimationValue);
@@ -46,25 +34,21 @@ const FacebookTabBar = React.createClass({
   },
 
   render() {
-    const containerWidth = this.props.containerWidth;
-    const numberOfTabs = this.props.tabs.length;
-    const tabUnderlineStyle = {
-      position: 'absolute',
-      width: containerWidth / numberOfTabs,
-      height: 3,
-      backgroundColor: '#3b5998',
-      bottom: 0,
-    };
-
+    const tabWidth = this.props.containerWidth / this.props.tabs.length;
     const left = this.props.scrollValue.interpolate({
-      inputRange: [0, 1, ], outputRange: [0, containerWidth / numberOfTabs, ],
+      inputRange: [0, 1, ], outputRange: [0, tabWidth, ],
     });
 
     return <View>
       <View style={[styles.tabs, this.props.style, ]}>
-        {this.props.tabs.map((tab, i) => this.renderTabOption(tab, i))}
+        {this.props.tabs.map((tab, i) => {
+          return <TouchableOpacity key={tab} onPress={() => this.props.goToPage(i)} style={styles.tab}>
+            <Icon name={tab} size={30} color='#3B5998' style={styles.icon}/>
+            <Icon name={tab} size={30} color='#ccc' style={styles.icon} ref={(icon) => { this.unselectedTabIcons[i] = icon; }}/>
+          </TouchableOpacity>;
+        })}
       </View>
-      <Animated.View style={[tabUnderlineStyle, { left, }, ]} />
+      <Animated.View style={[styles.tabUnderlineStyle, { width: tabWidth }, { left, }, ]} />
     </View>;
   },
 });
@@ -90,6 +74,12 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     left: 20,
+  },
+  tabUnderlineStyle: {
+    position: 'absolute',
+    height: 3,
+    backgroundColor: '#3b5998',
+    bottom: 0,
   },
 });
 
