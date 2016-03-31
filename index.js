@@ -100,10 +100,9 @@ const ScrollableTabView = React.createClass({
           }}
           onMomentumScrollEnd={(e) => {
             const offsetX = e.nativeEvent.contentOffset.x;
-            this._updateSelectedPage(computePageFromOffset(offsetX, this.state.containerWidth));
+            this._updateSelectedPage(computePageFromOffset(offsetX, this.state.containerWidth), this._autosync);
           }}
           scrollEventThrottle={16}
-          scrollsToTop={false}
           showsHorizontalScrollIndicator={false}
           scrollEnabled={!this.props.locked}
           directionalLockEnabled
@@ -144,14 +143,19 @@ const ScrollableTabView = React.createClass({
     }
   },
 
-  _updateSelectedPage(currentPage) {
+  _updateSelectedPage(currentPage, next) {
     let localCurrentPage = currentPage;
     if (typeof localCurrentPage === 'object') {
       localCurrentPage = currentPage.nativeEvent.position;
     }
     this.setState({currentPage: localCurrentPage, }, () => {
       this.props.onChangeTab({ i: localCurrentPage, ref: this._children()[localCurrentPage], });
+      next && next();
     });
+  },
+
+  _autosync() {
+    this.goToPage(this.state.currentPage);
   },
 
   _updateScrollValue(value) {
