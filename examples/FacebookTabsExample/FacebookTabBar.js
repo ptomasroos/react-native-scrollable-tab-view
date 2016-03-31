@@ -9,7 +9,6 @@ import React, {
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const FacebookTabBar = React.createClass({
-  selectedTabIcons: [],
   unselectedTabIcons: [],
 
   propTypes: {
@@ -23,8 +22,7 @@ const FacebookTabBar = React.createClass({
 
     return (
       <TouchableOpacity key={name} onPress={() => this.props.goToPage(page)} style={styles.tab}>
-        <Icon name={name} size={30} color='#3B5998' style={styles.icon}
-              ref={(icon) => { this.selectedTabIcons[page] = icon; }}/>
+        <Icon name={name} size={30} color='#3B5998' style={styles.icon}/>
         <Icon name={name} size={30} color='#ccc' style={styles.icon}
               ref={(icon) => { this.unselectedTabIcons[page] = icon; }}/>
       </TouchableOpacity>
