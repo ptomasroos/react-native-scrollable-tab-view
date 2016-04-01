@@ -4,13 +4,10 @@ var React = require('react-native');
 var {
   StyleSheet,
   Text,
-  TouchableOpacity,
-  TouchableNativeFeedback,
   View,
   Animated,
-  Platform,
 } = React;
-
+var Button = require('./Button');
 
 var styles = StyleSheet.create({
   tab: {
@@ -48,39 +45,19 @@ var DefaultTabBar = React.createClass({
     var activeTextColor = this.props.activeTextColor || "navy";
     var inactiveTextColor = this.props.inactiveTextColor || "black";
 
-    var innerText = (
-      <Text style={{color: isTabActive ? activeTextColor : inactiveTextColor,
-        fontWeight: isTabActive ? 'bold' : 'normal'}}>{name}</Text>
-    );
-
-    if (Platform.OS !== 'android') {
-      return (
-        <TouchableOpacity
-          key={name}
-          accessible={true}
-          accessibilityLabel={name}
-          accessibilityTraits='button'
-          style={[styles.tab]}
-          onPress={() => this.props.goToPage(page)}>
-          <View>
-            { innerText }
-          </View>
-        </TouchableOpacity>
-      );
-    } else {
-      return (
-        <TouchableNativeFeedback
-          background={TouchableNativeFeedback.SelectableBackground()}
-          key={name}
-          accessible={true}
-          accessibilityLabel={name}
-          onPress={() => this.props.goToPage(page)}>
-          <View style={[styles.tab]}>
-            { innerText }
-          </View>
-        </TouchableNativeFeedback>
-      );
-    }
+    return <Button
+      key={name}
+      accessible={true}
+      accessibilityLabel={name}
+      accessibilityTraits='button'
+      onPress={() => this.props.goToPage(page)}
+    >
+      <View style={[styles.tab]}>
+        <Text style={{color: isTabActive ? activeTextColor : inactiveTextColor, fontWeight: isTabActive ? 'bold' : 'normal'}}>
+          {name}
+        </Text>
+      </View>
+    </Button>;
   },
 
   render() {
