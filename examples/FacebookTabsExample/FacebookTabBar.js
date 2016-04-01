@@ -9,7 +9,7 @@ import React, {
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const FacebookTabBar = React.createClass({
-  unselectedTabIcons: [],
+  tabIcons: [],
 
   propTypes: {
     goToPage: React.PropTypes.func,
@@ -23,14 +23,22 @@ const FacebookTabBar = React.createClass({
   },
 
   setAnimationValue({ value, }) {
-    this.unselectedTabIcons.forEach((icon, i) => {
-      const opacity = (value - i >= 0 && value - i <= 1) ? value - i : 1;
+    this.tabIcons.forEach((icon, i) => {
+      const progress = (value - i >= 0 && value - i <= 1) ? value - i : 1;
       icon.setNativeProps({
         style: {
-          opacity,
+          color: this.iconColor(progress),
         },
       });
     });
+  },
+
+  //color between rgb(59,89,152) and rgb(204,204,204)
+  iconColor(progress) {
+    const red = 59 + (204 - 59) * progress;
+    const green = 89 + (204 - 89) * progress;
+    const blue = 152 + (204 - 152) * progress;
+    return `rgb(${red}, ${green}, ${blue})`;
   },
 
   render() {
@@ -43,8 +51,12 @@ const FacebookTabBar = React.createClass({
       <View style={[styles.tabs, this.props.style, ]}>
         {this.props.tabs.map((tab, i) => {
           return <TouchableOpacity key={tab} onPress={() => this.props.goToPage(i)} style={styles.tab}>
-            <Icon name={tab} size={30} color='#3B5998' style={styles.icon}/>
-            <Icon name={tab} size={30} color='#ccc' style={styles.icon} ref={(icon) => { this.unselectedTabIcons[i] = icon; }}/>
+            <Icon
+              name={tab}
+              size={30}
+              color={this.props.activeTab ? 'rgb(59,89,152)' : 'rgb(204,204,204)'}
+              ref={(icon) => { this.tabIcons[i] = icon; }}
+            />
           </TouchableOpacity>;
         })}
       </View>
@@ -69,11 +81,6 @@ const styles = StyleSheet.create({
     borderLeftWidth: 0,
     borderRightWidth: 0,
     borderBottomColor: 'rgba(0,0,0,0.05)',
-  },
-  icon: {
-    position: 'absolute',
-    top: 0,
-    left: 20,
   },
   tabUnderlineStyle: {
     position: 'absolute',
