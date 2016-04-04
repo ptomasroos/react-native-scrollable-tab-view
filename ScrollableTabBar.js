@@ -98,6 +98,7 @@ const ScrollableTabBar = React.createClass({
     const isTabActive = this.props.activeTab === page;
     const activeTextColor = this.props.activeTextColor || 'navy';
     const inactiveTextColor = this.props.inactiveTextColor || 'black';
+    const textStyle = this.props.textStyle || {};
 
     return <TouchableOpacity
       key={name}
@@ -110,7 +111,7 @@ const ScrollableTabBar = React.createClass({
       onLayout={this.measureTab.bind(this, page)}
       >
       <View>
-        <Text style={{color: isTabActive ? activeTextColor : inactiveTextColor, }}>{name}</Text>
+        <Text style={[{color: isTabActive ? activeTextColor : inactiveTextColor}, textStyle]}>{name}</Text>
       </View>
     </TouchableOpacity>;
   },
