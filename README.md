@@ -58,6 +58,7 @@ var App = React.createClass({
   }
 });
 ```
+Note: If you have more than 5 tabs, use ScrollableTabBar.js as your custom tab bar for support for horizontal scrolling suppport in your tab bar.
 
 ## Example
 
