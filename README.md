@@ -58,7 +58,29 @@ var App = React.createClass({
   }
 });
 ```
-Note: If you have more than 5 tabs, use ScrollableTabBar.js as your custom tab bar for support for horizontal scrolling suppport in your tab bar.
+Note: If you have more than 5 tabs, use ScrollableTabBar.js as your custom tab bar for support for horizontal scrolling in your tab bar.  See example below: 
+
+```javascript
+var ScrollableTabView = require('react-native-scrollable-tab-view');
+var ScrollableTabBar = require('./ScrollableTabBar');
+
+var App = React.createClass({
+  render() {
+    return (
+      <ScrollableTabView  renderTabBar={() => <ScrollableTabBar/>}
+                          edgeHitWidth={50}>>
+        <ReactPage tabLabel="React" />
+        <FlowPage tabLabel="Flow" />
+        <JestPage tabLabel="Jest" />
+        <ReactPage tabLabel="React 2" />
+        <FlowPage tabLabel="Flow 2" />
+        <JestPage tabLabel="Jest 2" />
+      </ScrollableTabView>
+    );
+  }
+});
+```
+
 
 ## Example
 
