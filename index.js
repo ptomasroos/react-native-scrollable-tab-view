@@ -29,9 +29,11 @@ const ScrollableTabView = React.createClass({
     renderTabBar: PropTypes.any,
     style: View.propTypes.style,
     contentProps: PropTypes.object,
+    gap: PropTypes.number,
   },
 
   getDefaultProps() {
+    console.log('HELP', this.props)
     return {
       tabBarPosition: 'top',
       initialPage: 0,
@@ -39,6 +41,7 @@ const ScrollableTabView = React.createClass({
       onChangeTab: () => {},
       onScroll: () => {},
       contentProps: {},
+      gap: 0,
     };
   },
 
@@ -46,7 +49,7 @@ const ScrollableTabView = React.createClass({
     return {
       currentPage: this.props.initialPage,
       scrollValue: new Animated.Value(this.props.initialPage),
-      containerWidth: Dimensions.get('window').width,
+      containerWidth: Dimensions.get('window').width + this.props.gap,
     };
   },
 
@@ -109,7 +112,8 @@ const ScrollableTabView = React.createClass({
           directionalLockEnabled
           alwaysBounceVertical={false}
           keyboardDismissMode="on-drag"
-          {...this.props.contentProps}>
+          {...this.props.contentProps}
+          {...this.getGapProps()}>
           {this._children().map((child, idx) => {
             return <View
               key={child.props.tabLabel + '_' + idx}
@@ -161,12 +165,24 @@ const ScrollableTabView = React.createClass({
 
   _handleLayout(e) {
     const { width, } = e.nativeEvent.layout;
+    let containerWidth = width + this.props.gap;
 
-    if (width !== this.state.containerWidth) {
-      this.setState({ containerWidth: width, });
+    if (containerWidth !== this.state.containerWidth) {
+      this.setState({ containerWidth });
       InteractionManager.runAfterInteractions(() => {
         this.goToPage(this.state.currentPage);
       });
+    }
+  },
+
+  getGapProps() {
+    if(this.props.gap > 0) {
+      return {
+        snapToInterval: this.state.containerWidth,
+        snapToAlignment: "start",
+        pagingEnabled: false,
+        decelerationRate: 0,
+      };
     }
   },
 
@@ -181,7 +197,7 @@ const ScrollableTabView = React.createClass({
       tabs: this._children().map((child) => child.props.tabLabel),
       activeTab: this.state.currentPage,
       scrollValue: this.state.scrollValue,
-      containerWidth: this.state.containerWidth,
+      containerWidth: this.state.containerWidth - this.props.gap,
     };
 
     if (this.props.tabBarUnderlineColor) {
