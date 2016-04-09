@@ -24,6 +24,7 @@ const ScrollableTabBar = React.createClass({
     activeTab: React.PropTypes.number,
     tabs: React.PropTypes.array,
     underlineColor: React.PropTypes.string,
+    underlineHeight: React.PropTypes.number,
     backgroundColor: React.PropTypes.string,
     activeTextColor: React.PropTypes.string,
     inactiveTextColor: React.PropTypes.string,
@@ -126,7 +127,7 @@ const ScrollableTabBar = React.createClass({
   render() {
     const tabUnderlineStyle = {
       position: 'absolute',
-      height: 4,
+      height: this.props.underlineHeight || 4,
       backgroundColor: this.props.underlineColor || 'navy',
       bottom: 0,
     };
