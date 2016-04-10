@@ -74,18 +74,21 @@ const OverlayExample = React.createClass({
   render() {
     return <ScrollableTabView
       style={styles.container}
-      renderTabBar={()=><DefaultTabBar backgroundColor='rgba(255, 255, 255, 0.5)' />}
+      renderTabBar={()=><DefaultTabBar backgroundColor='rgba(255, 255, 255, 0.7)' />}
       tabBarPosition='overlayTop'
     >
-      <View tabLabel='Music' style={{ flex: 1, backgroundColor: '#CCFFFF', }}>
-        <Icon name='android-volume-up' color='#2222CC' size={300} style={styles.icon} />
-      </View>
-      <View tabLabel='Food' style={{ flex: 1, backgroundColor: '#CCBBDD', }}>
-        <Icon name='ios-nutrition' color='#22AACC' size={300} style={styles.icon} />
-      </View>
-      <View tabLabel='Drink' style={{ flex: 1, backgroundColor: '#EEFF33', }}>
-        <Icon name='ios-pint' color='#22FFCC' size={300} style={styles.icon} />
-      </View>
+      <ScrollView tabLabel='iOS'>
+        <Icon name='social-apple' color='#DBDDDE' size={300} style={styles.icon} />
+        <Icon name='social-apple-outline' color='#DBDDDE' size={300} style={styles.icon} />
+        <Icon name='ipad' color='#DBDDDE' size={300} style={styles.icon} />
+        <Icon name='iphone' color='#DBDDDE' size={300} style={styles.icon} />
+        <Icon name='ipod' color='#DBDDDE' size={300} style={styles.icon} />
+      </ScrollView>
+      <ScrollView tabLabel='Android'>
+        <Icon name='social-android' color='#A4C639' size={300} style={styles.icon} />
+        <Icon name='social-android-outline' color='#A4C639' size={300} style={styles.icon} />
+        <Icon name='android-playstore' color='#A4C639' size={300} style={styles.icon} />
+      </ScrollView>
     </ScrollableTabView>;
   },
 });
