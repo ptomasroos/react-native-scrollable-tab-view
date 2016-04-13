@@ -96,18 +96,17 @@ const ScrollableTabView = React.createClass({
           ref={(scrollView) => { this.scrollView = scrollView; }}
           onScroll={(e) => {
             const offsetX = e.nativeEvent.contentOffset.x;
-            this._updateScrollValue(offsetX / this.state.containerWidth);
+            this._updateScrollValue(computePageFromOffset(offsetX, this.state.containerWidth));
           }}
           onMomentumScrollBegin={(e) => {
             const offsetX = e.nativeEvent.contentOffset.x;
-            this._updateSelectedPage(parseInt(offsetX / this.state.containerWidth, 10));
+            this._updateSelectedPage(computePageFromOffset(offsetX, this.state.containerWidth));
           }}
           onMomentumScrollEnd={(e) => {
             const offsetX = e.nativeEvent.contentOffset.x;
-            this._updateSelectedPage(parseInt(offsetX / this.state.containerWidth, 10));
+            this._updateSelectedPage(computePageFromOffset(offsetX, this.state.containerWidth), this._autosync);
           }}
           scrollEventThrottle={16}
-          scrollsToTop={false}
           showsHorizontalScrollIndicator={false}
           scrollEnabled={!this.props.locked}
           directionalLockEnabled
@@ -148,14 +147,19 @@ const ScrollableTabView = React.createClass({
     }
   },
 
-  _updateSelectedPage(currentPage) {
+  _updateSelectedPage(currentPage, next) {
     let localCurrentPage = currentPage;
     if (typeof localCurrentPage === 'object') {
       localCurrentPage = currentPage.nativeEvent.position;
     }
     this.setState({currentPage: localCurrentPage, }, () => {
       this.props.onChangeTab({ i: localCurrentPage, ref: this._children()[localCurrentPage], });
+      next && next();
     });
+  },
+
+  _autosync() {
+    this.goToPage(this.state.currentPage);
   },
 
   _updateScrollValue(value) {
@@ -236,3 +240,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
+
+function computePageFromOffset(offsetX, containerWidth) {
+  return parseInt(0.5 + offsetX / containerWidth, 10);
+}
