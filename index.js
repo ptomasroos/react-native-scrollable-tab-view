@@ -29,16 +29,19 @@ const ScrollableTabView = React.createClass({
     renderTabBar: PropTypes.any,
     style: View.propTypes.style,
     contentProps: PropTypes.object,
+    gap: PropTypes.number,
   },
 
   getDefaultProps() {
+    console.log('HELP', this.props)
     return {
       tabBarPosition: 'top',
       initialPage: 0,
       page: -1,
       onChangeTab: () => {},
       onScroll: () => {},
-      contentProps: {}
+      contentProps: {},
+      gap: 0,
     };
   },
 
@@ -46,7 +49,7 @@ const ScrollableTabView = React.createClass({
     return {
       currentPage: this.props.initialPage,
       scrollValue: new Animated.Value(this.props.initialPage),
-      containerWidth: Dimensions.get('window').width,
+      containerWidth: Dimensions.get('window').width + this.props.gap,
     };
   },
 
@@ -61,7 +64,7 @@ const ScrollableTabView = React.createClass({
 
     if (Platform.OS === 'ios') {
       const offset = pageNumber * this.state.containerWidth;
-      this.scrollView.scrollTo(0, offset);
+      this.scrollView.scrollTo({x: offset, y: 0, });
     } else {
       this.scrollView.setPage(pageNumber);
     }
@@ -103,12 +106,14 @@ const ScrollableTabView = React.createClass({
             this._updateSelectedPage(parseInt(offsetX / this.state.containerWidth, 10));
           }}
           scrollEventThrottle={16}
+          scrollsToTop={false}
           showsHorizontalScrollIndicator={false}
           scrollEnabled={!this.props.locked}
           directionalLockEnabled
           alwaysBounceVertical={false}
+          keyboardDismissMode="on-drag"
           {...this.props.contentProps}
-          >
+          {...this.getGapProps()}>
           {this._children().map((child, idx) => {
             return <View
               key={child.props.tabLabel + '_' + idx}
@@ -124,6 +129,7 @@ const ScrollableTabView = React.createClass({
          style={styles.scrollableContentAndroid}
          initialPage={this.props.initialPage}
          onPageSelected={this._updateSelectedPage}
+         keyboardDismissMode="on-drag"
          onPageScroll={(e) => {
            const { offset, position, } = e.nativeEvent;
            this._updateScrollValue(position + offset);
@@ -148,7 +154,7 @@ const ScrollableTabView = React.createClass({
       localCurrentPage = currentPage.nativeEvent.position;
     }
     this.setState({currentPage: localCurrentPage, }, () => {
-      this.props.onChangeTab({ i: localCurrentPage, });
+      this.props.onChangeTab({ i: localCurrentPage, ref: this._children()[localCurrentPage], });
     });
   },
 
@@ -159,22 +165,29 @@ const ScrollableTabView = React.createClass({
 
   _handleLayout(e) {
     const { width, } = e.nativeEvent.layout;
+    let containerWidth = width + this.props.gap;
 
-    if (width !== this.state.containerWidth) {
-      this.setState({ containerWidth: width, });
+    if (containerWidth !== this.state.containerWidth) {
+      this.setState({ containerWidth });
       InteractionManager.runAfterInteractions(() => {
         this.goToPage(this.state.currentPage);
       });
     }
   },
 
-  // The following implementation allows for compatibility with version
-  // of React Native that depend on React.Children prior to
-  // facebook/react#6013105a9cf625cac18851683adbf2fd19b6833c
+  getGapProps() {
+    if(this.props.gap > 0) {
+      return {
+        snapToInterval: this.state.containerWidth,
+        snapToAlignment: "start",
+        pagingEnabled: false,
+        decelerationRate: 0,
+      };
+    }
+  },
+
   _children() {
-    let result = [];
-    React.Children.forEach(this.props.children, (child) => result.push(child));
-    return result;
+    return React.Children.map(this.props.children, (child) => child);
   },
 
   render() {
@@ -184,7 +197,7 @@ const ScrollableTabView = React.createClass({
       tabs: this._children().map((child) => child.props.tabLabel),
       activeTab: this.state.currentPage,
       scrollValue: this.state.scrollValue,
-      containerWidth: this.state.containerWidth,
+      containerWidth: this.state.containerWidth - this.props.gap,
     };
 
     if (this.props.tabBarUnderlineColor) {
@@ -199,28 +212,20 @@ const ScrollableTabView = React.createClass({
     if (this.props.tabBarInactiveTextColor) {
       tabBarProps.inactiveTextColor = this.props.tabBarInactiveTextColor;
     }
-    if (this.props.tabBarUseIcons) {
-      tabBarProps.useIcons = this.props.tabBarUseIcons;
-    }
-    if (this.props.tabBarScrollEnabled) {
-      tabBarProps.scrollEnabled = this.props.tabBarScrollEnabled;
-    }
     if (overlayTabs) {
       tabBarProps.style = {
         position: 'absolute',
         left: 0,
         right: 0,
-        [this.props.tabBarPosition === 'overlayTop' ? 'top' : 'bottom']: 0
+        [this.props.tabBarPosition === 'overlayTop' ? 'top' : 'bottom']: 0,
       };
     }
 
-    return (
-      <View style={[styles.container, this.props.style, ]} onLayout={this._handleLayout}>
-        {this.props.tabBarPosition === 'top' && this.renderTabBar(tabBarProps)}
-        {this.renderScrollableContent()}
-        {(this.props.tabBarPosition === 'bottom' || overlayTabs) && this.renderTabBar(tabBarProps)}
-      </View>
-    );
+    return <View style={[styles.container, this.props.style, ]} onLayout={this._handleLayout}>
+      {this.props.tabBarPosition === 'top' && this.renderTabBar(tabBarProps)}
+      {this.renderScrollableContent()}
+      {(this.props.tabBarPosition === 'bottom' || overlayTabs) && this.renderTabBar(tabBarProps)}
+    </View>;
   },
 });
 
