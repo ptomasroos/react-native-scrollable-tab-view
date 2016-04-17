@@ -1,4 +1,4 @@
-const React = require('react-native');
+const React = require('react');
 const {
   Dimensions,
   View,
@@ -9,7 +9,7 @@ const {
   ViewPagerAndroid,
   PropTypes,
   InteractionManager,
-} = React;
+} = require('react-native');
 
 const DefaultTabBar = require('./DefaultTabBar');
 const ScrollableTabBar = require('./ScrollableTabBar');
@@ -100,11 +100,17 @@ const ScrollableTabView = React.createClass({
           }}
           onMomentumScrollBegin={(e) => {
             const offsetX = e.nativeEvent.contentOffset.x;
-            this._updateSelectedPage(parseInt(offsetX / this.state.containerWidth, 10));
+            const page = Math.round(offsetX / this.state.containerWidth);
+            if(this.state.currentPage != page){
+              this._updateSelectedPage(page);
+            }
           }}
           onMomentumScrollEnd={(e) => {
             const offsetX = e.nativeEvent.contentOffset.x;
-            this._updateSelectedPage(parseInt(offsetX / this.state.containerWidth, 10));
+            const page = Math.round(offsetX / this.state.containerWidth);
+            if(this.state.currentPage != page){
+              this._updateSelectedPage(page);
+            }
           }}
           scrollEventThrottle={16}
           scrollsToTop={false}

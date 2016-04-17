@@ -1,4 +1,4 @@
-const React = require('react-native');
+const React = require('react');
 const {
   View,
   Animated,
@@ -7,9 +7,12 @@ const {
   TouchableOpacity,
   Text,
   Platform,
-} = React;
+  findNodeHandle,
+  Dimensions,
+} = require('react-native');
 
 const TAB_HEIGHT = 50;
+const WINDOW_WIDTH = Dimensions.get('window').width;
 
 const ScrollableTabBar = React.createClass({
 
@@ -36,6 +39,7 @@ const ScrollableTabBar = React.createClass({
     return {
       _leftTabUnderline: new Animated.Value(0),
       _widthTabUnderline: new Animated.Value(0),
+      _containerWidth: null,
     };
   },
 
@@ -117,7 +121,7 @@ const ScrollableTabBar = React.createClass({
   },
 
   measureTab(page) {
-    const tabContainerhandle = React.findNodeHandle(this.refs.tabContainer);
+    const tabContainerhandle = findNodeHandle(this.refs.tabContainer);
     this.refs['tab_' + page].measureLayout(tabContainerhandle, (ox, oy, width, height, pageX, pageY) => {
       this._tabsMeasurements[page] = {left: ox, right: ox + width, width: width, height: height, };
 
@@ -149,12 +153,12 @@ const ScrollableTabBar = React.createClass({
         horizontal={true}
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
-        styles={styles.scrollableContainer}
+        style={styles.scrollableContainer}
         directionalLockEnabled={true}
         scrollEventThrottle={16}
       >
         <View
-          style={styles.tabs}
+          style={[styles.tabs, {width: this.state._containerWidth}]}
           ref={'tabContainer'}
           onLayout={this.onTabContainerLayout}
         >
@@ -167,6 +171,13 @@ const ScrollableTabBar = React.createClass({
 
   onTabContainerLayout(e) {
     this._tabContainerMeasurements = e.nativeEvent.layout;
+    let width = this._tabContainerMeasurements.width;
+    if(width < WINDOW_WIDTH){
+      width = WINDOW_WIDTH;
+    }
+    this.setState({
+      _containerWidth: width,
+    })
   },
 
   onContainerLayout(e) {
