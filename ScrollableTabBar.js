@@ -8,9 +8,11 @@ const {
   Text,
   Platform,
   findNodeHandle,
+  Dimensions,
 } = require('react-native');
 
 const TAB_HEIGHT = 50;
+const WINDOW_WIDTH = Dimensions.get('window').width;
 
 const ScrollableTabBar = React.createClass({
 
@@ -37,6 +39,7 @@ const ScrollableTabBar = React.createClass({
     return {
       _leftTabUnderline: new Animated.Value(0),
       _widthTabUnderline: new Animated.Value(0),
+      _containerWidth: null,
     };
   },
 
@@ -150,12 +153,12 @@ const ScrollableTabBar = React.createClass({
         horizontal={true}
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
-        styles={styles.scrollableContainer}
+        style={styles.scrollableContainer}
         directionalLockEnabled={true}
         scrollEventThrottle={16}
       >
         <View
-          style={styles.tabs}
+          style={[styles.tabs, {width: this.state._containerWidth}]}
           ref={'tabContainer'}
           onLayout={this.onTabContainerLayout}
         >
@@ -168,6 +171,13 @@ const ScrollableTabBar = React.createClass({
 
   onTabContainerLayout(e) {
     this._tabContainerMeasurements = e.nativeEvent.layout;
+    let width = this._tabContainerMeasurements.width;
+    if(width < WINDOW_WIDTH){
+      width = WINDOW_WIDTH;
+    }
+    this.setState({
+      _containerWidth: width,
+    })
   },
 
   onContainerLayout(e) {
