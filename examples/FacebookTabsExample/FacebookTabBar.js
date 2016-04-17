@@ -55,7 +55,7 @@ const FacebookTabBar = React.createClass({
             <Icon
               name={tab}
               size={30}
-              color={this.props.activeTab ? 'rgb(59,89,152)' : 'rgb(204,204,204)'}
+              color={this.props.activeTab == i ? 'rgb(59,89,152)' : 'rgb(204,204,204)'}
               ref={(icon) => { this.tabIcons[i] = icon; }}
             />
           </TouchableOpacity>;

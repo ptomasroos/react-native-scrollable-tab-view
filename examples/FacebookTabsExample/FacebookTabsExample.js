@@ -94,9 +94,9 @@ const OverlayExample = React.createClass({
   },
 });
 
-//export default FacebookTabsExample;
+export default FacebookTabsExample;
 //export default SimpleExample;
-export default ScrollableTabsExample;
+//export default ScrollableTabsExample;
 //export default OverlayExample;
 
 const styles = StyleSheet.create({
