@@ -1,4 +1,4 @@
-const React = require('react-native');
+const React = require('react');
 const {
   View,
   Animated,
@@ -7,7 +7,8 @@ const {
   TouchableOpacity,
   Text,
   Platform,
-} = React;
+  findNodeHandle,
+} = require('react-native');
 
 const TAB_HEIGHT = 50;
 
@@ -117,7 +118,7 @@ const ScrollableTabBar = React.createClass({
   },
 
   measureTab(page) {
-    const tabContainerhandle = React.findNodeHandle(this.refs.tabContainer);
+    const tabContainerhandle = findNodeHandle(this.refs.tabContainer);
     this.refs['tab_' + page].measureLayout(tabContainerhandle, (ox, oy, width, height, pageX, pageY) => {
       this._tabsMeasurements[page] = {left: ox, right: ox + width, width: width, height: height, };
 

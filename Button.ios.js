@@ -1,8 +1,7 @@
-const React = require('react-native');
 const {
  TouchableOpacity,
   View,
-} = React;
+} = require('react-native');
 
 const Button = (props) => {
   return <TouchableOpacity {...props}>
