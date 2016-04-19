@@ -1,7 +1,8 @@
+const React = require('react-native');
 const {
   TouchableNativeFeedback,
   View,
-} = require('react-native');
+} = React;
 
 const Button = (props) => {
   return <TouchableNativeFeedback
