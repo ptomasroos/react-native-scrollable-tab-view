@@ -1,10 +1,10 @@
-const React = require('react');
+const React = require('react-native');
 const {
   StyleSheet,
   Text,
   View,
   Animated,
-} = require('react-native');
+} = React;
 const Button = require('./Button');
 
 const DefaultTabBar = React.createClass({

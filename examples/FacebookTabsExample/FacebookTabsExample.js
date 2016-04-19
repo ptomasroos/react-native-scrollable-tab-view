@@ -1,5 +1,4 @@
-import React from 'react';
-import {
+import React, {
   StyleSheet,
   Text,
   View,

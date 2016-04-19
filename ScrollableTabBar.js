@@ -1,4 +1,4 @@
-const React = require('react');
+const React = require('react-native');
 const {
   View,
   Animated,
@@ -9,7 +9,7 @@ const {
   Platform,
   findNodeHandle,
   Dimensions,
-} = require('react-native');
+} = React;
 
 const TAB_HEIGHT = 50;
 const WINDOW_WIDTH = Dimensions.get('window').width;

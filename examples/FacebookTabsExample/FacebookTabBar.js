@@ -1,12 +1,10 @@
-import React from 'react';
-import {
+import React, {
   StyleSheet,
   Text,
   View,
   TouchableOpacity,
   Animated,
 } from 'react-native';
-
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const FacebookTabBar = React.createClass({
