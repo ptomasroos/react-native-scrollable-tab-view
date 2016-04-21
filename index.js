@@ -33,7 +33,6 @@ const ScrollableTabView = React.createClass({
   },
 
   getDefaultProps() {
-    console.log('HELP', this.props)
     return {
       tabBarPosition: 'top',
       initialPage: 0,
