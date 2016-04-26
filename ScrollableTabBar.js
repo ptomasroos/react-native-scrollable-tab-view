@@ -11,7 +11,7 @@ const {
   Dimensions,
 } = React;
 
-const TAB_HEIGHT = 30;
+const TAB_HEIGHT = 40;
 const WINDOW_WIDTH = Dimensions.get('window').width;
 
 const ScrollableTabBar = React.createClass({
