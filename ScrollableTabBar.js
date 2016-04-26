@@ -157,6 +157,7 @@ const ScrollableTabBar = React.createClass({
         style={styles.scrollableContainer}
         directionalLockEnabled={true}
         scrollEventThrottle={16}
+        keyboardShouldPersistTaps
       >
         <View
           style={[styles.tabs, {width: this.state._containerWidth}]}
