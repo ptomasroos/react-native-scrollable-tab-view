@@ -6,7 +6,8 @@
     "start": "node_modules/react-native/packager/packager.sh"
   },
   "dependencies": {
-    "react-native": "^0.20.0",
+    "react": "^0.14.8",
+    "react-native": "^0.24.1",
     "react-native-scrollable-tab-view": "../..",
     "react-native-vector-icons": "^1.2.0"
   }
