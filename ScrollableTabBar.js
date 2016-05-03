@@ -104,6 +104,7 @@ const ScrollableTabBar = React.createClass({
     const activeTextColor = this.props.activeTextColor || 'navy';
     const inactiveTextColor = this.props.inactiveTextColor || 'black';
     const textStyle = this.props.textStyle || {};
+    const textColor = isTabActive ? activeTextColor : inactiveTextColor;
 
     return <TouchableOpacity
       key={name}
@@ -114,9 +115,9 @@ const ScrollableTabBar = React.createClass({
       style={styles.tab}
       onPress={() => this.props.goToPage(page)}
       onLayout={this.measureTab.bind(this, page)}
-      >
+    >
       <View>
-        <Text style={[{color: isTabActive ? activeTextColor : inactiveTextColor}, textStyle]}>{name}</Text>
+        <Text style={[{color: textColor, }, textStyle, ]}>{name}</Text>
       </View>
     </TouchableOpacity>;
   },
@@ -157,9 +158,10 @@ const ScrollableTabBar = React.createClass({
         style={styles.scrollableContainer}
         directionalLockEnabled={true}
         scrollEventThrottle={16}
+        bounces={false}
       >
         <View
-          style={[styles.tabs, {width: this.state._containerWidth}]}
+          style={[styles.tabs, {width: this.state._containerWidth, }, ]}
           ref={'tabContainer'}
           onLayout={this.onTabContainerLayout}
         >
@@ -173,12 +175,10 @@ const ScrollableTabBar = React.createClass({
   onTabContainerLayout(e) {
     this._tabContainerMeasurements = e.nativeEvent.layout;
     let width = this._tabContainerMeasurements.width;
-    if(width < WINDOW_WIDTH){
+    if (width < WINDOW_WIDTH) {
       width = WINDOW_WIDTH;
     }
-    this.setState({
-      _containerWidth: width,
-    })
+    this.setState({ _containerWidth: width, });
   },
 
   onContainerLayout(e) {
