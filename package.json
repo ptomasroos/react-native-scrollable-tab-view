@@ -26,5 +26,8 @@
   "peerDependencies": {
     "react-native": ">=0.20.0"
   },
-  "homepage": "https://github.com/brentvatne/react-native-scrollable-tab-view#readme"
+  "homepage": "https://github.com/brentvatne/react-native-scrollable-tab-view#readme",
+  "dependencies": {
+    "react-timer-mixin": "^0.13.3"
+  }
 }

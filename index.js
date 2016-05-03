@@ -1,6 +1,6 @@
 const React = require('react');
 const {
-  PropTypes
+  PropTypes,
 } = React;
 const ReactNative = require('react-native');
 const {
@@ -13,11 +13,13 @@ const {
   ViewPagerAndroid,
   InteractionManager,
 } = ReactNative;
+const TimerMixin = require('react-timer-mixin');
 
 const DefaultTabBar = require('./DefaultTabBar');
 const ScrollableTabBar = require('./ScrollableTabBar');
 
 const ScrollableTabView = React.createClass({
+  mixins: [TimerMixin, ],
   statics: {
     DefaultTabBar,
     ScrollableTabBar,
@@ -104,14 +106,14 @@ const ScrollableTabView = React.createClass({
           onMomentumScrollBegin={(e) => {
             const offsetX = e.nativeEvent.contentOffset.x;
             const page = Math.round(offsetX / this.state.containerWidth);
-            if(this.state.currentPage != page){
+            if (this.state.currentPage !== page) {
               this._updateSelectedPage(page);
             }
           }}
           onMomentumScrollEnd={(e) => {
             const offsetX = e.nativeEvent.contentOffset.x;
             const page = Math.round(offsetX / this.state.containerWidth);
-            if(this.state.currentPage != page){
+            if (this.state.currentPage !== page) {
               this._updateSelectedPage(page);
             }
           }}
@@ -177,7 +179,7 @@ const ScrollableTabView = React.createClass({
 
     if (width !== this.state.containerWidth) {
       this.setState({ containerWidth: width, });
-      InteractionManager.runAfterInteractions(() => {
+      this.requestAnimationFrame(() => {
         this.goToPage(this.state.currentPage);
       });
     }
