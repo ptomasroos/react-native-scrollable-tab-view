@@ -22,7 +22,7 @@ const ScrollableTabBar = React.createClass({
       scrollOffset: 52,
       style: {},
       tabStyle: {},
-      tabsStyle: {},
+      tabsContainerStyle: {},
     };
   },
 
@@ -38,7 +38,7 @@ const ScrollableTabBar = React.createClass({
     scrollOffset: React.PropTypes.number,
     style: React.PropTypes.object,
     tabStyle: React.PropTypes.object,
-    tabsStyle: React.PropTypes.object,
+    tabsContainerStyle: React.PropTypes.object,
   },
 
   getInitialState() {
@@ -167,7 +167,7 @@ const ScrollableTabBar = React.createClass({
         bounces={false}
       >
         <View
-          style={[styles.tabs, {width: this.state._containerWidth, }, this.props.tabsStyle]}
+          style={[styles.tabs, {width: this.state._containerWidth, }, this.props.tabsContainerStyle]}
           ref={'tabContainer'}
           onLayout={this.onTabContainerLayout}
         >
