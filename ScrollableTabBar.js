@@ -20,6 +20,7 @@ const ScrollableTabBar = React.createClass({
   getDefaultProps() {
     return {
       scrollOffset: 52,
+      style: {}
     };
   },
 
@@ -37,7 +38,6 @@ const ScrollableTabBar = React.createClass({
   },
 
   getInitialState() {
-    this.props.style = this.props.style || {}
     this._tabsMeasurements = [];
     return {
       _leftTabUnderline: new Animated.Value(0),
