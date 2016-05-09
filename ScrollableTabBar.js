@@ -20,7 +20,9 @@ const ScrollableTabBar = React.createClass({
   getDefaultProps() {
     return {
       scrollOffset: 52,
-      style: {}
+      containerStyle: {},
+      tabStyle: {},
+      tabsStyle: {},
     };
   },
 
@@ -34,7 +36,9 @@ const ScrollableTabBar = React.createClass({
     activeTextColor: React.PropTypes.string,
     inactiveTextColor: React.PropTypes.string,
     scrollOffset: React.PropTypes.number,
-    style: React.PropTypes.object,
+    containerStyle: React.PropTypes.object,
+    tabStyle: React.PropTypes.object,
+    tabsStyle: React.PropTypes.object,
   },
 
   getInitialState() {
@@ -114,7 +118,7 @@ const ScrollableTabBar = React.createClass({
       accessible={true}
       accessibilityLabel={name}
       accessibilityTraits='button'
-      style={[styles.tab, this.props.style.tab]}
+      style={[styles.tab, this.props.tabStyle]}
       onPress={() => this.props.goToPage(page)}
       onLayout={this.measureTab.bind(this, page)}
     >
@@ -149,7 +153,7 @@ const ScrollableTabBar = React.createClass({
     };
 
     return  <View
-      style={[styles.container, {backgroundColor: this.props.backgroundColor || null, }, this.props.style.container]}
+      style={[styles.container, {backgroundColor: this.props.backgroundColor || null, }, this.props.containerStyle]}
       onLayout={this.onContainerLayout}
     >
       <ScrollView
@@ -163,7 +167,7 @@ const ScrollableTabBar = React.createClass({
         bounces={false}
       >
         <View
-          style={[styles.tabs, {width: this.state._containerWidth, }, this.props.style.tabs]}
+          style={[styles.tabs, {width: this.state._containerWidth, }, this.props.tabsStyle]}
           ref={'tabContainer'}
           onLayout={this.onTabContainerLayout}
         >
