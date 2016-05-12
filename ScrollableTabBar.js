@@ -16,16 +16,6 @@ const TAB_HEIGHT = 50;
 const WINDOW_WIDTH = Dimensions.get('window').width;
 
 const ScrollableTabBar = React.createClass({
-
-  getDefaultProps() {
-    return {
-      scrollOffset: 52,
-      style: {},
-      tabStyle: {},
-      tabsContainerStyle: {},
-    };
-  },
-
   propTypes: {
     goToPage: React.PropTypes.func,
     activeTab: React.PropTypes.number,
@@ -39,6 +29,20 @@ const ScrollableTabBar = React.createClass({
     style: React.PropTypes.object,
     tabStyle: React.PropTypes.object,
     tabsContainerStyle: React.PropTypes.object,
+  },
+
+  getDefaultProps() {
+    return {
+      scrollOffset: 52,
+      activeTextColor: 'navy',
+      inactiveTextColor: 'black',
+      underlineColor: 'navy',
+      backgroundColor: null,
+      underlineHeight: 4,
+      style: {},
+      tabStyle: {},
+      tabsContainerStyle: {},
+    };
   },
 
   getInitialState() {
@@ -107,10 +111,9 @@ const ScrollableTabBar = React.createClass({
 
   renderTabOption(name, page) {
     const isTabActive = this.props.activeTab === page;
-    const activeTextColor = this.props.activeTextColor || 'navy';
-    const inactiveTextColor = this.props.inactiveTextColor || 'black';
-    const textStyle = this.props.textStyle || {};
+    const { activeTextColor, inactiveTextColor, textStyle, } = this.props;
     const textColor = isTabActive ? activeTextColor : inactiveTextColor;
+    const fontWeight = isTabActive ? 'bold' : 'normal';
 
     return <TouchableOpacity
       key={name}
@@ -123,7 +126,9 @@ const ScrollableTabBar = React.createClass({
       onLayout={this.measureTab.bind(this, page)}
     >
       <View>
-        <Text style={[{color: textColor, }, textStyle, ]}>{name}</Text>
+        <Text style={[{color: textColor, fontWeight, }, textStyle, ]}>
+          {name}
+        </Text>
       </View>
     </TouchableOpacity>;
   },
@@ -140,8 +145,8 @@ const ScrollableTabBar = React.createClass({
   render() {
     const tabUnderlineStyle = {
       position: 'absolute',
-      height: this.props.underlineHeight || 4,
-      backgroundColor: this.props.underlineColor || 'navy',
+      height: this.props.underlineHeight,
+      backgroundColor: this.props.underlineColor,
       bottom: 0,
     };
 
@@ -153,7 +158,7 @@ const ScrollableTabBar = React.createClass({
     };
 
     return  <View
-      style={[styles.container, {backgroundColor: this.props.backgroundColor || null, }, this.props.style]}
+      style={[styles.container, {backgroundColor: this.props.backgroundColor, }, this.props.style]}
       onLayout={this.onContainerLayout}
     >
       <ScrollView
