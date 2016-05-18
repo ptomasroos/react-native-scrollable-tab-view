@@ -143,14 +143,14 @@ class TabBar extends Component {
       });
 
       if (inputRange.length > 1) {
-        const left = this.props.scrollValue.interpolate({
+        var left = this.props.scrollValue.interpolate({
           inputRange: inputRange,
           outputRange: outputRangeLeft,
           extrapolateLeft: 'clamp',
           extrapolateRight: 'clamp'
         });
 
-        const width = this.props.scrollValue.interpolate({
+        var width = this.props.scrollValue.interpolate({
           inputRange: inputRange,
           outputRange: outputRangeWidth,
           extrapolateLeft: 'clamp',
