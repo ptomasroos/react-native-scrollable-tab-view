@@ -54,6 +54,10 @@ const ScrollableTabBar = React.createClass({
     };
   },
 
+  componentDidMount() {
+    this.props.scrollValue.addListener(this.updateView);
+  },
+
   updateView(offset) {
     const position = Math.floor(offset.value);
     const pageOffset = offset.value % 1;
@@ -149,8 +153,6 @@ const ScrollableTabBar = React.createClass({
       backgroundColor: this.props.underlineColor,
       bottom: 0,
     };
-
-    this.props.scrollValue.addListener(this.updateView);
 
     const dynamicTabUnderline = {
       left: this.state._leftTabUnderline,
