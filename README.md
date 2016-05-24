@@ -91,6 +91,7 @@ var App = React.createClass({
 - **`tabBarTextStyle`** _(Object)_ - Additional styles to the tab bar's text. Example: `{fontFamily: 'Roboto', fontSize: 15}`
 - **`style`** _([View.propTypes.style](https://facebook.github.io/react-native/docs/view.html#style))_
 - **`contentProps`** _(Object)_ - props that are applied to root `ScrollView`/`ViewPagerAndroid`. Note that overriding defaults set by the library may break functionality; see the source for details.
+-- **`scrollWithoutAnimation`** _(Bool)_ - on tab press change tab without animation
 
 ---
 
