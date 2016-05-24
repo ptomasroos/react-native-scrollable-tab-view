@@ -26,9 +26,10 @@ const ScrollableTabBar = React.createClass({
     activeTextColor: React.PropTypes.string,
     inactiveTextColor: React.PropTypes.string,
     scrollOffset: React.PropTypes.number,
-    style: React.PropTypes.object,
-    tabStyle: React.PropTypes.object,
-    tabsContainerStyle: React.PropTypes.object,
+    style: View.propTypes.style,
+    tabStyle: View.propTypes.style,
+    tabsContainerStyle: View.propTypes.style,
+    textStyle: View.propTypes.style,
   },
 
   getDefaultProps() {
