@@ -37,6 +37,7 @@ const DefaultTabBar = React.createClass({
     const fontWeight = isTabActive ? 'bold' : 'normal';
 
     return <Button
+      style={{flex: 1}}
       key={name}
       accessible={true}
       accessibilityLabel={name}
