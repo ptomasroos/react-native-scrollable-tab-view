@@ -42,7 +42,6 @@ const ScrollableTabBar = React.createClass({
       style: {},
       tabStyle: {},
       tabsContainerStyle: {},
-      paddingWidth: 0,
     };
   },
 
