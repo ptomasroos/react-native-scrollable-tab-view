@@ -14,7 +14,7 @@ export default React.createClass({
   render() {
     return <ScrollableTabView
       style={styles.container}
-      renderTabBar={()=><DefaultTabBar backgroundColor='rgba(255, 255, 255, 0.7)' />}
+      renderTabBar={(props)=><DefaultTabBar {...props} backgroundColor='rgba(255, 255, 255, 0.7)' />}
       tabBarPosition='overlayTop'
     >
       <ScrollView tabLabel='iOS'>

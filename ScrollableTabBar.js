@@ -12,7 +12,6 @@ const {
   Dimensions,
 } = ReactNative;
 
-const TAB_HEIGHT = 50;
 const WINDOW_WIDTH = Dimensions.get('window').width;
 
 const ScrollableTabBar = React.createClass({
@@ -29,7 +28,7 @@ const ScrollableTabBar = React.createClass({
     style: View.propTypes.style,
     tabStyle: View.propTypes.style,
     tabsContainerStyle: View.propTypes.style,
-    textStyle: View.propTypes.style,
+    textStyle: Text.propTypes.style,
   },
 
   getDefaultProps() {
@@ -88,7 +87,7 @@ const ScrollableTabBar = React.createClass({
     if (Platform === 'android') {
       this._scrollView.scrollTo({x: newScrollX, y: 0, });
     } else {
-      const rightBoundScroll = this._tabContainerMeasurements.width - (this._containerMeasurements.width);
+      const rightBoundScroll = this._tabContainerMeasurements.width - this._containerMeasurements.width;
       newScrollX = newScrollX > rightBoundScroll ? rightBoundScroll : newScrollX;
       this._scrollView.scrollTo({x: newScrollX, y: 0, });
     }
@@ -172,6 +171,7 @@ const ScrollableTabBar = React.createClass({
         style={styles.scrollableContainer}
         directionalLockEnabled={true}
         scrollEventThrottle={16}
+        keyboardShouldPersistTaps
         bounces={false}
       >
         <View
@@ -204,7 +204,7 @@ module.exports = ScrollableTabBar;
 
 const styles = StyleSheet.create({
   tab: {
-    height: TAB_HEIGHT - 1,
+    height: 49,
     alignItems: 'center',
     justifyContent: 'center',
     paddingBottom: 30,
@@ -212,7 +212,7 @@ const styles = StyleSheet.create({
     paddingRight: 20,
   },
   container: {
-    height: TAB_HEIGHT,
+    height: 50,
     borderWidth: 1,
     borderTopWidth: 0,
     borderLeftWidth: 0,
@@ -220,11 +220,9 @@ const styles = StyleSheet.create({
     borderBottomColor: '#ccc',
   },
   tabs: {
-    height: TAB_HEIGHT - 1,
     flexDirection: 'row',
     justifyContent: 'space-around',
   },
   scrollableContainer: {
-    height: TAB_HEIGHT,
   },
 });
