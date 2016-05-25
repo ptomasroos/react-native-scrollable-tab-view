@@ -12,7 +12,7 @@ import ScrollableTabView from 'react-native-scrollable-tab-view';
 export default React.createClass({
   render() {
     return <View style={styles.container}>
-      <ScrollableTabView initialPage={1} renderTabBar={() => <FacebookTabBar />}>
+      <ScrollableTabView initialPage={1} renderTabBar={(props) => <FacebookTabBar {...props}/>}>
         <ScrollView tabLabel="ios-paper" style={styles.tabView}>
           <View style={styles.card}>
             <Text>News</Text>

@@ -71,10 +71,9 @@ var App = React.createClass({
 
 ## Props
 
-- **`renderTabBar`** _(Function:ReactComponent)_ - should return a component to use as
-  the tab bar. The component has `goToPage`, `tabs`, `activeTab` and
-  `ref` added to the props, and should implement `setAnimationValue` to
-  be able to animate itself along with the tab content.
+- **`renderTabBar`** _(Function:ReactComponent)_ - should accept 1 argument `props` and return a component to use as
+  the tab bar. The component should implement `setAnimationValue` to
+  be able to animate itself along with the tab content, and You should manually pass the `props` to the component!
 - **`tabBarPosition`** _(String)_ Defaults to `"top"`.
   - `"bottom"` to position the tab bar below content.
   - `"overlayTop"` or `"overlayBottom"` for a semitransparent tab bar that overlays content. Custom tab bars must consume a style prop on their outer element to support this feature: `style={this.props.style}`.
