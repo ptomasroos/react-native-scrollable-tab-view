@@ -18,6 +18,7 @@ const DefaultTabBar = React.createClass({
     activeTextColor: React.PropTypes.string,
     inactiveTextColor: React.PropTypes.string,
     textStyle: Text.propTypes.style,
+    tabStyle: View.propTypes.style,
   },
 
   getDefaultProps() {
