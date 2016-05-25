@@ -123,7 +123,6 @@ const ScrollableTabBar = React.createClass({
     return <TouchableOpacity
       key={name}
       ref={'tab_' + page}
-      activeOpacity={0.7}
       accessible={true}
       accessibilityLabel={name}
       accessibilityTraits='button'
