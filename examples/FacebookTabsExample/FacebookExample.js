@@ -18,7 +18,7 @@ export default React.createClass({
             <Text>News</Text>
           </View>
         </ScrollView>
-        <ScrollView tabLabel="person-stalker" style={styles.tabView}>
+        <ScrollView tabLabel="ios-people" style={styles.tabView}>
           <View style={styles.card}>
             <Text>Friends</Text>
           </View>
@@ -28,12 +28,12 @@ export default React.createClass({
             <Text>Messenger</Text>
           </View>
         </ScrollView>
-        <ScrollView tabLabel="ios-world" style={styles.tabView}>
+        <ScrollView tabLabel="ios-notifications" style={styles.tabView}>
           <View style={styles.card}>
             <Text>Notifications</Text>
           </View>
         </ScrollView>
-        <ScrollView tabLabel="navicon-round" style={styles.tabView}>
+        <ScrollView tabLabel="ios-list" style={styles.tabView}>
           <View style={styles.card}>
             <Text>Other nav</Text>
           </View>
