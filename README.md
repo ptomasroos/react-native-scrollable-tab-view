@@ -98,6 +98,12 @@ var App = React.createClass({
 
 **Pull requests** are welcome. If you want to change API or making something big better to create issue and discuss it first. Before submiting PR please run ```eslint .``` Also all eslint fixes are welcome.
 
+Please attach video or gif to PR's and issues it is super helpful.
+
+<a href="http://www.abeautifulsite.net/recording-a-screencast-with-quicktime/" target="_blank">How to make video</a>
+
+<a href="https://github.com/jclem/gifify" target="_blank">How to make gif from video</a>
+
 ---
 
 **MIT Licensed**
