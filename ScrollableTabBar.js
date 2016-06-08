@@ -129,11 +129,9 @@ const ScrollableTabBar = React.createClass({
       onPress={() => this.props.goToPage(page)}
       onLayout={this.measureTab.bind(this, page)}
     >
-      <View>
-        <Text style={[{color: textColor, fontWeight, }, textStyle, ]}>
-          {name}
-        </Text>
-      </View>
+      <Text style={[{color: textColor, fontWeight, }, textStyle, ]}>
+        {name}
+      </Text>
     </TouchableOpacity>;
   },
 
