@@ -18,16 +18,15 @@ export default React.createClass({
       tabBarPosition='overlayTop'
     >
       <ScrollView tabLabel='iOS'>
-        <Icon name='social-apple' color='#DBDDDE' size={300} style={styles.icon} />
-        <Icon name='social-apple-outline' color='#DBDDDE' size={300} style={styles.icon} />
-        <Icon name='ipad' color='#DBDDDE' size={300} style={styles.icon} />
-        <Icon name='iphone' color='#DBDDDE' size={300} style={styles.icon} />
-        <Icon name='ipod' color='#DBDDDE' size={300} style={styles.icon} />
+        <Icon name='logo-apple' color='black' size={300} style={styles.icon} />
+        <Icon name='ios-phone-portrait' color='black' size={300} style={styles.icon} />
+        <Icon name='logo-apple' color='#DBDDDE' size={300} style={styles.icon} />
+        <Icon name='ios-phone-portrait' color='#DBDDDE' size={300} style={styles.icon} />
       </ScrollView>
       <ScrollView tabLabel='Android'>
-        <Icon name='social-android' color='#A4C639' size={300} style={styles.icon} />
-        <Icon name='social-android-outline' color='#A4C639' size={300} style={styles.icon} />
-        <Icon name='android-playstore' color='#A4C639' size={300} style={styles.icon} />
+        <Icon name='logo-android' color='#A4C639' size={300} style={styles.icon} />
+        <Icon name='logo-android' color='black' size={300} style={styles.icon} />
+        <Icon name='logo-android' color='brown' size={300} style={styles.icon} />
       </ScrollView>
     </ScrollableTabView>;
   },
