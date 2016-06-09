@@ -131,8 +131,6 @@ const ScrollableTabView = React.createClass({
         horizontal
         pagingEnabled
         automaticallyAdjustContentInsets={false}
-        style={styles.scrollableContentIOS}
-        contentContainerStyle={styles.scrollableContentContainerIOS}
         contentOffset={{ x: this.props.initialPage * this.state.containerWidth, }}
         ref={(scrollView) => { this.scrollView = scrollView; }}
         onScroll={(e) => {
@@ -283,12 +281,6 @@ module.exports = ScrollableTabView;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  scrollableContentContainerIOS: {
-    flex: 1,
-  },
-  scrollableContentIOS: {
-    flexDirection: 'column',
   },
   scrollableContentAndroid: {
     flex: 1,
