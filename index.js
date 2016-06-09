@@ -1,6 +1,7 @@
 const React = require('react');
 const {
   PropTypes,
+  Component,
 } = React;
 const ReactNative = require('react-native');
 const {
@@ -17,6 +18,28 @@ const TimerMixin = require('react-timer-mixin');
 
 const DefaultTabBar = require('./DefaultTabBar');
 const ScrollableTabBar = require('./ScrollableTabBar');
+
+class StaticContainer extends Component{
+  shouldComponentUpdate(nextProps){
+    return !!nextProps.shouldUpdate
+  }
+  render(){
+    return this.props.children
+  }
+}
+
+class SceneComponent extends Component{
+  render(){
+    let {selected, ...props} = this.props
+    return(
+      <View {...props}>
+        <StaticContainer shouldUpdate={selected}>
+          {this.props.children}
+        </StaticContainer>
+      </View>
+    )
+  }
+}
 
 const ScrollableTabView = React.createClass({
   mixins: [TimerMixin, ],
@@ -56,6 +79,7 @@ const ScrollableTabView = React.createClass({
       currentPage: this.props.initialPage,
       scrollValue: new Animated.Value(this.props.initialPage),
       containerWidth: Dimensions.get('window').width,
+      sceneKeys:this.updateSceneKeys(this.props.children,[],this.props.initialPage),
     };
   },
 
@@ -83,7 +107,12 @@ const ScrollableTabView = React.createClass({
       }
     }
 
-    this.setState({currentPage: pageNumber, });
+    if(this.props.children.length !== this.state.sceneKeys.length){
+      let newKeys = this.updateSceneKeys(this.props.children,this.state.sceneKeys,pageNumber)
+      this.setState({currentPage: pageNumber,sceneKeys:newKeys });
+    }else{
+      this.setState({currentPage: pageNumber, });
+    }
   },
 
   renderTabBar(props) {
@@ -94,6 +123,23 @@ const ScrollableTabView = React.createClass({
     } else {
       return <DefaultTabBar {...props} />;
     }
+  },
+
+  updateSceneKeys(children,sceneKeys=[],currentPage){
+    let newKeys=[]
+    children.forEach((child,idx) => {
+      let key=this._makeSceneKey(child,idx)
+      if(this._keyExists(sceneKeys,key) || currentPage == idx) newKeys.push(key)
+    })
+    return newKeys;
+  },
+
+  _keyExists(sceneKeys,key){
+    return sceneKeys.findIndex((sceneKey)=> key == sceneKey) > -1
+  },
+
+  _makeSceneKey(child,idx){
+    return child.props.tabLabel + '_' + idx
   },
 
   renderScrollableContent() {
@@ -143,6 +189,39 @@ const ScrollableTabView = React.createClass({
         </ScrollView>
       );
     } else {
+      let scenes=[]
+      this._children().forEach((child, idx) => {
+        let key=this._makeSceneKey(child,idx)
+        let selected=false;
+
+        // if key doesnt exist(typically before each tab is first mounted) then put a dummy child instead of real
+        // this ensures # of pages remain the same , leaving scrolling and click tab effect to be handled as intended
+        if(!this._keyExists(this.state.sceneKeys,key)){ 
+          let scene=(
+            <SceneComponent
+            key={key}
+            style={{width: this.state.containerWidth, }}
+            selected={selected}>
+              <View tabLabel={child.props.tabLabel}/>
+            </SceneComponent>
+          )
+          scenes.push(scene)
+        }
+        // if keyexists and the tab is viewed for the first time then SceneComponent is mounted, else its updated and rendered 
+        // Also when a tab is selected,StaticContainer inside the SceneComponent makes sure that only tab being viewed is rendered
+        if(this._keyExists(this.state.sceneKeys,key)){
+          if(idx==this.state.currentPage) selected=true
+          let scene=(
+            <SceneComponent
+            key={key}
+            style={{width: this.state.containerWidth, }}
+            selected={selected}>
+              {child}
+            </SceneComponent>
+          )
+          scenes.push(scene)
+        }
+      })
       return (
         <ViewPagerAndroid
          style={styles.scrollableContentAndroid}
@@ -156,13 +235,7 @@ const ScrollableTabView = React.createClass({
          }}
          ref={(scrollView) => { this.scrollView = scrollView; }}
          {...this.props.contentProps}>
-         {this._children().map((child, idx) => {
-           return <View
-             key={child.props.tabLabel + '_' + idx}
-             style={{width: this.state.containerWidth, }}>
-             {child}
-           </View>;
-         })}
+           {scenes}
         </ViewPagerAndroid>
       );
     }
@@ -173,9 +246,17 @@ const ScrollableTabView = React.createClass({
     if (typeof localCurrentPage === 'object') {
       localCurrentPage = currentPage.nativeEvent.position;
     }
-    this.setState({currentPage: localCurrentPage, }, () => {
-      this.props.onChangeTab({ i: localCurrentPage, ref: this._children()[localCurrentPage], });
-    });
+    // scenekeys length and children length is same then no need to update the keys as all are stored by now
+    if(this.props.children.length !== this.state.sceneKeys.length){
+      let newKeys = this.updateSceneKeys(this.props.children,this.state.sceneKeys,localCurrentPage)
+      this.setState({currentPage:localCurrentPage,sceneKeys:newKeys }, () => {
+        this.props.onChangeTab({ i: localCurrentPage, ref: this._children()[localCurrentPage], });
+      })
+    }else{
+      this.setState({currentPage: localCurrentPage, }, () => {
+        this.props.onChangeTab({ i: localCurrentPage, ref: this._children()[localCurrentPage], });
+      });
+    }
   },
 
   _updateScrollValue(value) {
