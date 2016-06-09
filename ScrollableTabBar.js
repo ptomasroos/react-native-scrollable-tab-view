@@ -78,18 +78,24 @@ const ScrollableTabBar = React.createClass({
   },
 
   updateTabPanel(position, pageOffset) {
-    const absolutePageOffset = pageOffset * this._tabsMeasurements[position].width;
-    let newScrollX = this._tabsMeasurements[position].left + absolutePageOffset;
+    const containerWidth = this._containerMeasurements.width;
+    const tabWidth = this._tabsMeasurements[position].width;
+    const nextTabMeasurements = this._tabsMeasurements[position + 1];
+    const nextTabWidth = nextTabMeasurements && nextTabMeasurements.width || 0;
+    const tabOffset = this._tabsMeasurements[position].left;
+    const absolutePageOffset = pageOffset * tabWidth;
+    let newScrollX = tabOffset + absolutePageOffset;
 
-    newScrollX -= this.props.scrollOffset;
+    // center tab and smooth tab change (for when tabWidth changes a lot between two tabs)
+    newScrollX -= (containerWidth - (1 - pageOffset) * tabWidth - pageOffset * nextTabWidth ) / 2 ;
     newScrollX = newScrollX >= 0 ? newScrollX : 0;
 
     if (Platform.OS === 'android') {
-      this._scrollView.scrollTo({x: newScrollX, y: 0, });
+      this._scrollView.scrollTo({x: newScrollX, y: 0, animated: false, });
     } else {
       const rightBoundScroll = this._tabContainerMeasurements.width - (this._containerMeasurements.width);
       newScrollX = newScrollX > rightBoundScroll ? rightBoundScroll : newScrollX;
-      this._scrollView.scrollTo({x: newScrollX, y: 0, });
+      this._scrollView.scrollTo({x: newScrollX, y: 0, animated: false, });
     }
 
   },
@@ -120,7 +126,7 @@ const ScrollableTabBar = React.createClass({
     const fontWeight = isTabActive ? 'bold' : 'normal';
 
     return <TouchableOpacity
-      key={name}
+      key={`${name}_${page}`}
       ref={'tab_' + page}
       accessible={true}
       accessibilityLabel={name}
@@ -167,7 +173,6 @@ const ScrollableTabBar = React.createClass({
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
         directionalLockEnabled={true}
-        scrollEventThrottle={16}
         bounces={false}
       >
         <View
@@ -203,7 +208,6 @@ const styles = StyleSheet.create({
     height: 49,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingBottom: 30,
     paddingLeft: 20,
     paddingRight: 20,
   },
