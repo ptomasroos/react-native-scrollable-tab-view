@@ -16,17 +16,10 @@ const {
 } = ReactNative;
 const TimerMixin = require('react-timer-mixin');
 
+const StaticContainer = require('react-static-container');
 const DefaultTabBar = require('./DefaultTabBar');
 const ScrollableTabBar = require('./ScrollableTabBar');
 
-class StaticContainer extends Component{
-  shouldComponentUpdate(nextProps){
-    return !!nextProps.shouldUpdate
-  }
-  render(){
-    return this.props.children
-  }
-}
 
 class SceneComponent extends Component{
   render(){
