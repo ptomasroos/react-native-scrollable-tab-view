@@ -145,6 +145,7 @@ const ScrollableTabView = React.createClass({
     } else {
       return (
         <ViewPagerAndroid
+         key={this._children().length}
          style={styles.scrollableContentAndroid}
          initialPage={this.props.initialPage}
          onPageSelected={this._updateSelectedPage}
