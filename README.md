@@ -83,7 +83,9 @@ var App = React.createClass({
 - **`locked`** _(Bool)_ - disables horizontal dragging to scroll between tabs, default is false.
 - **`initialPage`** _(Integer)_ - the index of the initially selected tab, defaults to 0 === first tab.
 - **`page`** _(Integer)_ - set selected tab(can be buggy see  [#126](https://github.com/brentvatne/react-native-scrollable-tab-view/issues/126)
-- **`children`** _(ReactComponents)_ - each top-level child component should have a `tabLabel` prop that can be used by the tab bar component to render out the labels. The default tab bar expects it to be a string, but you can use anything you want if you make a custom tab bar.
+- **`children`** _(ReactComponents)_
+  - each top-level child component should have a `tabLabel` prop that can be used by the tab bar component to render out the labels. The default tab bar expects it to be a string, but you can use anything you want if you make a custom tab bar.
+  - top-level child component also accepts `tabKey` that you can use to prevent mount/unmount of the child component when tabLabel changes but you want to keep internal state of the component
 - **`tabBarUnderlineColor`** _(String)_ - color of the default tab bar's underline, defaults to `navy`
 - **`tabBarBackgroundColor`** _(String)_ - color of the default tab bar's background, defaults to `white`
 - **`tabBarActiveTextColor`** _(String)_ - color of the default tab bar's text when active, defaults to `navy`
