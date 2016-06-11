@@ -24,7 +24,8 @@ const FacebookTabBar = React.createClass({
 
   setAnimationValue({ value, }) {
     this.tabIcons.forEach((icon, i) => {
-      const progress = (value - i >= 0 && value - i <= 1) ? value - i : 1;
+      const progress = (value >= i && value < i + 1) ? value - i :
+        (value >= i - 1 && value < i) ? i - value : 1;
       icon.setNativeProps({
         style: {
           color: this.iconColor(progress),
@@ -54,7 +55,6 @@ const FacebookTabBar = React.createClass({
             <Icon
               name={tab}
               size={30}
-              color={this.props.activeTab == i ? 'rgb(59,89,152)' : 'rgb(204,204,204)'}
               ref={(icon) => { this.tabIcons[i] = icon; }}
             />
           </TouchableOpacity>;
