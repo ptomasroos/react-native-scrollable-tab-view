@@ -16,23 +16,10 @@ const {
 } = ReactNative;
 const TimerMixin = require('react-timer-mixin');
 
-const StaticContainer = require('react-static-container');
+const SceneComponent = require('./SceneComponent');
 const DefaultTabBar = require('./DefaultTabBar');
 const ScrollableTabBar = require('./ScrollableTabBar');
 
-
-class SceneComponent extends Component{
-  render(){
-    let {selected, ...props} = this.props
-    return(
-      <View {...props}>
-        <StaticContainer shouldUpdate={selected}>
-          {this.props.children}
-        </StaticContainer>
-      </View>
-    )
-  }
-}
 
 const ScrollableTabView = React.createClass({
   mixins: [TimerMixin, ],
@@ -72,7 +59,7 @@ const ScrollableTabView = React.createClass({
       currentPage: this.props.initialPage,
       scrollValue: new Animated.Value(this.props.initialPage),
       containerWidth: Dimensions.get('window').width,
-      sceneKeys:this.updateSceneKeys(this.props.children,[],this.props.initialPage),
+      sceneKeys: this.updateSceneKeys(this.props.children, [], this.props.initialPage),
     };
   },
 
@@ -100,9 +87,9 @@ const ScrollableTabView = React.createClass({
       }
     }
 
-    if(this.props.children.length !== this.state.sceneKeys.length){
-      let newKeys = this.updateSceneKeys(this.props.children,this.state.sceneKeys,pageNumber)
-      this.setState({currentPage: pageNumber,sceneKeys:newKeys });
+    if(this.props.children.length !== this.state.sceneKeys.length) {
+      let newKeys = this.updateSceneKeys(this.props.children, this.state.sceneKeys, pageNumber);
+      this.setState({currentPage: pageNumber, sceneKeys: newKeys, });
     }else{
       this.setState({currentPage: pageNumber, });
     }
@@ -118,58 +105,26 @@ const ScrollableTabView = React.createClass({
     }
   },
 
-  updateSceneKeys(children,sceneKeys=[],currentPage){
-    let newKeys=[]
-    children.forEach((child,idx) => {
-      let key=this._makeSceneKey(child,idx)
-      if(this._keyExists(sceneKeys,key) || currentPage == idx) newKeys.push(key)
-    })
+  updateSceneKeys(children, sceneKeys = [], currentPage) {
+    let newKeys = [];
+    children.forEach((child, idx) => {
+      let key = this._makeSceneKey(child, idx);
+      if(this._keyExists(sceneKeys, key) || currentPage === idx) newKeys.push(key);
+    });
     return newKeys;
   },
 
-  _keyExists(sceneKeys,key){
-    return sceneKeys.findIndex((sceneKey)=> key == sceneKey) > -1
+  _keyExists(sceneKeys, key) {
+    return sceneKeys.find((sceneKey) => key === sceneKey);
   },
 
-  _makeSceneKey(child,idx){
-    return child.props.tabLabel + '_' + idx
+  _makeSceneKey(child, idx) {
+    return child.props.tabLabel + '_' + idx;
   },
 
   renderScrollableContent() {
     if (Platform.OS === 'ios') {
-      let scenes=[]
-      this._children().forEach((child, idx) => {
-        let key=this._makeSceneKey(child,idx)
-        let selected=false;
-
-        // if key doesnt exist(typically before each tab is first mounted) then put a dummy child instead of real
-        // this ensures # of pages remain the same , leaving scrolling and click tab effect to be handled as intended
-        if(!this._keyExists(this.state.sceneKeys,key)){ 
-          let scene=(
-            <SceneComponent
-            key={key}
-            style={{width: this.state.containerWidth, }}
-            selected={selected}>
-              <View tabLabel={child.props.tabLabel}/>
-            </SceneComponent>
-          )
-          scenes.push(scene)
-        }
-        // if keyexists and the tab is viewed for the first time then SceneComponent is mounted, else its updated and rendered 
-        // Also when a tab is selected,StaticContainer inside the SceneComponent makes sure that only tab being viewed is rendered
-        if(this._keyExists(this.state.sceneKeys,key)){
-          if(idx==this.state.currentPage) selected=true
-          let scene=(
-            <SceneComponent
-            key={key}
-            style={{width: this.state.containerWidth, }}
-            selected={selected}>
-              {child}
-            </SceneComponent>
-          )
-          scenes.push(scene)
-        }
-      })
+      let scenes = this._composeScenes();
       return (
         <ScrollView
           horizontal
@@ -209,39 +164,7 @@ const ScrollableTabView = React.createClass({
         </ScrollView>
       );
     } else {
-      let scenes=[]
-      this._children().forEach((child, idx) => {
-        let key=this._makeSceneKey(child,idx)
-        let selected=false;
-
-        // if key doesnt exist(typically before each tab is first mounted) then put a dummy child instead of real
-        // this ensures # of pages remain the same , leaving scrolling and click tab effect to be handled as intended
-        if(!this._keyExists(this.state.sceneKeys,key)){ 
-          let scene=(
-            <SceneComponent
-            key={key}
-            style={{width: this.state.containerWidth, }}
-            selected={selected}>
-              <View tabLabel={child.props.tabLabel}/>
-            </SceneComponent>
-          )
-          scenes.push(scene)
-        }
-        // if keyexists and the tab is viewed for the first time then SceneComponent is mounted, else its updated and rendered 
-        // Also when a tab is selected,StaticContainer inside the SceneComponent makes sure that only tab being viewed is rendered
-        if(this._keyExists(this.state.sceneKeys,key)){
-          if(idx==this.state.currentPage) selected=true
-          let scene=(
-            <SceneComponent
-            key={key}
-            style={{width: this.state.containerWidth, }}
-            selected={selected}>
-              {child}
-            </SceneComponent>
-          )
-          scenes.push(scene)
-        }
-      })
+      let scenes = this._composeScenes();
       return (
         <ViewPagerAndroid
          style={styles.scrollableContentAndroid}
@@ -261,17 +184,54 @@ const ScrollableTabView = React.createClass({
     }
   },
 
+  _composeScenes() {
+    let scenes = [];
+    this._children().forEach((child, idx) => {
+      let key = this._makeSceneKey(child, idx);
+      let selected = false;
+
+      // if key doesnt exist(typically before each tab is first mounted) then put a dummy child instead of real
+      // this ensures # of pages remain the same , leaving scrolling and click tab effect to be handled as intended
+      if(!this._keyExists(this.state.sceneKeys, key)) {
+        let scene = (
+          <SceneComponent
+          key={key}
+          style={{width: this.state.containerWidth, }}
+          selected={selected}>
+            <View tabLabel={child.props.tabLabel}/>
+          </SceneComponent>
+        );
+        scenes.push(scene);
+      }
+      // if keyexists and the tab is viewed for the first time then SceneComponent is mounted, else its updated and rendered
+      // Also when a tab is selected,StaticContainer inside the SceneComponent makes sure that only tab being viewed is rendered
+      if(this._keyExists(this.state.sceneKeys, key)) {
+        if(idx === this.state.currentPage) selected = true;
+        let scene = (
+          <SceneComponent
+          key={key}
+          style={{width: this.state.containerWidth, }}
+          selected={selected}>
+            {child}
+          </SceneComponent>
+        );
+        scenes.push(scene);
+      }
+    });
+    return scenes;
+  },
+
   _updateSelectedPage(currentPage) {
     let localCurrentPage = currentPage;
     if (typeof localCurrentPage === 'object') {
       localCurrentPage = currentPage.nativeEvent.position;
     }
     // scenekeys length and children length is same then no need to update the keys as all are stored by now
-    if(this.props.children.length !== this.state.sceneKeys.length){
-      let newKeys = this.updateSceneKeys(this.props.children,this.state.sceneKeys,localCurrentPage)
-      this.setState({currentPage:localCurrentPage,sceneKeys:newKeys }, () => {
+    if(this.props.children.length !== this.state.sceneKeys.length) {
+      let newKeys = this.updateSceneKeys(this.props.children, this.state.sceneKeys, localCurrentPage);
+      this.setState({currentPage: localCurrentPage, sceneKeys: newKeys, }, () => {
         this.props.onChangeTab({ i: localCurrentPage, ref: this._children()[localCurrentPage], });
-      })
+      });
     }else{
       this.setState({currentPage: localCurrentPage, }, () => {
         this.props.onChangeTab({ i: localCurrentPage, ref: this._children()[localCurrentPage], });
