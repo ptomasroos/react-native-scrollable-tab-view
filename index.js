@@ -134,8 +134,10 @@ const ScrollableTabView = React.createClass({
           keyboardDismissMode="on-drag"
           {...this.props.contentProps}>
           {this._children().map((child, idx) => {
+            const key = typeof child.props.tabKey !== 'undefined' ?
+                          child.props.tabKey : child.props.tabLabel + '_' + idx;
             return <View
-              key={child.props.tabLabel + '_' + idx}
+              key={key}
               style={{width: this.state.containerWidth, }}>
               {child}
             </View>;
