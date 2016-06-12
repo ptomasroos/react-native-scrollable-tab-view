@@ -36,6 +36,7 @@ const ScrollableTabView = React.createClass({
     contentProps: PropTypes.object,
     scrollWithoutAnimation: PropTypes.bool,
     locked: PropTypes.bool,
+    bounces: PropTypes.bool,
   },
 
   getDefaultProps() {
@@ -48,6 +49,7 @@ const ScrollableTabView = React.createClass({
       contentProps: {},
       scrollWithoutAnimation: false,
       locked: false,
+      bounces: true
     };
   },
 
@@ -129,6 +131,7 @@ const ScrollableTabView = React.createClass({
           scrollsToTop={false}
           showsHorizontalScrollIndicator={false}
           scrollEnabled={!this.props.locked}
+          bounces={this.props.bounces}
           directionalLockEnabled
           alwaysBounceVertical={false}
           keyboardDismissMode="on-drag"
