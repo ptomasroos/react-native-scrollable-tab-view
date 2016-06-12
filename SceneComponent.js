@@ -5,17 +5,15 @@ const {View, StyleSheet, } = ReactNative;
 
 const StaticContainer = require('react-static-container');
 
-class SceneComponent extends Component {
-  render() {
-    let {selected, ...props, } = this.props;
-    return(
-      <View {...props}>
-        <StaticContainer shouldUpdate={selected}>
-          {this.props.children}
-        </StaticContainer>
-      </View>
-    );
-  }
+const SceneComponent = (Props) => {
+  const {selected, ...props, } = Props;
+  return(
+    <View {...props}>
+      <StaticContainer shouldUpdate={selected}>
+        {props.children}
+      </StaticContainer>
+    </View>
+  );
 }
 
 module.exports = SceneComponent;
