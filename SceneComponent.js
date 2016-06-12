@@ -14,6 +14,6 @@ const SceneComponent = (Props) => {
       </StaticContainer>
     </View>
   );
-}
+};
 
 module.exports = SceneComponent;
