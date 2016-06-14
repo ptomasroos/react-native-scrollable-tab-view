@@ -135,7 +135,7 @@ const ScrollableTabView = React.createClass({
           {...this.props.contentProps}>
           {this._children().map((child, idx) => {
             return <View
-              key={child.props.tabLabel + '_' + idx}
+              key={child.key}
               style={{width: this.state.containerWidth, }}>
               {child}
             </View>;
@@ -159,7 +159,7 @@ const ScrollableTabView = React.createClass({
          {...this.props.contentProps}>
          {this._children().map((child, idx) => {
            return <View
-             key={child.props.tabLabel + '_' + idx}
+             key={child.key}
              style={{width: this.state.containerWidth, }}>
              {child}
            </View>;
