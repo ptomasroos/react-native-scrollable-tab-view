@@ -87,10 +87,10 @@ const ScrollableTabView = React.createClass({
       }
     }
 
-    if(this.props.children.length !== this.state.sceneKeys.length) {
+    if (this.props.children.length !== this.state.sceneKeys.length) {
       let newKeys = this.updateSceneKeys(this.props.children, this.state.sceneKeys, pageNumber);
       this.setState({currentPage: pageNumber, sceneKeys: newKeys, });
-    }else{
+    } else {
       this.setState({currentPage: pageNumber, });
     }
   },
@@ -109,7 +109,9 @@ const ScrollableTabView = React.createClass({
     let newKeys = [];
     children.forEach((child, idx) => {
       let key = this._makeSceneKey(child, idx);
-      if(this._keyExists(sceneKeys, key) || currentPage === idx) newKeys.push(key);
+      if (this._keyExists(sceneKeys, key) || currentPage === idx) {
+        newKeys.push(key);
+      }
     });
     return newKeys;
   },
@@ -125,78 +127,74 @@ const ScrollableTabView = React.createClass({
   renderScrollableContent() {
     if (Platform.OS === 'ios') {
       const scenes = this._composeScenes();
-      return (
-        <ScrollView
-          horizontal
-          pagingEnabled
-          automaticallyAdjustContentInsets={false}
-          style={styles.scrollableContentIOS}
-          contentContainerStyle={styles.scrollableContentContainerIOS}
-          contentOffset={{ x: this.props.initialPage * this.state.containerWidth, }}
-          ref={(scrollView) => { this.scrollView = scrollView; }}
-          onScroll={(e) => {
-            const offsetX = e.nativeEvent.contentOffset.x;
-            this._updateScrollValue(offsetX / this.state.containerWidth);
-          }}
-          onMomentumScrollBegin={(e) => {
-            const offsetX = e.nativeEvent.contentOffset.x;
-            const page = Math.round(offsetX / this.state.containerWidth);
-            if (this.state.currentPage !== page) {
-              this._updateSelectedPage(page);
-            }
-          }}
-          onMomentumScrollEnd={(e) => {
-            const offsetX = e.nativeEvent.contentOffset.x;
-            const page = Math.round(offsetX / this.state.containerWidth);
-            if (this.state.currentPage !== page) {
-              this._updateSelectedPage(page);
-            }
-          }}
-          scrollEventThrottle={16}
-          scrollsToTop={false}
-          showsHorizontalScrollIndicator={false}
-          scrollEnabled={!this.props.locked}
-          directionalLockEnabled
-          alwaysBounceVertical={false}
-          keyboardDismissMode="on-drag"
-          {...this.props.contentProps}>
-            {scenes}
-        </ScrollView>
-      );
+      return <ScrollView
+        horizontal
+        pagingEnabled
+        automaticallyAdjustContentInsets={false}
+        style={styles.scrollableContentIOS}
+        contentContainerStyle={styles.scrollableContentContainerIOS}
+        contentOffset={{ x: this.props.initialPage * this.state.containerWidth, }}
+        ref={(scrollView) => { this.scrollView = scrollView; }}
+        onScroll={(e) => {
+          const offsetX = e.nativeEvent.contentOffset.x;
+          this._updateScrollValue(offsetX / this.state.containerWidth);
+        }}
+        onMomentumScrollBegin={(e) => {
+          const offsetX = e.nativeEvent.contentOffset.x;
+          const page = Math.round(offsetX / this.state.containerWidth);
+          if (this.state.currentPage !== page) {
+            this._updateSelectedPage(page);
+          }
+        }}
+        onMomentumScrollEnd={(e) => {
+          const offsetX = e.nativeEvent.contentOffset.x;
+          const page = Math.round(offsetX / this.state.containerWidth);
+          if (this.state.currentPage !== page) {
+            this._updateSelectedPage(page);
+          }
+        }}
+        scrollEventThrottle={16}
+        scrollsToTop={false}
+        showsHorizontalScrollIndicator={false}
+        scrollEnabled={!this.props.locked}
+        directionalLockEnabled
+        alwaysBounceVertical={false}
+        keyboardDismissMode="on-drag"
+        {...this.props.contentProps}
+      >
+          {scenes}
+      </ScrollView>;
     } else {
       const scenes = this._composeScenes();
-      return (
-        <ViewPagerAndroid
-         key={this._children().length}
-         style={styles.scrollableContentAndroid}
-         initialPage={this.props.initialPage}
-         onPageSelected={this._updateSelectedPage}
-         keyboardDismissMode="on-drag"
-         scrollEnabled={!this.props.locked}
-         onPageScroll={(e) => {
-           const { offset, position, } = e.nativeEvent;
-           this._updateScrollValue(position + offset);
-         }}
-         ref={(scrollView) => { this.scrollView = scrollView; }}
-         {...this.props.contentProps}>
-           {scenes}
-        </ViewPagerAndroid>
-      );
+      return <ViewPagerAndroid
+        key={this._children().length}
+        style={styles.scrollableContentAndroid}
+        initialPage={this.props.initialPage}
+        onPageSelected={this._updateSelectedPage}
+        keyboardDismissMode="on-drag"
+        scrollEnabled={!this.props.locked}
+        onPageScroll={(e) => {
+          const { offset, position, } = e.nativeEvent;
+          this._updateScrollValue(position + offset);
+        }}
+        ref={(scrollView) => { this.scrollView = scrollView; }}
+        {...this.props.contentProps}
+      >
+        {scenes}
+      </ViewPagerAndroid>;
     }
   },
 
   _composeScenes() {
     return this._children().map((child, idx) => {
       let key = this._makeSceneKey(child, idx);
-      return (
-        <SceneComponent
-          key={child.key}
-          selected={(this.state.currentPage === idx)}
-          style={{width: this.state.containerWidth, }}
-        >
+      return <SceneComponent
+        key={child.key}
+        selected={(this.state.currentPage === idx)}
+        style={{width: this.state.containerWidth, }}
+      >
         {this._keyExists(this.state.sceneKeys, key) ? child : <View tabLabel={child.props.tabLabel}/>}
-        </SceneComponent>
-      );
+      </SceneComponent>;
     });
   },
 
@@ -206,12 +204,12 @@ const ScrollableTabView = React.createClass({
       localCurrentPage = currentPage.nativeEvent.position;
     }
     // scenekeys length and children length is same then no need to update the keys as all are stored by now
-    if(this.props.children.length !== this.state.sceneKeys.length) {
+    if (this.props.children.length !== this.state.sceneKeys.length) {
       let newKeys = this.updateSceneKeys(this.props.children, this.state.sceneKeys, localCurrentPage);
       this.setState({currentPage: localCurrentPage, sceneKeys: newKeys, }, () => {
         this.props.onChangeTab({ i: localCurrentPage, ref: this._children()[localCurrentPage], });
       });
-    }else{
+    } else {
       this.setState({currentPage: localCurrentPage, }, () => {
         this.props.onChangeTab({ i: localCurrentPage, ref: this._children()[localCurrentPage], });
       });
