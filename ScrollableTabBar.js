@@ -5,12 +5,11 @@ const {
   Animated,
   StyleSheet,
   ScrollView,
-  TouchableOpacity,
   Text,
   Platform,
-  findNodeHandle,
   Dimensions,
 } = ReactNative;
+const Button = require('./Button');
 
 const WINDOW_WIDTH = Dimensions.get('window').width;
 
@@ -74,7 +73,10 @@ const ScrollableTabBar = React.createClass({
   },
 
   necessarilyMeasurementsCompleted(position) {
-    return this._tabsMeasurements[position] && this._tabsMeasurements[position + 1];
+    return this._tabsMeasurements[position] &&
+      this._tabsMeasurements[position + 1] &&
+      this._tabContainerMeasurements &&
+      this._containerMeasurements;
   },
 
   updateTabPanel(position, pageOffset) {
@@ -125,29 +127,26 @@ const ScrollableTabBar = React.createClass({
     const textColor = isTabActive ? activeTextColor : inactiveTextColor;
     const fontWeight = isTabActive ? 'bold' : 'normal';
 
-    return <TouchableOpacity
+    return <Button
       key={`${name}_${page}`}
-      ref={'tab_' + page}
       accessible={true}
       accessibilityLabel={name}
       accessibilityTraits='button'
-      style={[styles.tab, this.props.tabStyle]}
       onPress={() => this.props.goToPage(page)}
       onLayout={this.measureTab.bind(this, page)}
     >
-      <Text style={[{color: textColor, fontWeight, }, textStyle, ]}>
-        {name}
-      </Text>
-    </TouchableOpacity>;
+      <View style={[styles.tab, this.props.tabStyle]}>
+        <Text style={[{color: textColor, fontWeight, }, textStyle, ]}>
+          {name}
+        </Text>
+      </View>
+    </Button>;
   },
 
-  measureTab(page) {
-    const tabContainerhandle = findNodeHandle(this.refs.tabContainer);
-    this.refs['tab_' + page].measureLayout(tabContainerhandle, (ox, oy, width, height, pageX, pageY) => {
-      this._tabsMeasurements[page] = {left: ox, right: ox + width, width: width, height: height, };
-
-      this.updateView({value: this.props.scrollValue._value, });
-    });
+  measureTab(page, event) {
+    const { x, width, height, } = event.nativeEvent.layout;
+    this._tabsMeasurements[page] = {left: x, right: x + width, width, height, };
+    this.updateView({value: this.props.scrollValue._value, });
   },
 
   render() {
@@ -194,10 +193,12 @@ const ScrollableTabBar = React.createClass({
       width = WINDOW_WIDTH;
     }
     this.setState({ _containerWidth: width, });
+    this.updateView({value: this.props.scrollValue._value, });
   },
 
   onContainerLayout(e) {
     this._containerMeasurements = e.nativeEvent.layout;
+    this.updateView({value: this.props.scrollValue._value, });
   },
 });
 
