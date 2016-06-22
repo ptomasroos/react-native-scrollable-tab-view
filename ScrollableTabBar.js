@@ -11,8 +11,6 @@ const {
 } = ReactNative;
 const Button = require('./Button');
 
-const WINDOW_WIDTH = Dimensions.get('window').width;
-
 const ScrollableTabBar = React.createClass({
   propTypes: {
     goToPage: React.PropTypes.func,
@@ -188,16 +186,25 @@ const ScrollableTabBar = React.createClass({
 
   onTabContainerLayout(e) {
     this._tabContainerMeasurements = e.nativeEvent.layout;
-    let width = this._tabContainerMeasurements.width;
-    if (width < WINDOW_WIDTH) {
-      width = WINDOW_WIDTH;
+    let tabContainerWidth = this._tabContainerMeasurements.width;
+
+    let width = this.state._containerWidth;
+    if (!width || width < tabContainerWidth) {
+      this.setState({ _containerWidth: tabContainerWidth, });
     }
-    this.setState({ _containerWidth: width, });
+
     this.updateView({value: this.props.scrollValue._value, });
   },
 
   onContainerLayout(e) {
     this._containerMeasurements = e.nativeEvent.layout;
+    let containerWidth = this._containerMeasurements.width;
+
+    let width = this.state._containerWidth;
+    if (!width || width < containerWidth) {
+      this.setState({ _containerWidth: containerWidth, });
+    }
+
     this.updateView({value: this.props.scrollValue._value, });
   },
 });
