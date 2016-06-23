@@ -249,6 +249,9 @@ const ScrollableTabView = React.createClass({
     if (this.props.tabBarUnderlineColor) {
       tabBarProps.underlineColor = this.props.tabBarUnderlineColor;
     }
+    if (this.props.tabBarUnderlineHeight) {
+      tabBarProps.underlineHeight = this.props.tabBarUnderlineHeight;
+    }
     if (this.props.tabBarBackgroundColor) {
       tabBarProps.backgroundColor = this.props.tabBarBackgroundColor;
     }
