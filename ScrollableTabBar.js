@@ -61,20 +61,21 @@ const ScrollableTabBar = React.createClass({
     const position = Math.floor(offset.value);
     const pageOffset = offset.value % 1;
     const tabCount = this.props.tabs.length;
+    const lastTabPosition = tabCount - 1;
 
-    if (tabCount === 0 || offset.value < 0 || offset.value > tabCount - 1) {
+    if (tabCount === 0 || offset.value < 0 || offset.value > lastTabPosition) {
       return;
     }
 
-    if (this.necessarilyMeasurementsCompleted(position)) {
+    if (this.necessarilyMeasurementsCompleted(position, position === lastTabPosition)) {
       this.updateTabPanel(position, pageOffset);
       this.updateTabUnderline(position, pageOffset, tabCount);
     }
   },
 
-  necessarilyMeasurementsCompleted(position) {
+  necessarilyMeasurementsCompleted(position, isLastTab) {
     return this._tabsMeasurements[position] &&
-      this._tabsMeasurements[position + 1] &&
+      (isLastTab || this._tabsMeasurements[position + 1]) &&
       this._tabContainerMeasurements &&
       this._containerMeasurements;
   },
