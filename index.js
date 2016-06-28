@@ -29,6 +29,7 @@ const ScrollableTabView = React.createClass({
   },
 
   propTypes: {
+    id: PropTypes.string,
     tabBarPosition: PropTypes.oneOf(['top', 'bottom', 'overlayTop', 'overlayBottom', ]),
     initialPage: PropTypes.number,
     page: PropTypes.number,
@@ -121,7 +122,9 @@ const ScrollableTabView = React.createClass({
   },
 
   _makeSceneKey(child, idx) {
-    return child.props.tabLabel + '_' + idx;
+    const { id, taskId } = child.props;
+    const val = id || taskId;
+    return val + '_' + idx;
   },
 
   renderScrollableContent() {
