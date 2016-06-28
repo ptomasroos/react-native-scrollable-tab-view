@@ -59,7 +59,7 @@ const ScrollableTabView = React.createClass({
       currentPage: this.props.initialPage,
       scrollValue: new Animated.Value(this.props.initialPage),
       containerWidth: Dimensions.get('window').width,
-      sceneKeys: this.updateSceneKeys(this.props.children, [], this.props.initialPage),
+      sceneKeys: this.updateSceneKeys([], this.props.initialPage),
     };
   },
 
@@ -87,8 +87,8 @@ const ScrollableTabView = React.createClass({
       }
     }
 
-    if (this.props.children.length !== this.state.sceneKeys.length) {
-      let newKeys = this.updateSceneKeys(this.props.children, this.state.sceneKeys, pageNumber);
+    if (this._children().length !== this.state.sceneKeys.length) {
+      let newKeys = this.updateSceneKeys(this.state.sceneKeys, pageNumber);
       this.setState({currentPage: pageNumber, sceneKeys: newKeys, });
     } else {
       this.setState({currentPage: pageNumber, });
@@ -105,9 +105,9 @@ const ScrollableTabView = React.createClass({
     }
   },
 
-  updateSceneKeys(children, sceneKeys = [], currentPage) {
+  updateSceneKeys(sceneKeys = [], currentPage) {
     let newKeys = [];
-    children.forEach((child, idx) => {
+    this._children().forEach((child, idx) => {
       let key = this._makeSceneKey(child, idx);
       if (this._keyExists(sceneKeys, key) || currentPage === idx) {
         newKeys.push(key);
@@ -202,8 +202,8 @@ const ScrollableTabView = React.createClass({
       localCurrentPage = currentPage.nativeEvent.position;
     }
     // scenekeys length and children length is same then no need to update the keys as all are stored by now
-    if (this.props.children.length !== this.state.sceneKeys.length) {
-      let newKeys = this.updateSceneKeys(this.props.children, this.state.sceneKeys, localCurrentPage);
+    if (this._children().length !== this.state.sceneKeys.length) {
+      let newKeys = this.updateSceneKeys(this.state.sceneKeys, localCurrentPage);
       this.setState({currentPage: localCurrentPage, sceneKeys: newKeys, }, () => {
         this.props.onChangeTab({ i: localCurrentPage, ref: this._children()[localCurrentPage], });
       });
