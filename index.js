@@ -117,6 +117,9 @@ const ScrollableTabView = React.createClass({
   },
 
   _keyExists(sceneKeys, key) {
+    if (sceneKeys.length === 0) {
+      sceneKeys.push(key);
+    }
     return sceneKeys.find((sceneKey) => key === sceneKey);
   },
 
@@ -191,7 +194,7 @@ const ScrollableTabView = React.createClass({
         selected={(this.state.currentPage === idx)}
         style={{width: this.state.containerWidth, }}
       >
-        {child}
+        {this._keyExists(this.state.sceneKeys, key) ? child : <View tabLabel={child.props.tabLabel}/>}
       </SceneComponent>;
     });
   },
