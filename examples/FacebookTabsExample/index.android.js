@@ -1,4 +1,4 @@
 import { AppRegistry, } from 'react-native';
-import FacebookTabsExample from './FacebookTabsExample';
+import FacebookTabsExample from './index.js';
 
 AppRegistry.registerComponent('FacebookTabsExample', () => FacebookTabsExample);

@@ -11,6 +11,7 @@ import SimpleExample from './SimpleExample';
 import ScrollableTabsExample from './ScrollableTabsExample';
 import OverlayExample from './OverlayExample';
 import FacebookExample from './FacebookExample';
+import DynamicExample from './DynamicExample';
 
 export default React.createClass({
   render() {
@@ -31,6 +32,8 @@ export default React.createClass({
       return <OverlayExample />;
     case 'facebook':
       return <FacebookExample />;
+    case 'dynamic':
+      return <DynamicExample />;
     default:
       return <View style={styles.container}>
         <TouchableOpacity
@@ -59,6 +62,13 @@ export default React.createClass({
           onPress={() => nav.push({id: 'facebook', })}
         >
           <Text>Facebook tabs example</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => nav.push({id: 'dynamic', })}
+        >
+          <Text>Dynamic tabs example</Text>
         </TouchableOpacity>
       </View>;
     }
