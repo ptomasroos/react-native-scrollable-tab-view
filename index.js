@@ -59,7 +59,7 @@ const ScrollableTabView = React.createClass({
       currentPage: this.props.initialPage,
       scrollValue: new Animated.Value(this.props.initialPage),
       containerWidth: Dimensions.get('window').width,
-      sceneKeys: this.updateSceneKeys([], this.props.initialPage),
+      sceneKeys: this.newSceneKeys([], this.props.initialPage),
     };
   },
 
@@ -87,12 +87,7 @@ const ScrollableTabView = React.createClass({
       }
     }
 
-    if (this._children().length !== this.state.sceneKeys.length) {
-      let newKeys = this.updateSceneKeys(this.state.sceneKeys, pageNumber);
-      this.setState({currentPage: pageNumber, sceneKeys: newKeys, });
-    } else {
-      this.setState({currentPage: pageNumber, });
-    }
+    this.updateSceneKeys(pageNumber);
   },
 
   renderTabBar(props) {
@@ -105,7 +100,12 @@ const ScrollableTabView = React.createClass({
     }
   },
 
-  updateSceneKeys(sceneKeys = [], currentPage) {
+  updateSceneKeys(page, callback) {
+    let newKeys = this.newSceneKeys(this.state.sceneKeys, page);
+    this.setState({currentPage: page, sceneKeys: newKeys, }, callback);
+  },
+
+  newSceneKeys(sceneKeys = [], currentPage) {
     let newKeys = [];
     this._children().forEach((child, idx) => {
       let key = this._makeSceneKey(child, idx);
@@ -201,17 +201,10 @@ const ScrollableTabView = React.createClass({
     if (typeof localCurrentPage === 'object') {
       localCurrentPage = currentPage.nativeEvent.position;
     }
-    // scenekeys length and children length is same then no need to update the keys as all are stored by now
-    if (this._children().length !== this.state.sceneKeys.length) {
-      let newKeys = this.updateSceneKeys(this.state.sceneKeys, localCurrentPage);
-      this.setState({currentPage: localCurrentPage, sceneKeys: newKeys, }, () => {
-        this.props.onChangeTab({ i: localCurrentPage, ref: this._children()[localCurrentPage], });
-      });
-    } else {
-      this.setState({currentPage: localCurrentPage, }, () => {
-        this.props.onChangeTab({ i: localCurrentPage, ref: this._children()[localCurrentPage], });
-      });
-    }
+
+    this.updateSceneKeys(localCurrentPage, () => {
+      this.props.onChangeTab({ i: localCurrentPage, ref: this._children()[localCurrentPage], });
+    });
   },
 
   _updateScrollValue(value) {
