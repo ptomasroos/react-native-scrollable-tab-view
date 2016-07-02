@@ -120,7 +120,10 @@ const ScrollableTabView = React.createClass({
     return newKeys;
   },
 
-  _keyExists(sceneKeys, key) {
+  _keyExists(sceneKeys, key, initialKey) {
+    if (sceneKeys.length === 0 && initialKey !== undefined) {
+      sceneKeys.push(initialKey);
+    }
     return sceneKeys.find((sceneKey) => key === sceneKey);
   },
 
@@ -189,13 +192,17 @@ const ScrollableTabView = React.createClass({
 
   _composeScenes() {
     return this._children().map((child, idx) => {
+      let initialKey;
       let key = this._makeSceneKey(child, idx);
+      if (idx === this.state.currentPage) {
+        initialKey = key;
+      }
       return <SceneComponent
         key={child.key}
         selected={(this.state.currentPage === idx)}
         style={{width: this.state.containerWidth, }}
       >
-        {this._keyExists(this.state.sceneKeys, key) ? child : <View tabLabel={child.props.tabLabel}/>}
+        {this._keyExists(this.state.sceneKeys, key, initialKey) ? child : <View tabLabel={child.props.tabLabel}/>}
       </SceneComponent>;
     });
   },
