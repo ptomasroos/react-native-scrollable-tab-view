@@ -76,8 +76,6 @@ const ScrollableTabView = React.createClass({
   },
 
   goToPage(pageNumber) {
-    this.props.onChangeTab({ i: pageNumber, ref: this._children()[pageNumber], });
-
     if (Platform.OS === 'ios') {
       const offset = pageNumber * this.state.containerWidth;
       if (this.scrollView) {
@@ -93,7 +91,11 @@ const ScrollableTabView = React.createClass({
       }
     }
 
-    this.updateSceneKeys({ page: pageNumber, });
+    const currentPage = this.state.currentPage;
+    this.updateSceneKeys({
+      page: pageNumber,
+      callback: this._onChangeTab.bind(this, currentPage, pageNumber),
+    });
   },
 
   renderTabBar(props) {
@@ -209,16 +211,25 @@ const ScrollableTabView = React.createClass({
     });
   },
 
-  _updateSelectedPage(currentPage) {
-    let localCurrentPage = currentPage;
-    if (typeof localCurrentPage === 'object') {
-      localCurrentPage = currentPage.nativeEvent.position;
+  _updateSelectedPage(nextPage) {
+    let localNextPage = nextPage;
+    if (typeof localNextPage === 'object') {
+      localNextPage = nextPage.nativeEvent.position;
     }
 
-    const callback = () => {
-      this.props.onChangeTab({ i: localCurrentPage, ref: this._children()[localCurrentPage], });
-    };
-    this.updateSceneKeys({ page: localCurrentPage, callback, }, );
+    const currentPage = this.state.currentPage;
+    this.updateSceneKeys({
+      page: localNextPage,
+      callback: this._onChangeTab.bind(this, currentPage, localNextPage),
+    });
+  },
+
+  _onChangeTab(prevPage, currentPage) {
+    this.props.onChangeTab({
+      i: currentPage,
+      ref: this._children()[currentPage],
+      from: prevPage,
+    });
   },
 
   _updateScrollValue(value) {
