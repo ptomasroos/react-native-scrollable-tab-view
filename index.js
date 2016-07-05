@@ -39,6 +39,7 @@ const ScrollableTabView = React.createClass({
     contentProps: PropTypes.object,
     scrollWithoutAnimation: PropTypes.bool,
     locked: PropTypes.bool,
+    prerenderingSiblingsNumber: PropTypes.number
   },
 
   getDefaultProps() {
@@ -51,6 +52,7 @@ const ScrollableTabView = React.createClass({
       contentProps: {},
       scrollWithoutAnimation: false,
       locked: false,
+      prerenderingSiblingsNumber: 0
     };
   },
 
@@ -113,11 +115,18 @@ const ScrollableTabView = React.createClass({
     let newKeys = [];
     this._children(children).forEach((child, idx) => {
       let key = this._makeSceneKey(child, idx);
-      if (this._keyExists(previousKeys, key) || currentPage === idx) {
+      if (this._keyExists(previousKeys, key) ||
+        this._shouldRenderSceneKey(idx, currentPage)) {
         newKeys.push(key);
       }
     });
     return newKeys;
+  },
+
+  _shouldRenderSceneKey(idx, currentPageKey) {
+    let numOfSibling = this.props.prerenderingSiblingsNumber;
+    return (idx < (currentPageKey + numOfSibling + 1) &&
+      idx > (currentPageKey - numOfSibling - 1));
   },
 
   _keyExists(sceneKeys, key) {
@@ -192,7 +201,7 @@ const ScrollableTabView = React.createClass({
       let key = this._makeSceneKey(child, idx);
       return <SceneComponent
         key={child.key}
-        selected={(this.state.currentPage === idx)}
+        shouldUpdated={this._shouldRenderSceneKey(idx, this.state.currentPage)}
         style={{width: this.state.containerWidth, }}
       >
         {this._keyExists(this.state.sceneKeys, key) ? child : <View tabLabel={child.props.tabLabel}/>}
