@@ -1,5 +1,6 @@
 
 ## react-native-scrollable-tab-view
+[![npm version](https://badge.fury.io/js/react-native-scrollable-tab-view.svg)](https://badge.fury.io/js/react-native-scrollable-tab-view)
 
 This is probably my favorite navigation pattern on Android, I wish it
 were more common on iOS! This is a very simple JavaScript-only
