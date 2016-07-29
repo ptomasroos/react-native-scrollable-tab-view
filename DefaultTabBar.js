@@ -39,14 +39,14 @@ const DefaultTabBar = React.createClass({
     const fontWeight = isTabActive ? 'bold' : 'normal';
 
     return <Button
-      style={{flex: 1}}
+      style={{flex: 1, }}
       key={name}
       accessible={true}
       accessibilityLabel={name}
       accessibilityTraits='button'
       onPress={() => this.props.goToPage(page)}
     >
-      <View style={[styles.tab, this.props.tabStyle]}>
+      <View style={[styles.tab, this.props.tabStyle, ]}>
         <Text style={[{color: textColor, fontWeight, }, textStyle, ]}>
           {name}
         </Text>
