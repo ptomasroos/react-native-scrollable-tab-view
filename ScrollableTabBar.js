@@ -90,7 +90,7 @@ const ScrollableTabBar = React.createClass({
     let newScrollX = tabOffset + absolutePageOffset;
 
     // center tab and smooth tab change (for when tabWidth changes a lot between two tabs)
-    newScrollX -= (containerWidth - (1 - pageOffset) * tabWidth - pageOffset * nextTabWidth ) / 2 ;
+    newScrollX -= (containerWidth - (1 - pageOffset) * tabWidth - pageOffset * nextTabWidth) / 2;
     newScrollX = newScrollX >= 0 ? newScrollX : 0;
 
     if (Platform.OS === 'android') {
@@ -136,7 +136,7 @@ const ScrollableTabBar = React.createClass({
       onPress={() => this.props.goToPage(page)}
       onLayout={this.measureTab.bind(this, page)}
     >
-      <View style={[styles.tab, this.props.tabStyle]}>
+      <View style={[styles.tab, this.props.tabStyle, ]}>
         <Text style={[{color: textColor, fontWeight, }, textStyle, ]}>
           {name}
         </Text>
@@ -164,7 +164,7 @@ const ScrollableTabBar = React.createClass({
     };
 
     return  <View
-      style={[styles.container, {backgroundColor: this.props.backgroundColor, }, this.props.style]}
+      style={[styles.container, {backgroundColor: this.props.backgroundColor, }, this.props.style, ]}
       onLayout={this.onContainerLayout}
     >
       <ScrollView
@@ -176,7 +176,7 @@ const ScrollableTabBar = React.createClass({
         bounces={false}
       >
         <View
-          style={[styles.tabs, {width: this.state._containerWidth, }, this.props.tabsContainerStyle]}
+          style={[styles.tabs, {width: this.state._containerWidth, }, this.props.tabsContainerStyle, ]}
           ref={'tabContainer'}
           onLayout={this.onTabContainerLayout}
         >
