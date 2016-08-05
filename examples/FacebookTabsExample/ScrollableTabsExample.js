@@ -18,6 +18,6 @@ export default React.createClass({
       <Text tabLabel='Tab #3 word word word'>project</Text>
       <Text tabLabel='Tab #4 word word word word'>favorite</Text>
       <Text tabLabel='Tab #5'>project</Text>
-    </ScrollableTabView>
+    </ScrollableTabView>;
   },
 });
