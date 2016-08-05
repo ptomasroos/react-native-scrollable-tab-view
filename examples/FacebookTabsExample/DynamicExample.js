@@ -8,11 +8,11 @@ import ScrollableTabView, { DefaultTabBar, } from 'react-native-scrollable-tab-v
 
 const Child = React.createClass({
   onEnter() {
-    console.log('enter: ' + this.props.i);
+    console.log('enter: ' + this.props.i); // eslint-disable-line no-console
   },
 
   onLeave() {
-    console.log('leave: ' + this.props.i);
+    console.log('leave: ' + this.props.i); // eslint-disable-line no-console
   },
 
   render() {
@@ -51,7 +51,7 @@ export default React.createClass({
     >
       {this.state.tabs.map((tab, i) => {
         return <Child
-          ref={(ref) => this.children[i] = ref}
+          ref={(ref) => (this.children[i] = ref)}
           tabLabel={`tab${i}`}
           i={i}
           key={i}

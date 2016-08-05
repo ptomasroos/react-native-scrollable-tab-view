@@ -41,7 +41,7 @@ export default React.createClass({
           <Text>Other nav</Text>
         </View>
       </ScrollView>
-    </ScrollableTabView>
+    </ScrollableTabView>;
   },
 });
 
