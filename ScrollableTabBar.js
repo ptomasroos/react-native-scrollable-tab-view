@@ -18,6 +18,7 @@ const ScrollableTabBar = React.createClass({
     goToPage: React.PropTypes.func,
     activeTab: React.PropTypes.number,
     tabs: React.PropTypes.array,
+    tabsTestIDs: React.PropTypes.array,
     underlineColor: React.PropTypes.string,
     underlineHeight: React.PropTypes.number,
     backgroundColor: React.PropTypes.string,
@@ -127,11 +128,13 @@ const ScrollableTabBar = React.createClass({
     const { activeTextColor, inactiveTextColor, textStyle, } = this.props;
     const textColor = isTabActive ? activeTextColor : inactiveTextColor;
     const fontWeight = isTabActive ? 'bold' : 'normal';
+    const testID = this.props.tabsTestIDs[page];
 
     return <Button
       key={`${name}_${page}`}
       accessible={true}
       accessibilityLabel={name}
+      testID={testID}
       accessibilityTraits='button'
       onPress={() => this.props.goToPage(page)}
       onLayout={this.measureTab.bind(this, page)}
