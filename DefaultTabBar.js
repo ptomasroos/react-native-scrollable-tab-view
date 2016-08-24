@@ -75,7 +75,7 @@ const DefaultTabBar = React.createClass({
     return (
       <View style={[styles.tabs, {backgroundColor: this.props.backgroundColor, }, tabsBorderStyle, this.props.style, ]}>
         {this.props.tabs.map((tab, i) => this.renderTabOption(tab, i))}
-        <Animated.View style={[tabUnderlineStyle, { left, }, this.props.underlineStyle]} />
+        <Animated.View style={[tabUnderlineStyle, { left, }, this.props.underlineStyle, ]} />
       </View>
     );
   },
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
   tabsBottom: {
     borderTopWidth: 1,
     borderBottomWidth: 0,
-  }
+  },
 });
 
 module.exports = DefaultTabBar;
