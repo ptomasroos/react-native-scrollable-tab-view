@@ -13,8 +13,6 @@ const DefaultTabBar = React.createClass({
     goToPage: React.PropTypes.func,
     activeTab: React.PropTypes.number,
     tabs: React.PropTypes.array,
-    underlineColor: React.PropTypes.string,
-    underlineHeight: React.PropTypes.number,
     backgroundColor: React.PropTypes.string,
     activeTextColor: React.PropTypes.string,
     inactiveTextColor: React.PropTypes.string,
@@ -28,9 +26,7 @@ const DefaultTabBar = React.createClass({
     return {
       activeTextColor: 'navy',
       inactiveTextColor: 'black',
-      underlineColor: 'navy',
       backgroundColor: null,
-      underlineHeight: 4,
     };
   },
 
@@ -63,8 +59,8 @@ const DefaultTabBar = React.createClass({
     const tabUnderlineStyle = {
       position: 'absolute',
       width: containerWidth / numberOfTabs,
-      height: this.props.underlineHeight,
-      backgroundColor: this.props.underlineColor,
+      height: 4,
+      backgroundColor: 'navy',
       [positionTop ? 'bottom' : 'top']: 0,
     };
 

@@ -18,8 +18,6 @@ const ScrollableTabBar = React.createClass({
     goToPage: React.PropTypes.func,
     activeTab: React.PropTypes.number,
     tabs: React.PropTypes.array,
-    underlineColor: React.PropTypes.string,
-    underlineHeight: React.PropTypes.number,
     backgroundColor: React.PropTypes.string,
     activeTextColor: React.PropTypes.string,
     inactiveTextColor: React.PropTypes.string,
@@ -37,9 +35,7 @@ const ScrollableTabBar = React.createClass({
       scrollOffset: 52,
       activeTextColor: 'navy',
       inactiveTextColor: 'black',
-      underlineColor: 'navy',
       backgroundColor: null,
-      underlineHeight: 4,
       style: {},
       tabStyle: {},
       tabsContainerStyle: {},
@@ -157,8 +153,8 @@ const ScrollableTabBar = React.createClass({
     const positionTop = this.props.tabBarPosition === 'top' || this.props.tabBarPosition === 'overlayTop';
     const tabUnderlineStyle = {
       position: 'absolute',
-      height: this.props.underlineHeight,
-      backgroundColor: this.props.underlineColor,
+      height: 4,
+      backgroundColor: 'navy',
       [positionTop ? 'bottom' : 'top']: 0,
     };
 
