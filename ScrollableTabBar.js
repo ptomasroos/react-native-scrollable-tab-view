@@ -28,6 +28,8 @@ const ScrollableTabBar = React.createClass({
     tabStyle: View.propTypes.style,
     tabsContainerStyle: View.propTypes.style,
     textStyle: Text.propTypes.style,
+    underlineStyle: View.propTypes.style,
+    tabBarPosition: React.PropTypes.oneOf(['top', 'bottom', 'overlayTop', 'overlayBottom', ]),
   },
 
   getDefaultProps() {
@@ -41,6 +43,7 @@ const ScrollableTabBar = React.createClass({
       style: {},
       tabStyle: {},
       tabsContainerStyle: {},
+      underlineStyle: {},
     };
   },
 
@@ -151,20 +154,23 @@ const ScrollableTabBar = React.createClass({
   },
 
   render() {
+    const positionTop = this.props.tabBarPosition === 'top' || this.props.tabBarPosition === 'overlayTop';
     const tabUnderlineStyle = {
       position: 'absolute',
       height: this.props.underlineHeight,
       backgroundColor: this.props.underlineColor,
-      bottom: 0,
+      [positionTop ? 'bottom' : 'top']: 0,
     };
 
     const dynamicTabUnderline = {
       left: this.state._leftTabUnderline,
       width: this.state._widthTabUnderline,
     };
-
+    const containerBorderStyle = styles[positionTop ? 'tabsTop' : 'tabsBottom'];
     return  <View
-      style={[styles.container, {backgroundColor: this.props.backgroundColor, }, this.props.style, ]}
+      style={[styles.container, {
+        backgroundColor: this.props.backgroundColor,
+      }, containerBorderStyle, this.props.style, ]}
       onLayout={this.onContainerLayout}
     >
       <ScrollView
@@ -182,7 +188,7 @@ const ScrollableTabBar = React.createClass({
           onLayout={this.onTabContainerLayout}
         >
           {this.props.tabs.map((tab, i) => this.renderTabOption(tab, i))}
-          <Animated.View style={[tabUnderlineStyle, dynamicTabUnderline, ]} />
+          <Animated.View style={[tabUnderlineStyle, dynamicTabUnderline, this.props.underlineStyle]} />
         </View>
       </ScrollView>
     </View>;
@@ -217,10 +223,17 @@ const styles = StyleSheet.create({
   container: {
     height: 50,
     borderWidth: 1,
-    borderTopWidth: 0,
     borderLeftWidth: 0,
     borderRightWidth: 0,
-    borderBottomColor: '#ccc',
+    borderColor: '#ccc',
+  },
+  containerTop: {
+    borderTopWidth: 0,
+    borderBottomWidth: 1,
+  },
+  containerBottom: {
+    borderTopWidth: 1,
+    borderBottomWidth: 0,
   },
   tabs: {
     flexDirection: 'row',

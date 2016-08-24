@@ -20,6 +20,8 @@ const DefaultTabBar = React.createClass({
     inactiveTextColor: React.PropTypes.string,
     textStyle: Text.propTypes.style,
     tabStyle: View.propTypes.style,
+    underlineStyle: View.propTypes.style,
+    tabBarPosition: React.PropTypes.oneOf(['top', 'bottom', 'overlayTop', 'overlayBottom', ]),
   },
 
   getDefaultProps() {
@@ -57,22 +59,23 @@ const DefaultTabBar = React.createClass({
   render() {
     const containerWidth = this.props.containerWidth;
     const numberOfTabs = this.props.tabs.length;
+    const positionTop = this.props.tabBarPosition === 'top' || this.props.tabBarPosition === 'overlayTop';
     const tabUnderlineStyle = {
       position: 'absolute',
       width: containerWidth / numberOfTabs,
       height: this.props.underlineHeight,
       backgroundColor: this.props.underlineColor,
-      bottom: 0,
+      [positionTop ? 'bottom' : 'top']: 0,
     };
 
     const left = this.props.scrollValue.interpolate({
       inputRange: [0, 1, ], outputRange: [0,  containerWidth / numberOfTabs, ],
     });
-
+    const tabsBorderStyle = styles[positionTop ? 'tabsTop' : 'tabsBottom'];
     return (
-      <View style={[styles.tabs, {backgroundColor: this.props.backgroundColor, }, this.props.style, ]}>
+      <View style={[styles.tabs, {backgroundColor: this.props.backgroundColor, }, tabsBorderStyle, this.props.style, ]}>
         {this.props.tabs.map((tab, i) => this.renderTabOption(tab, i))}
-        <Animated.View style={[tabUnderlineStyle, { left, }, ]} />
+        <Animated.View style={[tabUnderlineStyle, { left, }, this.props.underlineStyle]} />
       </View>
     );
   },
@@ -93,8 +96,16 @@ const styles = StyleSheet.create({
     borderTopWidth: 0,
     borderLeftWidth: 0,
     borderRightWidth: 0,
-    borderBottomColor: '#ccc',
+    borderColor: '#ccc',
   },
+  tabsTop: {
+    borderTopWidth: 0,
+    borderBottomWidth: 1,
+  },
+  tabsBottom: {
+    borderTopWidth: 1,
+    borderBottomWidth: 0,
+  }
 });
 
 module.exports = DefaultTabBar;
