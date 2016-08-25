@@ -28,6 +28,7 @@ const ScrollableTabBar = React.createClass({
     tabStyle: View.propTypes.style,
     tabsContainerStyle: View.propTypes.style,
     textStyle: Text.propTypes.style,
+    renderTabName: React.PropTypes.func,
   },
 
   getDefaultProps() {
@@ -41,6 +42,7 @@ const ScrollableTabBar = React.createClass({
       style: {},
       tabStyle: {},
       tabsContainerStyle: {},
+      renderTabName: this.renderTabName,
     };
   },
 
@@ -124,9 +126,6 @@ const ScrollableTabBar = React.createClass({
 
   renderTabOption(name, page) {
     const isTabActive = this.props.activeTab === page;
-    const { activeTextColor, inactiveTextColor, textStyle, } = this.props;
-    const textColor = isTabActive ? activeTextColor : inactiveTextColor;
-    const fontWeight = isTabActive ? 'bold' : 'normal';
 
     return <Button
       key={`${name}_${page}`}
@@ -136,12 +135,20 @@ const ScrollableTabBar = React.createClass({
       onPress={() => this.props.goToPage(page)}
       onLayout={this.measureTab.bind(this, page)}
     >
-      <View style={[styles.tab, this.props.tabStyle, ]}>
-        <Text style={[{color: textColor, fontWeight, }, textStyle, ]}>
-          {name}
-        </Text>
-      </View>
+      {this.renderTabName(name, page, isTabActive)}
     </Button>;
+  },
+
+  renderTabName(name, page, isTabActive) {
+    const { activeTextColor, inactiveTextColor, textStyle, } = this.props;
+    const textColor = isTabActive ? activeTextColor : inactiveTextColor;
+    const fontWeight = isTabActive ? 'bold' : 'normal';
+
+    return <View style={[styles.tab, this.props.tabStyle, ]}>
+      <Text style={[{color: textColor, fontWeight, }, textStyle, ]}>
+        {name}
+      </Text>
+    </View>;
   },
 
   measureTab(page, event) {
@@ -163,7 +170,7 @@ const ScrollableTabBar = React.createClass({
       width: this.state._widthTabUnderline,
     };
 
-    return  <View
+    return <View
       style={[styles.container, {backgroundColor: this.props.backgroundColor, }, this.props.style, ]}
       onLayout={this.onContainerLayout}
     >
