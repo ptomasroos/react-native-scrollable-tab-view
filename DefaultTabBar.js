@@ -20,7 +20,7 @@ const DefaultTabBar = React.createClass({
     inactiveTextColor: React.PropTypes.string,
     textStyle: Text.propTypes.style,
     tabStyle: View.propTypes.style,
-    renderTabName: React.PropTypes.func,
+    renderTab: React.PropTypes.func,
   },
 
   getDefaultProps() {
@@ -30,12 +30,22 @@ const DefaultTabBar = React.createClass({
       underlineColor: 'navy',
       backgroundColor: null,
       underlineHeight: 4,
-      renderTabName: this.renderTabName,
     };
   },
 
   renderTabOption(name, page) {
     const isTabActive = this.props.activeTab === page;
+
+    let onPressHandler = this.props.goToPage;
+    let renderTab = this.props.renderTab ? this.props.renderTab : this.renderTab;
+
+    return renderTab(name, page, isTabActive, onPressHandler);
+  },
+
+  renderTab(name, page, isTabActive, onPressHandler) {
+    const { activeTextColor, inactiveTextColor, textStyle, } = this.props;
+    const textColor = isTabActive ? activeTextColor : inactiveTextColor;
+    const fontWeight = isTabActive ? 'bold' : 'normal';
 
     return <Button
       style={{flex: 1, }}
@@ -43,22 +53,14 @@ const DefaultTabBar = React.createClass({
       accessible={true}
       accessibilityLabel={name}
       accessibilityTraits='button'
-      onPress={() => this.props.goToPage(page)}
+      onPress={() => onPressHandler(page)}
     >
-      {this.renderTabName(name, page, isTabActive)}
+      <View style={[styles.tab, this.props.tabStyle, ]}>
+        <Text style={[{color: textColor, fontWeight, }, textStyle, ]}>
+          {name}
+        </Text>
+      </View>
     </Button>;
-  },
-
-  renderTabName(name, page, isTabActive) {
-    const { activeTextColor, inactiveTextColor, textStyle, } = this.props;
-    const textColor = isTabActive ? activeTextColor : inactiveTextColor;
-    const fontWeight = isTabActive ? 'bold' : 'normal';
-
-    return <View style={[styles.tab, this.props.tabStyle, ]}>
-      <Text style={[{color: textColor, fontWeight, }, textStyle, ]}>
-        {name}
-      </Text>
-    </View>;
   },
 
   render() {
