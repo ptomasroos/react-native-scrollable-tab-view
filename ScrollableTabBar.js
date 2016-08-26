@@ -28,7 +28,7 @@ const ScrollableTabBar = React.createClass({
     tabStyle: View.propTypes.style,
     tabsContainerStyle: View.propTypes.style,
     textStyle: Text.propTypes.style,
-    renderTabName: React.PropTypes.func,
+    renderTab: React.PropTypes.func,
   },
 
   getDefaultProps() {
@@ -42,7 +42,6 @@ const ScrollableTabBar = React.createClass({
       style: {},
       tabStyle: {},
       tabsContainerStyle: {},
-      renderTabName: this.renderTabName,
     };
   },
 
@@ -127,28 +126,32 @@ const ScrollableTabBar = React.createClass({
   renderTabOption(name, page) {
     const isTabActive = this.props.activeTab === page;
 
+    let onPressHandler = this.props.goToPage;
+    let onLayoutHandler = this.measureTab.bind(this, page);
+    let renderTab = this.props.renderTab ? this.props.renderTab : this.renderTab;
+
+    return renderTab(name, page, isTabActive, onPressHandler, onLayoutHandler);
+  },
+
+  renderTab(name, page, isTabActive, onPressHandler, onLayoutHandler) {
+    const { activeTextColor, inactiveTextColor, textStyle, } = this.props;
+    const textColor = isTabActive ? activeTextColor : inactiveTextColor;
+    const fontWeight = isTabActive ? 'bold' : 'normal';
+
     return <Button
       key={`${name}_${page}`}
       accessible={true}
       accessibilityLabel={name}
       accessibilityTraits='button'
-      onPress={() => this.props.goToPage(page)}
-      onLayout={this.measureTab.bind(this, page)}
+      onPress={() => onPressHandler(page)}
+      onLayout={onLayoutHandler}
     >
-      {this.renderTabName(name, page, isTabActive)}
+      <View style={[styles.tab, this.props.tabStyle, ]}>
+        <Text style={[{color: textColor, fontWeight, }, textStyle, ]}>
+          {name}
+        </Text>
+      </View>
     </Button>;
-  },
-
-  renderTabName(name, page, isTabActive) {
-    const { activeTextColor, inactiveTextColor, textStyle, } = this.props;
-    const textColor = isTabActive ? activeTextColor : inactiveTextColor;
-    const fontWeight = isTabActive ? 'bold' : 'normal';
-
-    return <View style={[styles.tab, this.props.tabStyle, ]}>
-      <Text style={[{color: textColor, fontWeight, }, textStyle, ]}>
-        {name}
-      </Text>
-    </View>;
   },
 
   measureTab(page, event) {
