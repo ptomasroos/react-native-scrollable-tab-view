@@ -86,6 +86,8 @@ var App = React.createClass({
 - **`page`** _(Integer)_ - set selected tab(can be buggy see  [#126](https://github.com/brentvatne/react-native-scrollable-tab-view/issues/126)
 - **`children`** _(ReactComponents)_ - each top-level child component should have a `tabLabel` prop that can be used by the tab bar component to render out the labels. The default tab bar expects it to be a string, but you can use anything you want if you make a custom tab bar.
 - **`tabBarUnderlineColor`** _(String)_ - color of the default tab bar's underline, defaults to `navy`
+- **`tabBarLinePosition`** _(String)_ Defaults to `"bottom"`.
+  - `"top"` to position the tab bar's line over content.
 - **`tabBarBackgroundColor`** _(String)_ - color of the default tab bar's background, defaults to `white`
 - **`tabBarActiveTextColor`** _(String)_ - color of the default tab bar's text when active, defaults to `navy`
 - **`tabBarInactiveTextColor`** _(String)_ - color of the default tab bar's text when inactive, defaults to `black`
