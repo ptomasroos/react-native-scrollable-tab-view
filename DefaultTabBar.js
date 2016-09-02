@@ -21,6 +21,7 @@ const DefaultTabBar = React.createClass({
     textStyle: Text.propTypes.style,
     tabStyle: View.propTypes.style,
     renderTabName: React.PropTypes.func,
+    linePosition: React.PropTypes.oneOf(['top', 'bottom', ]),
   },
 
   getDefaultProps() {
@@ -31,6 +32,7 @@ const DefaultTabBar = React.createClass({
       backgroundColor: null,
       underlineHeight: 4,
       renderTabName: this.renderTabName,
+      linePosition: 'bottom',
     };
   },
 
@@ -53,8 +55,9 @@ const DefaultTabBar = React.createClass({
     const { activeTextColor, inactiveTextColor, textStyle, } = this.props;
     const textColor = isTabActive ? activeTextColor : inactiveTextColor;
     const fontWeight = isTabActive ? 'bold' : 'normal';
+    const padding  = this.props.linePosition === 'top'? { paddingTop: this.props.underlineHeight} : { paddingBottom: this.props.underlineHeight};
 
-    return <View style={[styles.tab, this.props.tabStyle, ]}>
+    return <View style={[styles.tab, this.props.tabStyle, padding, ]}>
       <Text style={[{color: textColor, fontWeight, }, textStyle, ]}>
         {name}
       </Text>
@@ -69,7 +72,7 @@ const DefaultTabBar = React.createClass({
       width: containerWidth / numberOfTabs,
       height: this.props.underlineHeight,
       backgroundColor: this.props.underlineColor,
-      bottom: 0,
+      [this.props.linePosition]: 0,
     };
 
     const left = this.props.scrollValue.interpolate({
@@ -90,7 +93,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingBottom: 10,
   },
   tabs: {
     height: 50,
