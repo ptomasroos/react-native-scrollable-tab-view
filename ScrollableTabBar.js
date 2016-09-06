@@ -18,8 +18,6 @@ const ScrollableTabBar = React.createClass({
     goToPage: React.PropTypes.func,
     activeTab: React.PropTypes.number,
     tabs: React.PropTypes.array,
-    underlineColor: React.PropTypes.string,
-    underlineHeight: React.PropTypes.number,
     backgroundColor: React.PropTypes.string,
     activeTextColor: React.PropTypes.string,
     inactiveTextColor: React.PropTypes.string,
@@ -29,6 +27,7 @@ const ScrollableTabBar = React.createClass({
     tabsContainerStyle: View.propTypes.style,
     textStyle: Text.propTypes.style,
     renderTab: React.PropTypes.func,
+    underlineStyle: View.propTypes.style,
   },
 
   getDefaultProps() {
@@ -36,12 +35,11 @@ const ScrollableTabBar = React.createClass({
       scrollOffset: 52,
       activeTextColor: 'navy',
       inactiveTextColor: 'black',
-      underlineColor: 'navy',
       backgroundColor: null,
-      underlineHeight: 4,
       style: {},
       tabStyle: {},
       tabsContainerStyle: {},
+      underlineStyle: {},
     };
   },
 
@@ -153,8 +151,8 @@ const ScrollableTabBar = React.createClass({
   render() {
     const tabUnderlineStyle = {
       position: 'absolute',
-      height: this.props.underlineHeight,
-      backgroundColor: this.props.underlineColor,
+      height: 4,
+      backgroundColor: 'navy',
       bottom: 0,
     };
 
@@ -186,7 +184,7 @@ const ScrollableTabBar = React.createClass({
             const renderTab = this.props.renderTab || this.renderTab;
             return renderTab(name, page, isTabActive, this.props.goToPage, this.measureTab.bind(this, page));
           })}
-          <Animated.View style={[tabUnderlineStyle, dynamicTabUnderline, ]} />
+          <Animated.View style={[tabUnderlineStyle, dynamicTabUnderline, this.props.underlineStyle, ]} />
         </View>
       </ScrollView>
     </View>;
@@ -224,7 +222,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 0,
     borderLeftWidth: 0,
     borderRightWidth: 0,
-    borderBottomColor: '#ccc',
+    borderColor: '#ccc',
   },
   tabs: {
     flexDirection: 'row',
