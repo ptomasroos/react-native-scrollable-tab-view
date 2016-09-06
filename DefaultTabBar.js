@@ -34,12 +34,6 @@ const DefaultTabBar = React.createClass({
   },
 
   renderTabOption(name, page) {
-    const isTabActive = this.props.activeTab === page;
-
-    let onPressHandler = this.props.goToPage;
-    let renderTab = this.props.renderTab ? this.props.renderTab : this.renderTab;
-
-    return renderTab(name, page, isTabActive, onPressHandler);
   },
 
   renderTab(name, page, isTabActive, onPressHandler) {
@@ -80,7 +74,11 @@ const DefaultTabBar = React.createClass({
 
     return (
       <View style={[styles.tabs, {backgroundColor: this.props.backgroundColor, }, this.props.style, ]}>
-        {this.props.tabs.map((tab, i) => this.renderTabOption(tab, i))}
+        {this.props.tabs.map((name, page) => {
+          const isTabActive = this.props.activeTab === page;
+          const renderTab = this.props.renderTab || this.renderTab;
+          return renderTab(name, page, isTabActive, this.props.goToPage);
+        })}
         <Animated.View style={[tabUnderlineStyle, { left, }, ]} />
       </View>
     );
