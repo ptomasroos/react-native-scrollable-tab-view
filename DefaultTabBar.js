@@ -18,6 +18,7 @@ const DefaultTabBar = React.createClass({
     backgroundColor: React.PropTypes.string,
     activeTextColor: React.PropTypes.string,
     inactiveTextColor: React.PropTypes.string,
+    borderBottomColor: React.PropTypes.string,
     textStyle: Text.propTypes.style,
     tabStyle: View.propTypes.style,
     renderTabName: React.PropTypes.func,
@@ -29,6 +30,7 @@ const DefaultTabBar = React.createClass({
       inactiveTextColor: 'black',
       underlineColor: 'navy',
       backgroundColor: null,
+      borderBottomColor: '#ccc',
       underlineHeight: 4,
       renderTabName: this.renderTabName,
     };
@@ -77,7 +79,7 @@ const DefaultTabBar = React.createClass({
     });
 
     return (
-      <View style={[styles.tabs, {backgroundColor: this.props.backgroundColor, }, this.props.style, ]}>
+      <View style={[styles.tabs, {backgroundColor: this.props.backgroundColor, borderBottomColor: this.props.borderBottomColor}, this.props.style, ]}>
         {this.props.tabs.map((tab, i) => this.renderTabOption(tab, i))}
         <Animated.View style={[tabUnderlineStyle, { left, }, ]} />
       </View>
@@ -100,7 +102,6 @@ const styles = StyleSheet.create({
     borderTopWidth: 0,
     borderLeftWidth: 0,
     borderRightWidth: 0,
-    borderBottomColor: '#ccc',
   },
 });
 

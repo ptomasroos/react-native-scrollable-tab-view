@@ -90,6 +90,7 @@ var App = React.createClass({
 - **`tabBarActiveTextColor`** _(String)_ - color of the default tab bar's text when active, defaults to `navy`
 - **`tabBarInactiveTextColor`** _(String)_ - color of the default tab bar's text when inactive, defaults to `black`
 - **`tabBarTextStyle`** _(Object)_ - Additional styles to the tab bar's text. Example: `{fontFamily: 'Roboto', fontSize: 15}`
+- **`tabBarBorderBottomColor`** _(String)_ - color of the tab bar's bottom border, defaults to `#ccc`
 - **`style`** _([View.propTypes.style](https://facebook.github.io/react-native/docs/view.html#style))_
 - **`contentProps`** _(Object)_ - props that are applied to root `ScrollView`/`ViewPagerAndroid`. Note that overriding defaults set by the library may break functionality; see the source for details.
 - **`scrollWithoutAnimation`** _(Bool)_ - on tab press change tab without animation.
