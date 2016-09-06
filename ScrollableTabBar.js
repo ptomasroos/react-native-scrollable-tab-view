@@ -123,16 +123,6 @@ const ScrollableTabBar = React.createClass({
     }
   },
 
-  renderTabOption(name, page) {
-    const isTabActive = this.props.activeTab === page;
-
-    let onPressHandler = this.props.goToPage;
-    let onLayoutHandler = this.measureTab.bind(this, page);
-    let renderTab = this.props.renderTab ? this.props.renderTab : this.renderTab;
-
-    return renderTab(name, page, isTabActive, onPressHandler, onLayoutHandler);
-  },
-
   renderTab(name, page, isTabActive, onPressHandler, onLayoutHandler) {
     const { activeTextColor, inactiveTextColor, textStyle, } = this.props;
     const textColor = isTabActive ? activeTextColor : inactiveTextColor;
@@ -191,7 +181,11 @@ const ScrollableTabBar = React.createClass({
           ref={'tabContainer'}
           onLayout={this.onTabContainerLayout}
         >
-          {this.props.tabs.map((tab, i) => this.renderTabOption(tab, i))}
+          {this.props.tabs.map((name, page) => {
+            const isTabActive = this.props.activeTab === page;
+            const renderTab = this.props.renderTab || this.renderTab;
+            return renderTab(name, page, isTabActive, this.props.goToPage, this.measureTab.bind(this, page));
+          })}
           <Animated.View style={[tabUnderlineStyle, dynamicTabUnderline, ]} />
         </View>
       </ScrollView>
