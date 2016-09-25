@@ -4,7 +4,7 @@ import {
   TouchableHighlight,
 } from 'react-native';
 import TimerMixin from 'react-timer-mixin';
-import ScrollableTabView, { DefaultTabBar, } from 'react-native-scrollable-tab-view';
+import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view';
 
 const Child = React.createClass({
   onEnter() {
@@ -27,13 +27,13 @@ export default React.createClass({
 
   getInitialState() {
     return {
-      tabs: [],
+      tabs: [1, 2],
     };
   },
 
   componentDidMount() {
     this.setTimeout(
-      () => { this.setState({ tabs: [1, 2, 3, ], }); },
+      () => { this.setState({ tabs: [1, 2, 3, 4, 5, 6, ], }); },
       100
     );
   },
@@ -48,7 +48,7 @@ export default React.createClass({
       key={`${name}_${page}`}
       onPress={() => onPressHandler(page)}
       onLayout={onLayoutHandler}
-      style={{flex: 1, }}
+      style={{flex: 1, width: 100, }}
       underlayColor="#aaaaaa"
     >
       <Text>{name}</Text>
@@ -58,7 +58,7 @@ export default React.createClass({
   render() {
     return <ScrollableTabView
       style={{marginTop: 20, }}
-      renderTabBar={() => <DefaultTabBar renderTab={this.renderTab}/>}
+      renderTabBar={() => <ScrollableTabBar renderTab={this.renderTab}/>}
       onChangeTab={this.handleChangeTab}
     >
       {this.state.tabs.map((tab, i) => {
