@@ -59,6 +59,7 @@ var App = React.createClass({
   }
 });
 ```
+To start you can just copy [DefaultTabBar](https://github.com/skv-headless/react-native-scrollable-tab-view/blob/master/DefaultTabBar.js).
 
 ## Examples
 
