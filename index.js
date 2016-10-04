@@ -40,6 +40,8 @@ const ScrollableTabView = React.createClass({
     scrollWithoutAnimation: PropTypes.bool,
     locked: PropTypes.bool,
     prerenderingSiblingsNumber: PropTypes.number,
+    forceUpdateOnPageChanged: PropTypes.bool,
+    bounces:PropTypes.bool,
   },
 
   getDefaultProps() {
@@ -53,6 +55,8 @@ const ScrollableTabView = React.createClass({
       scrollWithoutAnimation: false,
       locked: false,
       prerenderingSiblingsNumber: 0,
+      forceUpdateOnPageChanged: true,
+      bounces: true
     };
   },
 
@@ -162,6 +166,7 @@ const ScrollableTabView = React.createClass({
         scrollEnabled={!this.props.locked}
         directionalLockEnabled
         alwaysBounceVertical={false}
+        bounces = {this.props.bounces}
         keyboardDismissMode="on-drag"
         {...this.props.contentProps}
       >
@@ -193,7 +198,8 @@ const ScrollableTabView = React.createClass({
       let key = this._makeSceneKey(child, idx);
       return <SceneComponent
         key={child.key}
-        shouldUpdated={this._shouldRenderSceneKey(idx, this.state.currentPage) && !this._keyExists(this.state.previousKeys,idx) }
+        shouldUpdated={this._shouldRenderSceneKey(idx, this.state.currentPage) &&
+                       (this.props.forceUpdateOnPageChanged || !this._keyExists(this.state.previousKeys,idx)) }
         style={{width: this.state.containerWidth, }}
       >
         {this._keyExists(this.state.sceneKeys, key) ? child : <View tabLabel={child.props.tabLabel}/>}
