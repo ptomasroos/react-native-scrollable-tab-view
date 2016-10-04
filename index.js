@@ -62,6 +62,7 @@ const ScrollableTabView = React.createClass({
       scrollValue: new Animated.Value(this.props.initialPage),
       containerWidth: Dimensions.get('window').width,
       sceneKeys: this.newSceneKeys({ currentPage: this.props.initialPage, }),
+      previousKeys : [],
     };
   },
 
@@ -110,7 +111,8 @@ const ScrollableTabView = React.createClass({
 
   updateSceneKeys({ page, children = this.props.children, callback = () => {}, }) {
     let newKeys = this.newSceneKeys({ previousKeys: this.state.sceneKeys, currentPage: page, children, });
-    this.setState({currentPage: page, sceneKeys: newKeys, }, callback);
+    let previousKeys = JSON.parse(JSON.stringify(this.state.sceneKeys));
+    this.setState({currentPage: page, sceneKeys: newKeys, previousKeys : previousKeys }, callback);
   },
 
   newSceneKeys({ previousKeys = [], currentPage = 0, children = this.props.children, }) {
@@ -191,7 +193,7 @@ const ScrollableTabView = React.createClass({
       let key = this._makeSceneKey(child, idx);
       return <SceneComponent
         key={child.key}
-        shouldUpdated={this._shouldRenderSceneKey(idx, this.state.currentPage)}
+        shouldUpdated={this._shouldRenderSceneKey(idx, this.state.currentPage) && !this._keyExists(this.state.previousKeys,idx) }
         style={{width: this.state.containerWidth, }}
       >
         {this._keyExists(this.state.sceneKeys, key) ? child : <View tabLabel={child.props.tabLabel}/>}
