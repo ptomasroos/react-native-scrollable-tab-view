@@ -67,6 +67,7 @@ const ScrollableTabView = React.createClass({
       containerWidth: Dimensions.get('window').width,
       sceneKeys: this.newSceneKeys({ currentPage: this.props.initialPage, }),
       previousKeys : [],
+      updateByPageChange : false,
     };
   },
 
@@ -100,6 +101,7 @@ const ScrollableTabView = React.createClass({
     this.updateSceneKeys({
       page: pageNumber,
       callback: this._onChangeTab.bind(this, currentPage, pageNumber),
+      updateByPageChange: true,
     });
   },
 
@@ -113,7 +115,7 @@ const ScrollableTabView = React.createClass({
     }
   },
 
-  updateSceneKeys({ page, children = this.props.children, callback = () => {}, }) {
+  updateSceneKeys({ page, children = this.props.children, callback = () => {}, updateByPageChange = false }) {
     let newKeys = this.newSceneKeys({ previousKeys: this.state.sceneKeys, currentPage: page, children, });
     let previousKeys = JSON.parse(JSON.stringify(this.state.sceneKeys));
     this.setState({currentPage: page, sceneKeys: newKeys, previousKeys : previousKeys }, callback);
@@ -199,7 +201,9 @@ const ScrollableTabView = React.createClass({
       return <SceneComponent
         key={child.key}
         shouldUpdated={this._shouldRenderSceneKey(idx, this.state.currentPage) &&
-                       (this.props.forceUpdateOnPageChanged || !this._keyExists(this.state.previousKeys,key)) }
+                       (this.props.forceUpdateOnPageChanged || 
+                       !this._keyExists(this.state.previousKeys,key) ||
+                       !this.state.updateByPageChange ) }
         style={{width: this.state.containerWidth, }}
       >
         {this._keyExists(this.state.sceneKeys, key) ? child : <View tabLabel={child.props.tabLabel}/>}
@@ -225,6 +229,7 @@ const ScrollableTabView = React.createClass({
     this.updateSceneKeys({
       page: localNextPage,
       callback: this._onChangeTab.bind(this, currentPage, localNextPage),
+      updateByPageChange: true,
     });
   },
 
