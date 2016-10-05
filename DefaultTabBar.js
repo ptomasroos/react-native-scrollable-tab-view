@@ -27,6 +27,7 @@ const DefaultTabBar = React.createClass({
       activeTextColor: 'navy',
       inactiveTextColor: 'black',
       backgroundColor: null,
+      activetabStyle: null,
     };
   },
 
@@ -34,10 +35,11 @@ const DefaultTabBar = React.createClass({
   },
 
   renderTab(name, page, isTabActive, onPressHandler) {
-    const { activeTextColor, inactiveTextColor, textStyle, } = this.props;
+    const { activeTextColor, inactiveTextColor, textStyle, activetabStyle} = this.props;
     const textColor = isTabActive ? activeTextColor : inactiveTextColor;
     const fontWeight = isTabActive ? 'bold' : 'normal';
-
+    const tabStyle = isTabActive ? activetabStyle : '';
+    
     return <Button
       style={{flex: 1, }}
       key={name}
