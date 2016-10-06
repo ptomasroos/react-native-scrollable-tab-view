@@ -95,6 +95,7 @@ To start you can just copy [DefaultTabBar](https://github.com/skv-headless/react
 - **`contentProps`** _(Object)_ - props that are applied to root `ScrollView`/`ViewPagerAndroid`. Note that overriding defaults set by the library may break functionality; see the source for details.
 - **`scrollWithoutAnimation`** _(Bool)_ - on tab press change tab without animation.
 - **`prerenderingSiblingsNumber`** _(Integer)_ - pre-render nearby # sibling, `Infinity` === render all the siblings, default to 0 === render current page.
+- **`forceScrollView`** _(Boolean)_ - Forces the use of `ScrollView` instead of `ViewPagerAndroid`. See [this issue](https://github.com/skv-headless/react-native-scrollable-tab-view/issues/187) .
 
 ## Contribution
 **Issues** are welcome. Please add a screenshot of bug and code snippet. Quickest way to solve issue is to reproduce it on one of the examples.
