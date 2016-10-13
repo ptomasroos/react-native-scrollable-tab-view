@@ -20,15 +20,31 @@ const FacebookTabBar = React.createClass({
     this._listener = this.props.scrollValue.addListener(this.setAnimationValue);
   },
 
-  setAnimationValue({ value, }) {
-    this.tabIcons.forEach((icon, i) => {
-      const progress = (value - i >= 0 && value - i <= 1) ? value - i : 1;
-      icon.setNativeProps({
-        style: {
-          color: this.iconColor(progress),
-        },
-      });
-    });
+  setAnimationValue({ value }) {
+    this.tabIcons.forEach((icon, index) => {
+      if (index < value && Math.abs(index - value) < 1) {
+        const progress = value - index
+        icon.setNativeProps({
+          style: { color: this.iconColor(progress) }
+        })
+      }
+      else if (index > value && Math.abs(index - value) < 1) {
+        const progress = index - value
+        icon.setNativeProps({
+          style: { color: this.iconColor(progress) }
+        })
+      }
+      else if (index == value) {
+        icon.setNativeProps({
+          style: { color: this.iconColor(0) }
+        })
+      }
+      else {
+        icon.setNativeProps({
+          style: { color: this.iconColor(1) }
+        })
+      }
+    })
   },
 
   //color between rgb(59,89,152) and rgb(204,204,204)
