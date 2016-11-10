@@ -85,13 +85,13 @@ const ScrollableTabView = React.createClass({
     }
   },
 
-  goToPage(pageNumber) {
+  goToPage(pageNumber, shouldAnimate = true) {
     const offset = pageNumber * this.state.containerSize;
     if (this.scrollView) {
       const targetPosition = {
         x: this.props.horizontal ? offset : 0,
         y: this.props.horizontal ? 0 : offset,
-        animated: !this.props.scrollWithoutAnimation,
+        animated: !this.props.scrollWithoutAnimation && shouldAnimate,
       };
       this.scrollView.scrollTo(targetPosition);
     }
@@ -242,7 +242,7 @@ const ScrollableTabView = React.createClass({
     if (Math.round(size) !== Math.round(this.state.containerSize)) {
       this.setState({ containerSize: size, });
       this.requestAnimationFrame(() => {
-        this.goToPage(this.state.currentPage);
+        this.goToPage(this.state.currentPage, false);
       });
     }
   },
