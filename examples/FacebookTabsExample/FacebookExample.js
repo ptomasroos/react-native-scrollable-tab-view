@@ -16,21 +16,29 @@ export default React.createClass({
       initialPage={1}
       renderTabBar={() => <FacebookTabBar />}
       >
-      <ScrollView tabLabel="ios-paper" style={styles.tabView}>
+
+
+{/*
+  Use Views instead of ScrollView if you're going to use RefreshControl on the tabs on iOS devices
+  Otherwise it won't work.
+ */}
+ 
+      <View tabLabel="ios-paper" style={styles.tabView}>
         <View style={styles.card}>
           <Text>News</Text>
         </View>
-      </ScrollView>
-      <ScrollView tabLabel="ios-people" style={styles.tabView}>
+      </View>
+      <View tabLabel="ios-people" style={styles.tabView}>
         <View style={styles.card}>
           <Text>Friends</Text>
         </View>
-      </ScrollView>
-      <ScrollView tabLabel="ios-chatboxes" style={styles.tabView}>
+      </View>
+      <View tabLabel="ios-chatboxes" style={styles.tabView}>
         <View style={styles.card}>
           <Text>Messenger</Text>
         </View>
-      </ScrollView>
+      </View>
+
       <ScrollView tabLabel="ios-notifications" style={styles.tabView}>
         <View style={styles.card}>
           <Text>Notifications</Text>
