@@ -166,6 +166,7 @@ const ScrollableTabBar = React.createClass({
       onLayout={this.onContainerLayout}
     >
       <ScrollView
+        automaticallyAdjustContentInsets={false}
         ref={(scrollView) => { this._scrollView = scrollView; }}
         horizontal={true}
         showsHorizontalScrollIndicator={false}
