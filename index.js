@@ -17,13 +17,14 @@ const TimerMixin = require('react-timer-mixin');
 const SceneComponent = require('./SceneComponent');
 const DefaultTabBar = require('./DefaultTabBar');
 const ScrollableTabBar = require('./ScrollableTabBar');
-
+const Tab = require('./Tab');
 
 const ScrollableTabView = React.createClass({
   mixins: [TimerMixin, ],
   statics: {
     DefaultTabBar,
     ScrollableTabBar,
+    Tab,
   },
 
   propTypes: {
