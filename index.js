@@ -34,6 +34,7 @@ const ScrollableTabView = React.createClass({
     onScroll: PropTypes.func,
     renderTabBar: PropTypes.any,
     style: View.propTypes.style,
+    tabBarIconStyle: View.propTypes.style,
     contentProps: PropTypes.object,
     scrollWithoutAnimation: PropTypes.bool,
     locked: PropTypes.bool,
@@ -220,7 +221,7 @@ const ScrollableTabView = React.createClass({
     let overlayTabs = (this.props.tabBarPosition === 'overlayTop' || this.props.tabBarPosition === 'overlayBottom');
     let tabBarProps = {
       goToPage: this.goToPage,
-      tabs: this._children().map((child) => child.props.tabLabel),
+      tabs: this._children().map((child) => ({label: child.props.tabLabel, icon: child.props.icon, })),
       activeTab: this.state.currentPage,
       scrollValue: this.state.scrollValue,
       containerWidth: this.state.containerWidth,
@@ -237,6 +238,9 @@ const ScrollableTabView = React.createClass({
     }
     if (this.props.tabBarTextStyle) {
       tabBarProps.textStyle = this.props.tabBarTextStyle;
+    }
+    if (this.props.tabBarIconStyle) {
+      tabBarProps.iconStyle = this.props.tabBarIconStyle;
     }
     if (this.props.tabBarUnderlineStyle) {
       tabBarProps.underlineStyle = this.props.tabBarUnderlineStyle;

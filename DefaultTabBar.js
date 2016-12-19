@@ -17,6 +17,7 @@ const DefaultTabBar = React.createClass({
     activeTextColor: React.PropTypes.string,
     inactiveTextColor: React.PropTypes.string,
     textStyle: Text.propTypes.style,
+    iconStyle: View.propTypes.style,
     tabStyle: View.propTypes.style,
     renderTab: React.PropTypes.func,
     underlineStyle: View.propTypes.style,
@@ -33,10 +34,9 @@ const DefaultTabBar = React.createClass({
   renderTabOption(name, page) {
   },
 
-  renderTab(name, page, isTabActive, onPressHandler) {
-    const { activeTextColor, inactiveTextColor, textStyle, } = this.props;
+  renderTab(name, icon, page, isTabActive, onPressHandler) {
+    const { activeTextColor, inactiveTextColor, textStyle, iconStyle, } = this.props;
     const textColor = isTabActive ? activeTextColor : inactiveTextColor;
-    const fontWeight = isTabActive ? 'bold' : 'normal';
 
     return <Button
       style={{flex: 1, }}
@@ -47,7 +47,13 @@ const DefaultTabBar = React.createClass({
       onPress={() => onPressHandler(page)}
     >
       <View style={[styles.tab, this.props.tabStyle, ]}>
-        <Text style={[{color: textColor, fontWeight, }, textStyle, ]}>
+        {
+          !!icon &&
+          <View style={[styles.icon, iconStyle, ]}>
+            {icon}
+          </View>
+        }
+        <Text style={[{color: textColor, }, textStyle, ]}>
           {name}
         </Text>
       </View>
@@ -70,10 +76,10 @@ const DefaultTabBar = React.createClass({
     });
     return (
       <View style={[styles.tabs, {backgroundColor: this.props.backgroundColor, }, this.props.style, ]}>
-        {this.props.tabs.map((name, page) => {
+        {this.props.tabs.map(({label, icon, }, page) => {
           const isTabActive = this.props.activeTab === page;
           const renderTab = this.props.renderTab || this.renderTab;
-          return renderTab(name, page, isTabActive, this.props.goToPage);
+          return renderTab(label, icon, page, isTabActive, this.props.goToPage);
         })}
         <Animated.View style={[tabUnderlineStyle, { left, }, this.props.underlineStyle, ]} />
       </View>
@@ -86,17 +92,16 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    flexDirection: 'row',
     paddingBottom: 10,
   },
   tabs: {
-    height: 50,
+    height: 36,
     flexDirection: 'row',
     justifyContent: 'space-around',
-    borderWidth: 1,
-    borderTopWidth: 0,
-    borderLeftWidth: 0,
-    borderRightWidth: 0,
-    borderColor: '#ccc',
+  },
+  icon: {
+    marginRight: 5,
   },
 });
 
