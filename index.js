@@ -41,6 +41,8 @@ const ScrollableTabView = React.createClass({
     prerenderingSiblingsNumber: PropTypes.number,
   },
 
+  pageOffset: 0,
+
   getDefaultProps() {
     return {
       tabBarPosition: 'top',
@@ -68,7 +70,7 @@ const ScrollableTabView = React.createClass({
     InteractionManager.runAfterInteractions(() => {
       if (this.scrollView && Platform.OS === 'android') {
         const x = this.props.initialPage * this.state.containerWidth;
-        this.scrollView.scrollTo({ x, animated: false });
+        this.scrollView.scrollTo({ x, animated: false, });
       }
     });
   },
@@ -85,6 +87,8 @@ const ScrollableTabView = React.createClass({
 
   goToPage(pageNumber) {
     const offset = pageNumber * this.state.containerWidth;
+    this.pageOffset = offset;
+
     if (this.scrollView) {
       this.scrollView.scrollTo({x: offset, y: 0, animated: !this.props.scrollWithoutAnimation, });
     }
@@ -213,12 +217,19 @@ const ScrollableTabView = React.createClass({
 
   _handleLayout(e) {
     const { width, } = e.nativeEvent.layout;
+    const offset = this.state.currentPage * width;
 
     if (Math.round(width) !== Math.round(this.state.containerWidth)) {
       this.setState({ containerWidth: width, });
       this.requestAnimationFrame(() => {
         this.goToPage(this.state.currentPage);
       });
+    }
+
+    // in case the width does not change, but the offset does
+    if (this.scrollView && offset !== this.pageOffset) {
+      this.pageOffset = offset;
+      this.scrollView.scrollTo({x: offset, y: 0, animated: !this.props.scrollWithoutAnimation, });
     }
   },
 
