@@ -28,6 +28,7 @@ const ScrollableTabBar = React.createClass({
     textStyle: Text.propTypes.style,
     renderTab: React.PropTypes.func,
     underlineStyle: View.propTypes.style,
+    keyboardShouldPersistTaps: React.PropTypes.bool
   },
 
   getDefaultProps() {
@@ -40,6 +41,7 @@ const ScrollableTabBar = React.createClass({
       tabStyle: {},
       tabsContainerStyle: {},
       underlineStyle: {},
+      keyboardShouldPersistTaps: false,
     };
   },
 
@@ -174,6 +176,7 @@ const ScrollableTabBar = React.createClass({
         directionalLockEnabled={true}
         bounces={false}
         scrollsToTop={false}
+        keyboardShouldPersistTaps = { this.props.keyboardShouldPersistTaps }
       >
         <View
           style={[styles.tabs, {width: this.state._containerWidth, }, this.props.tabsContainerStyle, ]}
