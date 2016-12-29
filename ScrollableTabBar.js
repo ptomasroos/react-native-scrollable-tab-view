@@ -8,10 +8,25 @@ const {
   Text,
   Platform,
   Dimensions,
+  Image
 } = ReactNative;
 const Button = require('./Button');
 
 const WINDOW_WIDTH = Dimensions.get('window').width;
+const MASK_WIDTH = 60;
+
+const MASK_IMG = {
+  LEFT: {
+    LIGHT: require('./src/mask_left_light.png'),
+    DARK: require('./src/mask_left_dark.png'),
+    X_LIGHT: require('./src/mask_left_xlight.png')
+  },
+  RIGHT: {
+    LIGHT: require('./src/mask_right_light.png'),
+    DARK: require('./src/mask_right_dark.png'),
+    X_LIGHT: require('./src/mask_right_xlight.png')
+  }
+}
 
 const ScrollableTabBar = React.createClass({
   propTypes: {
@@ -28,7 +43,9 @@ const ScrollableTabBar = React.createClass({
     textStyle: Text.propTypes.style,
     renderTab: React.PropTypes.func,
     underlineStyle: View.propTypes.style,
-    onScroll:React.PropTypes.func,
+    onScroll: React.PropTypes.func,
+    showMask: React.PropTypes.bool,
+    maskMode: React.PropTypes.oneOf(['light', 'dark','x-light'])
   },
 
   getDefaultProps() {
@@ -41,15 +58,32 @@ const ScrollableTabBar = React.createClass({
       tabStyle: {},
       tabsContainerStyle: {},
       underlineStyle: {},
+      showMask: false,
+      maskMode: 'x-light'
     };
   },
 
   getInitialState() {
     this._tabsMeasurements = [];
+    switch (this.props.maskMode) {
+      case 'light':
+        this.maskImageSrc = {left: MASK_IMG.LEFT.LIGHT, right: MASK_IMG.RIGHT.LIGHT};
+        break;
+      case 'dark':
+        this.maskImageSrc = {left: MASK_IMG.LEFT.DARK, right: MASK_IMG.RIGHT.DARK};
+        break;
+      case 'x-light':
+        this.maskImageSrc = {left: MASK_IMG.LEFT.X_LIGHT, right: MASK_IMG.RIGHT.X_LIGHT};
+        break;
+      default:
+        this.maskImageSrc = {left: MASK_IMG.LEFT.X_LIGHT, right: MASK_IMG.RIGHT.X_LIGHT};
+    }
     return {
       _leftTabUnderline: new Animated.Value(0),
       _widthTabUnderline: new Animated.Value(0),
       _containerWidth: null,
+      _showLeftMask: false,
+      _showRightMask: false
     };
   },
 
@@ -94,11 +128,11 @@ const ScrollableTabBar = React.createClass({
     newScrollX = newScrollX >= 0 ? newScrollX : 0;
 
     if (Platform.OS === 'android') {
-      this._scrollView.scrollTo({x: newScrollX, y: 0, animated: false, });
+      this._scrollView.scrollTo({x: newScrollX, y: 0, animated: false,});
     } else {
       const rightBoundScroll = this._tabContainerMeasurements.width - (this._containerMeasurements.width);
       newScrollX = newScrollX > rightBoundScroll ? rightBoundScroll : newScrollX;
-      this._scrollView.scrollTo({x: newScrollX, y: 0, animated: false, });
+      this._scrollView.scrollTo({x: newScrollX, y: 0, animated: false,});
     }
 
   },
@@ -123,7 +157,7 @@ const ScrollableTabBar = React.createClass({
   },
 
   renderTab(name, page, isTabActive, onPressHandler, onLayoutHandler) {
-    const { activeTextColor, inactiveTextColor, textStyle, } = this.props;
+    const {activeTextColor, inactiveTextColor, textStyle,} = this.props;
     const textColor = isTabActive ? activeTextColor : inactiveTextColor;
     const fontWeight = isTabActive ? 'bold' : 'normal';
 
@@ -144,9 +178,56 @@ const ScrollableTabBar = React.createClass({
   },
 
   measureTab(page, event) {
-    const { x, width, height, } = event.nativeEvent.layout;
-    this._tabsMeasurements[page] = {left: x, right: x + width, width, height, };
-    this.updateView({value: this.props.scrollValue._value, });
+    const {x, width, height,} = event.nativeEvent.layout;
+    this._tabsMeasurements[page] = {left: x, right: x + width, width, height,};
+    this.updateView({value: this.props.scrollValue._value,});
+  },
+
+  renderLeftMask(){
+    return (
+      <View
+        style={[styles.maskImg,{left:0,opacity:this.state._showLeftMask?1:0}]}
+        pointerEvents='none'
+      >
+        <Image style={{resizeMode:'stretch'}} source={this.maskImageSrc.left}/>
+      </View>
+    )
+  },
+
+  renderRightMask(){
+
+    return (
+      <View
+        style={[styles.maskImg,{right:0,opacity:this.state._showRightMask?1:0}]}
+        pointerEvents='none'
+      >
+        <Image style={{resizeMode:'stretch'}} source={this.maskImageSrc.right}/>
+      </View>
+    )
+  },
+
+  showLeftMask(disable){
+    if (disable !== this.state._showLeftMask) this.setState({_showLeftMask: disable});
+  },
+
+  showRightMask(disable){
+    if (disable !== this.state._showRightMask) this.setState({_showRightMask: disable});
+  },
+
+  onScroll({nativeEvent:{contentOffset:{x}}}){
+    this.props.onScroll && this.props.onScroll(...arguments)
+
+    if (x >= MASK_WIDTH && !this.state._showLeftMask) {
+      this.showLeftMask(true)
+    } else if (x <= MASK_WIDTH && this.state._showLeftMask) {
+      this.showLeftMask(false)
+    }
+
+    if (x >= this._tabContainerMeasurements.width - MASK_WIDTH - WINDOW_WIDTH && this.state._showRightMask) {
+      this.showRightMask(false)
+    } else if (x <= this._tabContainerMeasurements.width - MASK_WIDTH - WINDOW_WIDTH && !this.state._showRightMask) {
+      this.showRightMask(true)
+    }
   },
 
   render() {
@@ -162,41 +243,47 @@ const ScrollableTabBar = React.createClass({
       width: this.state._widthTabUnderline,
     };
 
-    return <View
-      style={[styles.container, {backgroundColor: this.props.backgroundColor, }, this.props.style, ]}
-      onLayout={this.onContainerLayout}
-    >
-      <ScrollView
-        automaticallyAdjustContentInsets={false}
-        ref={(scrollView) => { this._scrollView = scrollView; }}
-        horizontal={true}
-        showsHorizontalScrollIndicator={false}
-        showsVerticalScrollIndicator={false}
-        directionalLockEnabled={true}
-        onScroll={this.props.onScroll}
-        bounces={false}
-        scrollsToTop={false}
+    return (
+
+      <View
+        style={[styles.container, {backgroundColor: this.props.backgroundColor, }, this.props.style, ]}
+        onLayout={this.onContainerLayout}
       >
-        <View
-          style={[styles.tabs, {width: this.state._containerWidth, }, this.props.tabsContainerStyle, ]}
-          ref={'tabContainer'}
-          onLayout={this.onTabContainerLayout}
+
+        <ScrollView
+          automaticallyAdjustContentInsets={false}
+          ref={(scrollView) => { this._scrollView = scrollView; }}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
+          directionalLockEnabled={true}
+          onScroll={this.onScroll}
+          bounces={false}
+          scrollsToTop={false}
         >
-          {this.props.tabs.map((name, page) => {
-            const isTabActive = this.props.activeTab === page;
-            const renderTab = this.props.renderTab || this.renderTab;
-            return renderTab(name, page, isTabActive, this.props.goToPage, this.measureTab.bind(this, page));
-          })}
-          <Animated.View style={[tabUnderlineStyle, dynamicTabUnderline, this.props.underlineStyle, ]} />
-        </View>
-      </ScrollView>
-    </View>;
+          <View
+            style={[styles.tabs, {width: this.state._containerWidth }, this.props.tabsContainerStyle, ]}
+            ref={'tabContainer'}
+            onLayout={this.onTabContainerLayout}
+          >
+            {this.props.tabs.map((name, page) => {
+              const isTabActive = this.props.activeTab === page;
+              const renderTab = this.props.renderTab || this.renderTab;
+              return renderTab(name, page, isTabActive, this.props.goToPage, this.measureTab.bind(this, page));
+            })}
+            <Animated.View style={[tabUnderlineStyle, dynamicTabUnderline, this.props.underlineStyle, ]}/>
+          </View>
+        </ScrollView>
+        {this.renderLeftMask()}
+        {this.renderRightMask()}
+      </View>
+    );
   },
 
   componentWillReceiveProps(nextProps) {
     // If the tabs change, force the width of the tabs container to be recalculated
     if (JSON.stringify(this.props.tabs) !== JSON.stringify(nextProps.tabs) && this.state._containerWidth) {
-      this.setState({ _containerWidth: null, });
+      this.setState({_containerWidth: null,});
     }
   },
 
@@ -205,14 +292,16 @@ const ScrollableTabBar = React.createClass({
     let width = this._tabContainerMeasurements.width;
     if (width < WINDOW_WIDTH) {
       width = WINDOW_WIDTH;
+    } else {
+      this.setState({_showRightMask: true});
     }
-    this.setState({ _containerWidth: width, });
-    this.updateView({value: this.props.scrollValue._value, });
+    this.setState({_containerWidth: width,});
+    this.updateView({value: this.props.scrollValue._value,});
   },
 
   onContainerLayout(e) {
     this._containerMeasurements = e.nativeEvent.layout;
-    this.updateView({value: this.props.scrollValue._value, });
+    this.updateView({value: this.props.scrollValue._value,});
   },
 });
 
@@ -238,4 +327,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
   },
+  maskImg: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+  }
 });
