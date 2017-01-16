@@ -20,6 +20,8 @@ const DefaultTabBar = React.createClass({
     tabStyle: View.propTypes.style,
     renderTab: React.PropTypes.func,
     underlineStyle: View.propTypes.style,
+    activeTextSize: React.PropTypes.number,
+    inactiveTextSize: React.PropTypes.number,
   },
 
   getDefaultProps() {
@@ -34,9 +36,10 @@ const DefaultTabBar = React.createClass({
   },
 
   renderTab(name, page, isTabActive, onPressHandler) {
-    const { activeTextColor, inactiveTextColor, textStyle, } = this.props;
+    const { activeTextColor, inactiveTextColor, textStyle, activeTextSize, inactiveTextSize} = this.props;
     const textColor = isTabActive ? activeTextColor : inactiveTextColor;
     const fontWeight = isTabActive ? 'bold' : 'normal';
+    const fontSize = isTabActive ? activeTextSize : inactiveTextSize;
 
     return <Button
       style={{flex: 1, }}
@@ -47,7 +50,7 @@ const DefaultTabBar = React.createClass({
       onPress={() => onPressHandler(page)}
     >
       <View style={[styles.tab, this.props.tabStyle, ]}>
-        <Text style={[{color: textColor, fontWeight, }, textStyle, ]}>
+        <Text style={[{color: textColor, fontWeight, fontSize}, textStyle, ]}>
           {name}
         </Text>
       </View>
