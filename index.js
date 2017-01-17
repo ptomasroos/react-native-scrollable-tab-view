@@ -9,10 +9,10 @@ const {
   View,
   Animated,
   ScrollView,
-  StyleSheet,
-  InteractionManager,
   Platform,
-  ViewPagerAndroid
+  StyleSheet,
+  ViewPagerAndroid,
+  InteractionManager,
 } = ReactNative;
 const TimerMixin = require('react-timer-mixin');
 
@@ -65,15 +65,6 @@ const ScrollableTabView = React.createClass({
     };
   },
 
-  componentDidMount() {
-    InteractionManager.runAfterInteractions(() => {
-      if (this.scrollView && Platform.OS === 'android') {
-        const x = this.props.initialPage * this.state.containerWidth;
-        this.scrollView.scrollTo({ x, animated: false });
-      }
-    });
-  },
-
   componentWillReceiveProps(props) {
     if (props.children !== this.props.children) {
       this.updateSceneKeys({ page: this.state.currentPage, children: props.children, });
@@ -85,9 +76,19 @@ const ScrollableTabView = React.createClass({
   },
 
   goToPage(pageNumber) {
-    const offset = pageNumber * this.state.containerWidth;
-    if (this.scrollView) {
-      this.scrollView.scrollTo({x: offset, y: 0, animated: !this.props.scrollWithoutAnimation, });
+    if (Platform.OS === 'ios') {
+      const offset = pageNumber * this.state.containerWidth;
+      if (this.scrollView) {
+        this.scrollView.scrollTo({x: offset, y: 0, animated: !this.props.scrollWithoutAnimation, });
+      }
+    } else {
+      if (this.scrollView) {
+        if (this.props.scrollWithoutAnimation) {
+          this.scrollView.setPageWithoutAnimation(pageNumber);
+        } else {
+          this.scrollView.setPage(pageNumber);
+        }
+      }
     }
 
     const currentPage = this.state.currentPage;
@@ -139,7 +140,6 @@ const ScrollableTabView = React.createClass({
   },
 
   renderScrollableContent() {
-    const scenes = this._composeScenes();
     if (Platform.OS === 'ios') {
       const scenes = this._composeScenes();
       return <ScrollView
