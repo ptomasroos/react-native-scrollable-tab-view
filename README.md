@@ -104,12 +104,12 @@ allow programatically navigation across the multiple tabs:
 
 - **`tabs`** _(Array)_ - Collection of each `tabLabel` as String
 - **`ownPosition`** _(Integer)_ - Current scene position
-- **`goToPage`** _(Function)_ - Method to navigate to any tab 
+- **`goToPage`** _(Function)_ - Method to navigate to any tab
 
 ## Contribution
 **Issues** are welcome. Please add a screenshot of bug and code snippet. Quickest way to solve issue is to reproduce it on one of the examples.
 
-**Pull requests** are welcome. If you want to change API or making something big better to create issue and discuss it first. Before submiting PR please run ```eslint .``` Also all eslint fixes are welcome.
+**Pull requests** are welcome. If you want to change API or making something big better to create issue and discuss it first. Before submiting PR please run ```npm run lint``` Also all eslint fixes are welcome.
 
 Please attach video or gif to PR's and issues it is super helpful.
 
