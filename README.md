@@ -71,6 +71,8 @@ To start you can just copy [DefaultTabBar](https://github.com/skv-headless/react
 
 [FacebookExample](https://github.com/skv-headless/react-native-scrollable-tab-view/blob/master/examples/FacebookTabsExample/FacebookExample.js).
 
+[StepperExample](https://github.com/skv-headless/react-native-scrollable-tab-view/blob/master/examples/FacebookTabsExample/StepperExample.js).
+
 ## Props
 
 - **`renderTabBar`** _(Function:ReactComponent)_ - accept 1 argument `props` and should return a component to use as
@@ -95,6 +97,14 @@ To start you can just copy [DefaultTabBar](https://github.com/skv-headless/react
 - **`contentProps`** _(Object)_ - props that are applied to root `ScrollView`/`ViewPagerAndroid`. Note that overriding defaults set by the library may break functionality; see the source for details.
 - **`scrollWithoutAnimation`** _(Bool)_ - on tab press change tab without animation.
 - **`prerenderingSiblingsNumber`** _(Integer)_ - pre-render nearby # sibling, `Infinity` === render all the siblings, default to 0 === render current page.
+
+## API Navigation
+Each scene (the `Tabs` children) has access to some special props in order to
+allow programatically navigation across the multiple tabs:
+
+- **`tabs`** _(Array)_ - Collection of each `tabLabel` as String
+- **`ownPosition`** _(Integer)_ - Current scene position
+- **`goToPage`** _(Function)_ - Method to navigate to any tab 
 
 ## Contribution
 **Issues** are welcome. Please add a screenshot of bug and code snippet. Quickest way to solve issue is to reproduce it on one of the examples.
