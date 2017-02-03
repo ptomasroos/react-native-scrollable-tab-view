@@ -11,7 +11,7 @@ const SceneComponent = (Props) => {
       <StaticContainer shouldUpdate={shouldUpdated} >
         {React.cloneElement(
           React.Children.only(props.children),
-          props.contentProps
+          props.tabContentProps
         )}
       </StaticContainer>
   </View>;

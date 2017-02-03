@@ -174,7 +174,7 @@ const ScrollableTabView = React.createClass({
         key={child.key}
         shouldUpdated={this._shouldRenderSceneKey(idx, this.state.currentPage)}
         style={{width: this.state.containerWidth, }}
-        contentProps={props}
+        tabContentProps={props}
       >
         {this._keyExists(this.state.sceneKeys, key) ? child : <View tabLabel={child.props.tabLabel}/>}
       </SceneComponent>;
@@ -233,7 +233,7 @@ const ScrollableTabView = React.createClass({
   render() {
     let tabs = this._children().map((child) => child.props.tabLabel)
     let overlayTabs = (this.props.tabBarPosition === 'overlayTop' || this.props.tabBarPosition === 'overlayBottom');
-    let contentProps = {
+    let tabContentProps = {
       goToPage: this.goToPage,
       tabs: tabs,
       ownPosition: this.state.currentPage
@@ -272,7 +272,7 @@ const ScrollableTabView = React.createClass({
 
     return <View style={[styles.container, this.props.style, ]} onLayout={this._handleLayout}>
       {this.props.tabBarPosition === 'top' && this.renderTabBar(tabBarProps)}
-      {this.renderScrollableContent(contentProps)}
+      {this.renderScrollableContent(tabContentProps)}
       {(this.props.tabBarPosition === 'bottom' || overlayTabs) && this.renderTabBar(tabBarProps)}
     </View>;
   },
