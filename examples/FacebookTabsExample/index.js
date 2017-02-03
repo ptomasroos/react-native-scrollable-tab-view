@@ -12,6 +12,7 @@ import ScrollableTabsExample from './ScrollableTabsExample';
 import OverlayExample from './OverlayExample';
 import FacebookExample from './FacebookExample';
 import DynamicExample from './DynamicExample';
+import StepperExample from './StepperExample';
 
 export default React.createClass({
   render() {
@@ -34,6 +35,8 @@ export default React.createClass({
       return <FacebookExample />;
     case 'dynamic':
       return <DynamicExample />;
+    case 'stepper':
+      return <StepperExample />;
     default:
       return <View style={styles.container}>
         <TouchableOpacity
@@ -69,6 +72,13 @@ export default React.createClass({
           onPress={() => nav.push({id: 'dynamic', })}
         >
           <Text>Dynamic tabs example</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => nav.push({id: 'stepper', })}
+        >
+          <Text>Stepper tabs example</Text>
         </TouchableOpacity>
       </View>;
     }
