@@ -140,8 +140,8 @@ const ScrollableTabView = React.createClass({
     return child.props.tabLabel + '_' + idx;
   },
 
-  renderScrollableContent() {
-    const scenes = this._composeScenes();
+  renderScrollableContent(props) {
+    const scenes = this._composeScenes(props);
     return <ScrollView
       horizontal
       pagingEnabled
@@ -167,13 +167,14 @@ const ScrollableTabView = React.createClass({
     </ScrollView>;
   },
 
-  _composeScenes() {
+  _composeScenes(props) {
     return this._children().map((child, idx) => {
       let key = this._makeSceneKey(child, idx);
       return <SceneComponent
         key={child.key}
         shouldUpdated={this._shouldRenderSceneKey(idx, this.state.currentPage)}
         style={{width: this.state.containerWidth, }}
+        contentProps={props}
       >
         {this._keyExists(this.state.sceneKeys, key) ? child : <View tabLabel={child.props.tabLabel}/>}
       </SceneComponent>;
@@ -230,10 +231,16 @@ const ScrollableTabView = React.createClass({
   },
 
   render() {
+    let tabs = this._children().map((child) => child.props.tabLabel)
     let overlayTabs = (this.props.tabBarPosition === 'overlayTop' || this.props.tabBarPosition === 'overlayBottom');
+    let contentProps = {
+      goToPage: this.goToPage,
+      tabs: tabs,
+      ownPosition: this.state.currentPage
+    }
     let tabBarProps = {
       goToPage: this.goToPage,
-      tabs: this._children().map((child) => child.props.tabLabel),
+      tabs: tabs,
       activeTab: this.state.currentPage,
       scrollValue: this.state.scrollValue,
       containerWidth: this.state.containerWidth,
@@ -265,7 +272,7 @@ const ScrollableTabView = React.createClass({
 
     return <View style={[styles.container, this.props.style, ]} onLayout={this._handleLayout}>
       {this.props.tabBarPosition === 'top' && this.renderTabBar(tabBarProps)}
-      {this.renderScrollableContent()}
+      {this.renderScrollableContent(contentProps)}
       {(this.props.tabBarPosition === 'bottom' || overlayTabs) && this.renderTabBar(tabBarProps)}
     </View>;
   },
