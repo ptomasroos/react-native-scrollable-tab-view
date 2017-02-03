@@ -7,30 +7,30 @@ import {
 
 import ScrollableTabView, {DefaultTabBar, } from 'react-native-scrollable-tab-view';
 
-const PrevButton = ({ goToPage, ownPosition }) => (
+const PrevButton = ({ goToPage, ownPosition, }) => (
   <TouchableOpacity onPress={() => goToPage(ownPosition - 1)}>
     <Text>- Prev</Text>
   </TouchableOpacity>
-)
+);
 
-const NextButton = ({ goToPage, ownPosition }) => (
+const NextButton = ({ goToPage, ownPosition, }) => (
   <TouchableOpacity onPress={() => goToPage(ownPosition + 1)}>
     <Text> Next +</Text>
   </TouchableOpacity>
-)
+);
 
 const Step = (props) => {
-  const hasPrev = props.ownPosition !== 0
-  const hasNext = props.ownPosition < props.tabs.length - 1
+  const hasPrev = props.ownPosition !== 0;
+  const hasNext = props.ownPosition < props.tabs.length - 1;
 
   return <View>
     <Text>You're at {props.tabLabel}</Text>
-    <View style={{ flexDirection: 'row' }}>
+    <View style={{ flexDirection: 'row', }}>
       {hasPrev && <PrevButton {...props} />}
       {hasNext && <NextButton {...props} />}
     </View>
-  </View>
-}
+  </View>;
+};
 
 export default React.createClass({
   render() {

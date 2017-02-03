@@ -68,7 +68,7 @@ const ScrollableTabView = React.createClass({
     const scrollFn = () => {
       if (this.scrollView && Platform.OS === 'android') {
         const x = this.props.initialPage * this.state.containerWidth;
-        this.scrollView.scrollTo({ x, animated: false });
+        this.scrollView.scrollTo({ x, animated: false, });
       }
     };
     this.setTimeout(() => {
@@ -231,13 +231,13 @@ const ScrollableTabView = React.createClass({
   },
 
   render() {
-    let tabs = this._children().map((child) => child.props.tabLabel)
+    let tabs = this._children().map((child) => child.props.tabLabel);
     let overlayTabs = (this.props.tabBarPosition === 'overlayTop' || this.props.tabBarPosition === 'overlayBottom');
     let tabContentProps = {
       goToPage: this.goToPage,
       tabs: tabs,
-      ownPosition: this.state.currentPage
-    }
+      ownPosition: this.state.currentPage,
+    };
     let tabBarProps = {
       goToPage: this.goToPage,
       tabs: tabs,
