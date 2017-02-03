@@ -8,8 +8,11 @@ const StaticContainer = require('react-native/Libraries/Components/StaticContain
 const SceneComponent = (Props) => {
   const {shouldUpdated, ...props, } = Props;
   return <View {...props}>
-      <StaticContainer shouldUpdate={shouldUpdated}>
-        {props.children}
+      <StaticContainer shouldUpdate={shouldUpdated} >
+        {React.cloneElement(
+          React.Children.only(props.children),
+          props.contentProps
+        )}
       </StaticContainer>
   </View>;
 };
