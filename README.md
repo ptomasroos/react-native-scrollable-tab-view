@@ -65,7 +65,7 @@ To start you can just copy [DefaultTabBar](https://github.com/skv-headless/react
 
 You can change tabs programmatically. Just use `goToPage` method.
 
-```
+```javascript
 var App = React.createClass({
   render() {
     return <ScrollableTabView
