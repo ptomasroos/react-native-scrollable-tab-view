@@ -13,6 +13,7 @@ const {
   StyleSheet,
   ViewPagerAndroid,
   InteractionManager,
+  Platform,
 } = ReactNative;
 const TimerMixin = require('react-timer-mixin');
 
@@ -63,6 +64,18 @@ const ScrollableTabView = React.createClass({
       containerWidth: Dimensions.get('window').width,
       sceneKeys: this.newSceneKeys({ currentPage: this.props.initialPage, }),
     };
+  },
+
+  componentDidMount() {
+    const scrollFn = () => {
+      if (this.scrollView && Platform.OS === 'android') {
+        const x = this.props.initialPage * this.state.containerWidth;
+        this.scrollView.scrollTo({ x, animated: false });
+      }
+    };
+    this.setTimeout(() => {
+      InteractionManager.runAfterInteractions(scrollFn);
+    }, 0);
   },
 
   componentWillReceiveProps(props) {
