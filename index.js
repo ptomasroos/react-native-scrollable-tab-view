@@ -9,7 +9,6 @@ const {
   View,
   Animated,
   ScrollView,
-  Platform,
   StyleSheet,
   ViewPagerAndroid,
   InteractionManager,
