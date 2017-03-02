@@ -158,18 +158,11 @@ const ScrollableTabBar = React.createClass({
       bottom: 0,
     };
 
-    const dynamicTabUnderline = {};
-      if(I18nManager.isRTL){
-        dynamicTabUnderline = {
-          right: this.state._leftTabUnderline,
-          width: this.state._widthTabUnderline,
-        };
-      }else{
-        dynamicTabUnderline = {
-          left: this.state._leftTabUnderline,
-          width: this.state._widthTabUnderline,
-        };
-      }
+    const key = I18nManager.isRTL ? 'right' : 'left';
+    const dynamicTabUnderline = {
+      [`${key}`]: this.state._leftTabUnderline,
+      width: this.state._widthTabUnderline
+    }
 
     return <View
       style={[styles.container, {backgroundColor: this.props.backgroundColor, }, this.props.style, ]}
