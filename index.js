@@ -144,6 +144,7 @@ const ScrollableTabView = React.createClass({
     if (Platform.OS === 'ios') {
       const scenes = this._composeScenes();
       return <ScrollView
+        style={{ flexDirection: I18nManager.isRTL ? 'row-reverse' : 'row' }}
         horizontal
         pagingEnabled
         automaticallyAdjustContentInsets={false}
