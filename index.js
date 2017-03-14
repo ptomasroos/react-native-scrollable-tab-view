@@ -213,7 +213,6 @@ const ScrollableTabView = React.createClass({
   },
 
   _updateScrollValue(value) {
-    //if (this.value > this.page)
     this.state.scrollValue.setValue(value);
     this.props.onScroll(value);
   },
