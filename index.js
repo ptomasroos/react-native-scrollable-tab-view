@@ -39,6 +39,7 @@ const ScrollableTabView = React.createClass({
     scrollWithoutAnimation: PropTypes.bool,
     locked: PropTypes.bool,
     prerenderingSiblingsNumber: PropTypes.number,
+    allowBounce: PropTypes.bool,
   },
 
   getDefaultProps() {
@@ -52,6 +53,7 @@ const ScrollableTabView = React.createClass({
       scrollWithoutAnimation: false,
       locked: false,
       prerenderingSiblingsNumber: 0,
+      allowBounce: true,
     };
   },
 
@@ -148,6 +150,7 @@ const ScrollableTabView = React.createClass({
       automaticallyAdjustContentInsets={false}
       contentOffset={{ x: this.props.initialPage * this.state.containerWidth, }}
       ref={(scrollView) => { this.scrollView = scrollView; }}
+      bounces={this.props.allowBounce}
       onScroll={(e) => {
         const offsetX = e.nativeEvent.contentOffset.x;
         this._updateScrollValue(offsetX / this.state.containerWidth);
