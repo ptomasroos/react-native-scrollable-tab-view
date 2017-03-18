@@ -67,14 +67,12 @@ const ScrollableTabView = React.createClass({
   },
 
   componentDidMount() {
-    const scrollFn = () => {
-      if (this.scrollView && Platform.OS === 'android') {
-        const x = this.props.initialPage * this.state.containerWidth;
-        this.scrollView.scrollTo({ x, animated: false });
-      }
-    };
     this.setTimeout(() => {
-      InteractionManager.runAfterInteractions(scrollFn);
+      InteractionManager.runAfterInteractions(() => {
+        if (Platform.OS === 'android') {
+          this.goToPage(this.props.initialPage, false);
+        }
+      });
     }, 0);
 
     this.state.scrollX.addListener(({ value, }) => {
@@ -94,10 +92,10 @@ const ScrollableTabView = React.createClass({
     }
   },
 
-  goToPage(pageNumber) {
+  goToPage(pageNumber, animated = !this.props.scrollWithoutAnimation) {
     const offset = pageNumber * this.state.containerWidth;
-    if (this.scrollView) {
-      this.scrollView.scrollTo({x: offset, y: 0, animated: !this.props.scrollWithoutAnimation, });
+    if (this.scrollView && this.scrollView._component && this.scrollView._component.scrollTo) {
+      this.scrollView._component.scrollTo({x: offset, y: 0, animated, });
     }
 
     const currentPage = this.state.currentPage;
