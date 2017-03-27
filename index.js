@@ -27,6 +27,7 @@ const ScrollableTabView = React.createClass({
     DefaultTabBar,
     ScrollableTabBar,
   },
+  scrollOnMountCalled: false,
 
   propTypes: {
     tabBarPosition: PropTypes.oneOf(['top', 'bottom', 'overlayTop', 'overlayBottom', ]),
@@ -150,7 +151,11 @@ const ScrollableTabView = React.createClass({
         ref={(scrollView) => { this.scrollView = scrollView; }}
         onScroll={(e) => {
           const offsetX = e.nativeEvent.contentOffset.x;
-          this._updateScrollValue(offsetX / this.state.containerWidth);
+          if (offsetX === 0 && !this.scrollOnMountCalled) {
+            this.scrollOnMountCalled = true;
+          } else {
+            this._updateScrollValue(offsetX / this.state.containerWidth);
+          }
         }}
         onMomentumScrollBegin={this._onMomentumScrollBeginAndEnd}
         onMomentumScrollEnd={this._onMomentumScrollBeginAndEnd}
