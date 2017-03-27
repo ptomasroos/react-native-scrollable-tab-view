@@ -9,6 +9,7 @@ export default React.createClass({
   render() {
     return <ScrollableTabView
       style={{marginTop: 20, }}
+      initialPage={1}
       renderTabBar={() => <DefaultTabBar />}
     >
       <Text tabLabel='Tab #1'>My</Text>

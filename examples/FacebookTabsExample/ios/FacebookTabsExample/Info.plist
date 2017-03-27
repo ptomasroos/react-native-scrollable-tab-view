@@ -4,6 +4,8 @@
   <dict>
     <key>CFBundleDevelopmentRegion</key>
     <string>en</string>
+    <key>CFBundleDisplayName</key>
+    <string>FacebookTabsExample</string>
     <key>CFBundleExecutable</key>
     <string>$(EXECUTABLE_NAME)</string>
     <key>CFBundleIdentifier</key>
@@ -44,7 +46,7 @@
       <dict>
         <key>localhost</key>
         <dict>
-          <key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+          <key>NSExceptionAllowsInsecureHTTPLoads</key>
           <true/>
         </dict>
       </dict>
@@ -59,6 +61,8 @@
       <string>MaterialIcons.ttf</string>
       <string>Octicons.ttf</string>
       <string>Zocial.ttf</string>
+      <string>MaterialCommunityIcons.ttf</string>
+      <string>SimpleLineIcons.ttf</string>
     </array>
   </dict>
 </plist>
