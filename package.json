@@ -29,6 +29,7 @@
   },
   "homepage": "https://github.com/brentvatne/react-native-scrollable-tab-view#readme",
   "dependencies": {
+    "react-static-container": "^1.0.1",
     "react-timer-mixin": "^0.13.3"
   },
   "devDependencies": {
