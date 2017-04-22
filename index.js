@@ -64,16 +64,20 @@ const ScrollableTabView = React.createClass({
       scrollValue: new Animated.Value(this.props.initialPage),
       containerWidth: width,
       sceneKeys: this.newSceneKeys({ currentPage: this.props.initialPage, }),
+      androidFixKey: 'init-key',
     };
   },
 
   componentDidMount() {
     this.setTimeout(() => {
+      /*
       InteractionManager.runAfterInteractions(() => {
         if (Platform.OS === 'android') {
           this.goToPage(this.props.initialPage, false);
         }
       });
+      */
+      this.setState({androidFixKey: 'did-key'});
     }, 0);
 
     this.state.scrollX.addListener(({ value, }) => {
@@ -162,19 +166,19 @@ const ScrollableTabView = React.createClass({
 
     if (Platform.OS === 'android') {
       return <ViewPagerAndroid
-          style={styles.scrollableContentAndroid}
-          initialPage={this.props.initialPage}
-          onPageSelected={this._updateSelectedPage}
-          keyboardDismissMode="on-drag"
-          scrollEnabled={!this.props.locked}
-          onPageScroll={(e) => {
-            const { offset, position, } = e.nativeEvent;
-            this.state.scrollValue.setValue(position);
-            this.props.onScroll(position);
-          }}
-          ref={(scrollView) => { this.scrollView = scrollView; }}
-          {...this.props.contentProps}
-        >
+        key={this.state.androidFixKey}
+        style={styles.scrollableContentAndroid}
+        initialPage={this.props.initialPage}
+        onPageSelected={this._updateSelectedPage}
+        keyboardDismissMode="on-drag"
+        scrollEnabled={!this.props.locked}
+        onPageScroll={(e) => {
+          const { offset, position, } = e.nativeEvent;
+          this.state.scrollValue.setValue(position);
+          this.props.onScroll(position);
+        }}
+        ref={(scrollView) => { this.scrollView = scrollView; }}
+        {...this.props.contentProps} >
           {scenes}
         </ViewPagerAndroid>;
     }
