@@ -22,7 +22,7 @@ const FacebookTabBar = React.createClass({
 
   setAnimationValue({ value, }) {
     this.tabIcons.forEach((icon, i) => {
-      const progress = Math.min(1, Math.abs(value - i))
+      const progress = Math.min(1, Math.abs(value - i));
       icon.setNativeProps({
         style: {
           color: this.iconColor(progress),
