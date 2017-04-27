@@ -65,9 +65,11 @@ const DefaultTabBar = React.createClass({
       bottom: 0,
     };
 
-    const left = this.props.scrollValue.interpolate({
-      inputRange: [0, 1, ], outputRange: [0,  containerWidth / numberOfTabs, ],
+    const translateX = this.props.scrollX.interpolate({
+      inputRange: [0, containerWidth * numberOfTabs],
+      outputRange: [0, containerWidth],
     });
+
     return (
       <View style={[styles.tabs, {backgroundColor: this.props.backgroundColor, }, this.props.style, ]}>
         {this.props.tabs.map((name, page) => {
@@ -75,7 +77,17 @@ const DefaultTabBar = React.createClass({
           const renderTab = this.props.renderTab || this.renderTab;
           return renderTab(name, page, isTabActive, this.props.goToPage);
         })}
-        <Animated.View style={[tabUnderlineStyle, { left, }, this.props.underlineStyle, ]} />
+        <Animated.View
+          style={[
+            tabUnderlineStyle,
+            {
+              transform: [
+                { translateX },
+              ]
+            },
+            this.props.underlineStyle,
+          ]}
+        />
       </View>
     );
   },
