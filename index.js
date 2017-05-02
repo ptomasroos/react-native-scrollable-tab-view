@@ -3,7 +3,7 @@ const {
   PropTypes,
   Component,
 } = React;
-const ReactNative = require('react-native');
+const { ViewPropTypes } = ReactNative = require('react-native');
 const {
   Dimensions,
   View,
@@ -36,7 +36,7 @@ const ScrollableTabView = React.createClass({
     onChangeTab: PropTypes.func,
     onScroll: PropTypes.func,
     renderTabBar: PropTypes.any,
-    style: View.propTypes.style,
+    style: ViewPropTypes.style,
     contentProps: PropTypes.object,
     scrollWithoutAnimation: PropTypes.bool,
     locked: PropTypes.bool,

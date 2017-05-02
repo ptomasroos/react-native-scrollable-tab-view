@@ -1,5 +1,5 @@
 const React = require('react');
-const ReactNative = require('react-native');
+const { ViewPropTypes } = ReactNative = require('react-native');
 const {
   View,
   Animated,
@@ -22,12 +22,13 @@ const ScrollableTabBar = React.createClass({
     activeTextColor: React.PropTypes.string,
     inactiveTextColor: React.PropTypes.string,
     scrollOffset: React.PropTypes.number,
-    style: View.propTypes.style,
-    tabStyle: View.propTypes.style,
-    tabsContainerStyle: View.propTypes.style,
+    style: ViewPropTypes.style,
+    tabStyle: ViewPropTypes.style,
+    tabsContainerStyle: ViewPropTypes.style,
     textStyle: Text.propTypes.style,
     renderTab: React.PropTypes.func,
-    underlineStyle: View.propTypes.style,
+    underlineStyle: ViewPropTypes.style,
+    onScroll:React.PropTypes.func,
   },
 
   getDefaultProps() {
