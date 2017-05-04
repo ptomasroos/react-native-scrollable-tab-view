@@ -13,6 +13,7 @@ const {
   InteractionManager,
   Platform,
 } = ReactNative;
+const ViewPropTypes = require('react-native/Libraries/Components/View/ViewPropTypes');
 const TimerMixin = require('react-timer-mixin');
 
 const SceneComponent = require('./SceneComponent');
@@ -34,7 +35,7 @@ const ScrollableTabView = React.createClass({
     onChangeTab: PropTypes.func,
     onScroll: PropTypes.func,
     renderTabBar: PropTypes.any,
-    style: View.propTypes.style,
+    style: ViewPropTypes.style,
     contentProps: PropTypes.object,
     scrollWithoutAnimation: PropTypes.bool,
     locked: PropTypes.bool,
