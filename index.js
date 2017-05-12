@@ -13,6 +13,7 @@ const {
   InteractionManager,
   Platform,
 } = ReactNative;
+const ViewPropTypes = require('react-native/Libraries/Components/View/ViewPropTypes');
 const TimerMixin = require('react-timer-mixin');
 
 const SceneComponent = require('./SceneComponent');

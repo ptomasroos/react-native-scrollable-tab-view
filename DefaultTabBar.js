@@ -6,6 +6,7 @@ const {
   View,
   Animated,
 } = ReactNative;
+const ViewPropTypes = require('react-native/Libraries/Components/View/ViewPropTypes');
 const Button = require('./Button');
 
 const DefaultTabBar = React.createClass({

@@ -10,6 +10,7 @@ const {
   Dimensions,
   I18nManager
 } = ReactNative;
+const ViewPropTypes = require('react-native/Libraries/Components/View/ViewPropTypes');
 const Button = require('./Button');
 
 const WINDOW_WIDTH = Dimensions.get('window').width;
