@@ -6,74 +6,70 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import { Navigator } from 'react-native-deprecated-custom-components'
+import { StackNavigator } from 'react-navigation';
 import SimpleExample from './SimpleExample';
 import ScrollableTabsExample from './ScrollableTabsExample';
 import OverlayExample from './OverlayExample';
 import FacebookExample from './FacebookExample';
 import DynamicExample from './DynamicExample';
 
-export default React.createClass({
-  render() {
-    return <Navigator
-      style={{flex: 1, }}
-      initialRoute={{}}
-      renderScene={this.renderScene}
-    />;
+const HomeScreen = React.createClass({
+  navigationOptions: {
+    title: 'Welcome',
   },
 
-  renderScene(route, nav) {
-    switch (route.id) {
-    case 'simple':
-      return <SimpleExample />;
-    case 'scrollable':
-      return <ScrollableTabsExample />;
-    case 'overlay':
-      return <OverlayExample />;
-    case 'facebook':
-      return <FacebookExample />;
-    case 'dynamic':
-      return <DynamicExample />;
-    default:
-      return <View style={styles.container}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => nav.push({id: 'simple', })}
-        >
-          <Text>Simple example</Text>
-        </TouchableOpacity>
+  render() {
+    const { navigate } = this.props.navigation;
 
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => nav.push({id: 'scrollable', })}
-        >
-          <Text>Scrollable tabs example</Text>
-        </TouchableOpacity>
+    return <View style={styles.container}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigate('Simple')}
+      >
+        <Text>Simple example</Text>
+      </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => nav.push({id: 'overlay', })}
-        >
-          <Text>Overlay example</Text>
-        </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigate('Scrollable')}
+      >
+        <Text>Scrollable tabs example</Text>
+      </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => nav.push({id: 'facebook', })}
-        >
-          <Text>Facebook tabs example</Text>
-        </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigate('Overlay')}
+      >
+        <Text>Overlay example</Text>
+      </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => nav.push({id: 'dynamic', })}
-        >
-          <Text>Dynamic tabs example</Text>
-        </TouchableOpacity>
-      </View>;
-    }
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigate('Facebook')}
+      >
+        <Text>Facebook tabs example</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigate('Dynamic')}
+      >
+        <Text>Dynamic tabs example</Text>
+      </TouchableOpacity>
+    </View>;
   },
 });
+
+const App = StackNavigator({
+  Home: { screen: HomeScreen },
+  Simple: { screen: SimpleExample },
+  Scrollable: { screen: ScrollableTabsExample },
+  Overlay: { screen: OverlayExample },
+  Facebook: { screen: FacebookExample },
+  Dynamic: { screen: DynamicExample },
+});
+
+export default App;
 
 const styles = StyleSheet.create({
   container: {
