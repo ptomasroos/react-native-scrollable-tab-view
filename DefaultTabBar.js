@@ -1,5 +1,5 @@
 const React = require('react');
-const ReactNative = require('react-native');
+const { ViewPropTypes } = ReactNative = require('react-native');
 const {
   StyleSheet,
   Text,
@@ -17,9 +17,9 @@ const DefaultTabBar = React.createClass({
     activeTextColor: React.PropTypes.string,
     inactiveTextColor: React.PropTypes.string,
     textStyle: Text.propTypes.style,
-    tabStyle: View.propTypes.style,
+    tabStyle: ViewPropTypes.style,
     renderTab: React.PropTypes.func,
-    underlineStyle: View.propTypes.style,
+    underlineStyle: ViewPropTypes.style,
   },
 
   getDefaultProps() {
