@@ -7,6 +7,7 @@ const {
   Animated,
 } = ReactNative;
 const Button = require('./Button');
+const propTypesStyle = ViewPropTypes ? ViewPropTypes.style : View.propTypes.style;
 
 const DefaultTabBar = React.createClass({
   propTypes: {
@@ -17,9 +18,9 @@ const DefaultTabBar = React.createClass({
     activeTextColor: React.PropTypes.string,
     inactiveTextColor: React.PropTypes.string,
     textStyle: Text.propTypes.style,
-    tabStyle: ViewPropTypes.style,
+    tabStyle: propTypesStyle,
     renderTab: React.PropTypes.func,
-    underlineStyle: ViewPropTypes.style,
+    underlineStyle: propTypesStyle,
   },
 
   getDefaultProps() {
