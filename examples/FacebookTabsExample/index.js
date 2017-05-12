@@ -4,9 +4,9 @@ import {
   Text,
   View,
   ScrollView,
-  Navigator,
   TouchableOpacity,
 } from 'react-native';
+import { Navigator } from 'react-native-deprecated-custom-components'
 import SimpleExample from './SimpleExample';
 import ScrollableTabsExample from './ScrollableTabsExample';
 import OverlayExample from './OverlayExample';
