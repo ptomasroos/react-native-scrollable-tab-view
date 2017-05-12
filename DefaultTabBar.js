@@ -7,7 +7,7 @@ const {
   Animated,
 } = ReactNative;
 const Button = require('./Button');
-const propTypesStyle: ViewPropTypes ? ViewPropTypes.style : View.propTypes.style;
+const propTypesStyle = ViewPropTypes ? ViewPropTypes.style : View.propTypes.style;
 
 const DefaultTabBar = React.createClass({
   propTypes: {
