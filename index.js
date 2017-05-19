@@ -44,6 +44,7 @@ const ScrollableTabView = React.createClass({
     scrollWithoutAnimation: _propTypes.bool,
     locked: _propTypes.bool,
     prerenderingSiblingsNumber: _propTypes.number,
+
   },
 
   getDefaultProps() {

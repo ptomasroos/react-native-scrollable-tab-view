@@ -1,5 +1,5 @@
 const React = require('react');
-const {ViewPropTypes} = ReactNative = require('react-native');
+const { ViewPropTypes } = ReactNative = require('react-native');
 const {
     View,
     Animated,
