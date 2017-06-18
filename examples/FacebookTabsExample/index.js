@@ -12,6 +12,7 @@ import ScrollableTabsExample from './ScrollableTabsExample';
 import OverlayExample from './OverlayExample';
 import FacebookExample from './FacebookExample';
 import DynamicExample from './DynamicExample';
+import CollapsableExample from './CollapsableExample';
 
 const HomeScreen = React.createClass({
   navigationOptions: {
@@ -56,6 +57,13 @@ const HomeScreen = React.createClass({
       >
         <Text>Dynamic tabs example</Text>
       </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigate('Collapsable')}
+      >
+        <Text>Collapsable content example</Text>
+      </TouchableOpacity>
     </View>;
   },
 });
@@ -67,6 +75,7 @@ const App = new StackNavigator({
   Overlay: { screen: OverlayExample, },
   Facebook: { screen: FacebookExample, },
   Dynamic: { screen: DynamicExample, },
+  Collapsable: { screen: CollapsableExample, },
 });
 
 export default App;
