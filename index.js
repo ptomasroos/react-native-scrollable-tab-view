@@ -3,7 +3,7 @@ const {
   PropTypes,
   Component,
 } = React;
-const { ViewPropTypes } = ReactNative = require('react-native');
+const { ViewPropTypes, } = ReactNative = require('react-native');
 const {
   Dimensions,
   View,
@@ -156,10 +156,10 @@ const ScrollableTabView = React.createClass({
       ref={(scrollView) => { this.scrollView = scrollView; }}
       onScroll={
         Animated.event([{
-              nativeEvent: { contentOffset: { x: this.state.scrollX } }
-            }], {
-              useNativeDriver: true,
-            })
+          nativeEvent: { contentOffset: { x: this.state.scrollX, }, },
+        }, ], {
+          useNativeDriver: true,
+        })
       }
       onMomentumScrollBegin={this._onMomentumScrollBeginAndEnd}
       onMomentumScrollEnd={this._onMomentumScrollBeginAndEnd}

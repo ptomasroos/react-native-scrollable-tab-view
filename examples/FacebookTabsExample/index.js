@@ -6,7 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import { StackNavigator } from 'react-navigation';
+import { StackNavigator, } from 'react-navigation';
 import SimpleExample from './SimpleExample';
 import ScrollableTabsExample from './ScrollableTabsExample';
 import OverlayExample from './OverlayExample';
@@ -19,7 +19,7 @@ const HomeScreen = React.createClass({
   },
 
   render() {
-    const { navigate } = this.props.navigation;
+    const { navigate, } = this.props.navigation;
 
     return <View style={styles.container}>
       <TouchableOpacity
@@ -60,13 +60,13 @@ const HomeScreen = React.createClass({
   },
 });
 
-const App = StackNavigator({
-  Home: { screen: HomeScreen },
-  Simple: { screen: SimpleExample },
-  Scrollable: { screen: ScrollableTabsExample },
-  Overlay: { screen: OverlayExample },
-  Facebook: { screen: FacebookExample },
-  Dynamic: { screen: DynamicExample },
+const App = new StackNavigator({
+  Home: { screen: HomeScreen, },
+  Simple: { screen: SimpleExample, },
+  Scrollable: { screen: ScrollableTabsExample, },
+  Overlay: { screen: OverlayExample, },
+  Facebook: { screen: FacebookExample, },
+  Dynamic: { screen: DynamicExample, },
 });
 
 export default App;
