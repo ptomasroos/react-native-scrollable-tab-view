@@ -3,7 +3,7 @@ const {
   PropTypes,
   Component,
 } = React;
-const ReactNative = require('react-native');
+const { ViewPropTypes } = ReactNative = require('react-native');
 const {
   Dimensions,
   View,
@@ -35,7 +35,7 @@ const ScrollableTabView = React.createClass({
     onChangeTab: PropTypes.func,
     onScroll: PropTypes.func,
     renderTabBar: PropTypes.any,
-    style: View.propTypes.style,
+    style: ViewPropTypes.style,
     contentProps: PropTypes.object,
     scrollWithoutAnimation: PropTypes.bool,
     locked: PropTypes.bool,
@@ -57,12 +57,30 @@ const ScrollableTabView = React.createClass({
   },
 
   getInitialState() {
+    const width = Dimensions.get('window').width;
     return {
       currentPage: this.props.initialPage,
+      scrollX: new Animated.Value(this.props.initialPage * width),
       scrollValue: new Animated.Value(this.props.initialPage),
-      containerWidth: Dimensions.get('window').width,
+      containerWidth: width,
       sceneKeys: this.newSceneKeys({ currentPage: this.props.initialPage, }),
     };
+  },
+
+  componentDidMount() {
+    this.setTimeout(() => {
+      InteractionManager.runAfterInteractions(() => {
+        if (Platform.OS === 'android') {
+          this.goToPage(this.props.initialPage, false);
+        }
+      });
+    }, 0);
+
+    this.state.scrollX.addListener(({ value, }) => {
+      const scrollValue = value / this.state.containerWidth;
+      this.state.scrollValue.setValue(scrollValue);
+      this.props.onScroll(scrollValue);
+    });
   },
 
   componentWillReceiveProps(props) {
@@ -75,11 +93,11 @@ const ScrollableTabView = React.createClass({
     }
   },
 
-  goToPage(pageNumber) {
+  goToPage(pageNumber, animated = !this.props.scrollWithoutAnimation) {
     if (Platform.OS === 'ios') {
       const offset = pageNumber * this.state.containerWidth;
-      if (this.scrollView) {
-        this.scrollView.scrollTo({x: offset, y: 0, animated: !this.props.scrollWithoutAnimation, });
+      if (this.scrollView && this.scrollView._component && this.scrollView._component.scrollTo) {
+        this.scrollView._component.scrollTo({x: offset, y: 0, animated, });
       }
     } else {
       if (this.scrollView) {
@@ -142,16 +160,19 @@ const ScrollableTabView = React.createClass({
   renderScrollableContent() {
     if (Platform.OS === 'ios') {
       const scenes = this._composeScenes();
-      return <ScrollView
+      return <Animated.ScrollView
         horizontal
         pagingEnabled
         automaticallyAdjustContentInsets={false}
         contentOffset={{ x: this.props.initialPage * this.state.containerWidth, }}
         ref={(scrollView) => { this.scrollView = scrollView; }}
-        onScroll={(e) => {
-          const offsetX = e.nativeEvent.contentOffset.x;
-          this._updateScrollValue(offsetX / this.state.containerWidth);
-        }}
+        onScroll={
+          Animated.event([{
+                nativeEvent: { contentOffset: { x: this.state.scrollX } }
+              }], {
+                useNativeDriver: true,
+              })
+        }
         onMomentumScrollBegin={this._onMomentumScrollBeginAndEnd}
         onMomentumScrollEnd={this._onMomentumScrollBeginAndEnd}
         scrollEventThrottle={16}
@@ -162,9 +183,9 @@ const ScrollableTabView = React.createClass({
         alwaysBounceVertical={false}
         keyboardDismissMode="on-drag"
         {...this.props.contentProps}
-      >
-          {scenes}
-      </ScrollView>;
+        >
+        {scenes}
+      </Animated.ScrollView>;
     } else {
       const scenes = this._composeScenes();
       return <ViewPagerAndroid
@@ -228,11 +249,6 @@ const ScrollableTabView = React.createClass({
     });
   },
 
-  _updateScrollValue(value) {
-    this.state.scrollValue.setValue(value);
-    this.props.onScroll(value);
-  },
-
   _handleLayout(e) {
     const { width, } = e.nativeEvent.layout;
 
@@ -254,6 +270,7 @@ const ScrollableTabView = React.createClass({
       goToPage: this.goToPage,
       tabs: this._children().map((child) => child.props.tabLabel),
       activeTab: this.state.currentPage,
+      scrollX: this.state.scrollX,
       scrollValue: this.state.scrollValue,
       containerWidth: this.state.containerWidth,
     };
