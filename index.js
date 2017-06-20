@@ -9,9 +9,10 @@ const {
   View,
   Animated,
   ScrollView,
-  StyleSheet,
-  InteractionManager,
   Platform,
+  StyleSheet,
+  ViewPagerAndroid,
+  InteractionManager,
 } = ReactNative;
 const TimerMixin = require('react-timer-mixin');
 
@@ -93,9 +94,19 @@ const ScrollableTabView = React.createClass({
   },
 
   goToPage(pageNumber, animated = !this.props.scrollWithoutAnimation) {
-    const offset = pageNumber * this.state.containerWidth;
-    if (this.scrollView && this.scrollView._component && this.scrollView._component.scrollTo) {
-      this.scrollView._component.scrollTo({x: offset, y: 0, animated, });
+    if (Platform.OS === 'ios') {
+      const offset = pageNumber * this.state.containerWidth;
+      if (this.scrollView && this.scrollView._component && this.scrollView._component.scrollTo) {
+        this.scrollView._component.scrollTo({x: offset, y: 0, animated, });
+      }
+    } else {
+      if (this.scrollView) {
+        if (this.props.scrollWithoutAnimation) {
+          this.scrollView.setPageWithoutAnimation(pageNumber);
+        } else {
+          this.scrollView.setPage(pageNumber);
+        }
+      }
     }
 
     const currentPage = this.state.currentPage;
@@ -147,33 +158,53 @@ const ScrollableTabView = React.createClass({
   },
 
   renderScrollableContent() {
-    const scenes = this._composeScenes();
-    return <Animated.ScrollView
-      horizontal
-      pagingEnabled
-      automaticallyAdjustContentInsets={false}
-      contentOffset={{ x: this.props.initialPage * this.state.containerWidth, }}
-      ref={(scrollView) => { this.scrollView = scrollView; }}
-      onScroll={
-        Animated.event([{
-              nativeEvent: { contentOffset: { x: this.state.scrollX } }
-            }], {
-              useNativeDriver: true,
-            })
-      }
-      onMomentumScrollBegin={this._onMomentumScrollBeginAndEnd}
-      onMomentumScrollEnd={this._onMomentumScrollBeginAndEnd}
-      scrollEventThrottle={16}
-      scrollsToTop={false}
-      showsHorizontalScrollIndicator={false}
-      scrollEnabled={!this.props.locked}
-      directionalLockEnabled
-      alwaysBounceVertical={false}
-      keyboardDismissMode="on-drag"
-      {...this.props.contentProps}
+    if (Platform.OS === 'ios') {
+      const scenes = this._composeScenes();
+      return <Animated.ScrollView
+        horizontal
+        pagingEnabled
+        automaticallyAdjustContentInsets={false}
+        contentOffset={{ x: this.props.initialPage * this.state.containerWidth, }}
+        ref={(scrollView) => { this.scrollView = scrollView; }}
+        onScroll={
+          Animated.event([{
+                nativeEvent: { contentOffset: { x: this.state.scrollX } }
+              }], {
+                useNativeDriver: true,
+              })
+        }
+        onMomentumScrollBegin={this._onMomentumScrollBeginAndEnd}
+        onMomentumScrollEnd={this._onMomentumScrollBeginAndEnd}
+        scrollEventThrottle={16}
+        scrollsToTop={false}
+        showsHorizontalScrollIndicator={false}
+        scrollEnabled={!this.props.locked}
+        directionalLockEnabled
+        alwaysBounceVertical={false}
+        keyboardDismissMode="on-drag"
+        {...this.props.contentProps}
+        >
+        {scenes}
+      </Animated.ScrollView>;
+    } else {
+      const scenes = this._composeScenes();
+      return <ViewPagerAndroid
+        key={this._children().length}
+        style={styles.scrollableContentAndroid}
+        initialPage={this.props.initialPage}
+        onPageSelected={this._updateSelectedPage}
+        keyboardDismissMode="on-drag"
+        scrollEnabled={!this.props.locked}
+        onPageScroll={(e) => {
+          const { offset, position, } = e.nativeEvent;
+          this._updateScrollValue(position + offset);
+        }}
+        ref={(scrollView) => { this.scrollView = scrollView; }}
+        {...this.props.contentProps}
       >
-      {scenes}
-    </Animated.ScrollView>;
+        {scenes}
+      </ViewPagerAndroid>;
+    }
   },
 
   _composeScenes() {
