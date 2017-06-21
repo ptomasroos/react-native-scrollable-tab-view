@@ -178,6 +178,8 @@ const ScrollableTabBar = React.createClass({
         onScroll={this.props.onScroll}
         bounces={false}
         scrollsToTop={false}
+        keyboardDismissMode={this.props.keyboardDismissMode}
+        keyboardShouldPersistTaps={this.props.keyboardShouldPersistTaps}
       >
         <View
           style={[styles.tabs, {width: this.state._containerWidth, }, this.props.tabsContainerStyle, ]}
