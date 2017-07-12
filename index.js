@@ -1,9 +1,8 @@
 const React = require('react');
 const {
-  PropTypes,
   Component,
 } = React;
-const { ViewPropTypes } = ReactNative = require('react-native');
+const ReactNative = require('react-native');
 const {
   Dimensions,
   View,
@@ -12,23 +11,26 @@ const {
   StyleSheet,
   InteractionManager,
   Platform,
+  ViewPropTypes
 } = ReactNative;
 const TimerMixin = require('react-timer-mixin');
 
 const SceneComponent = require('./SceneComponent');
 const DefaultTabBar = require('./DefaultTabBar');
 const ScrollableTabBar = require('./ScrollableTabBar');
+const PropTypes = require('prop-types');
+const createClass = require('create-react-class');
 
 
-const ScrollableTabView = React.createClass({
-  mixins: [TimerMixin, ],
+const ScrollableTabView = createClass({
+  mixins: [ TimerMixin, ],
   statics: {
     DefaultTabBar,
     ScrollableTabBar,
   },
 
   propTypes: {
-    tabBarPosition: PropTypes.oneOf(['top', 'bottom', 'overlayTop', 'overlayBottom', ]),
+    tabBarPosition: PropTypes.oneOf([ 'top', 'bottom', 'overlayTop', 'overlayBottom', ]),
     initialPage: PropTypes.number,
     page: PropTypes.number,
     onChangeTab: PropTypes.func,

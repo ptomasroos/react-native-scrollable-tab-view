@@ -1,5 +1,5 @@
 const React = require('react');
-const { ViewPropTypes } = ReactNative = require('react-native');
+const ReactNative = require('react-native');
 const {
   View,
   Animated,
@@ -8,28 +8,31 @@ const {
   Text,
   Platform,
   Dimensions,
-  I18nManager
+  I18nManager,
+  ViewPropTypes
 } = ReactNative;
 const Button = require('./Button');
+const PropTypes = require('prop-types');
+const createClass = require('create-react-class');
 
 const WINDOW_WIDTH = Dimensions.get('window').width;
 
-const ScrollableTabBar = React.createClass({
+const ScrollableTabBar = createClass({
   propTypes: {
-    goToPage: React.PropTypes.func,
-    activeTab: React.PropTypes.number,
-    tabs: React.PropTypes.array,
-    backgroundColor: React.PropTypes.string,
-    activeTextColor: React.PropTypes.string,
-    inactiveTextColor: React.PropTypes.string,
-    scrollOffset: React.PropTypes.number,
+    goToPage: PropTypes.func,
+    activeTab: PropTypes.number,
+    tabs: PropTypes.array,
+    backgroundColor: PropTypes.string,
+    activeTextColor: PropTypes.string,
+    inactiveTextColor: PropTypes.string,
+    scrollOffset: PropTypes.number,
     style: ViewPropTypes.style,
     tabStyle: ViewPropTypes.style,
     tabsContainerStyle: ViewPropTypes.style,
-    textStyle: Text.propTypes.style,
-    renderTab: React.PropTypes.func,
+    textStyle: ViewPropTypes.style,
+    renderTab: PropTypes.func,
     underlineStyle: ViewPropTypes.style,
-    onScroll:React.PropTypes.func,
+    onScroll: PropTypes.func,
   },
 
   getDefaultProps() {
