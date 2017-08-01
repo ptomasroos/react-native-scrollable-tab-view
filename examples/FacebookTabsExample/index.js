@@ -1,4 +1,5 @@
 import React from 'react';
+import createReactClass from 'create-react-class';
 import {
   StyleSheet,
   Text,
@@ -13,7 +14,7 @@ import OverlayExample from './OverlayExample';
 import FacebookExample from './FacebookExample';
 import DynamicExample from './DynamicExample';
 
-const HomeScreen = React.createClass({
+const HomeScreen = createReactClass({
   navigationOptions: {
     title: 'Welcome',
   },

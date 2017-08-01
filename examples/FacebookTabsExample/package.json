@@ -11,6 +11,8 @@
     "react-native-scrollable-tab-view": "../..",
     "react-native-vector-icons": "^4.0.0",
     "react-navigation": "^1.0.0-beta.9",
-    "react-timer-mixin": "^0.13.3"
+    "react-timer-mixin": "^0.13.3",
+    "prop-types": "^15.5.8",
+    "create-react-class":"^15.6.0"
   }
 }

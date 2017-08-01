@@ -1,4 +1,5 @@
 import React from 'react';
+import createReactClass from 'create-react-class';
 import {
   StyleSheet,
   Text,
@@ -9,7 +10,7 @@ import {
 import FacebookTabBar from './FacebookTabBar';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 
-export default React.createClass({
+export default createReactClass({
   render() {
     return <ScrollableTabView
       style={{marginTop: 20, }}

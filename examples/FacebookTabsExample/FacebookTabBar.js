@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import createReactClass from 'create-react-class';
 import {
   StyleSheet,
   Text,
@@ -7,13 +9,13 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-const FacebookTabBar = React.createClass({
+const FacebookTabBar = createReactClass({
   tabIcons: [],
 
   propTypes: {
-    goToPage: React.PropTypes.func,
-    activeTab: React.PropTypes.number,
-    tabs: React.PropTypes.array,
+    goToPage: PropTypes.func,
+    activeTab: PropTypes.number,
+    tabs: PropTypes.array,
   },
 
   componentDidMount() {
