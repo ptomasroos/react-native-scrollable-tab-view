@@ -29,9 +29,9 @@
   },
   "homepage": "https://github.com/brentvatne/react-native-scrollable-tab-view#readme",
   "dependencies": {
-    "react-timer-mixin": "^0.13.3",
     "prop-types": "^15.5.8",
-    "create-react-class":"^15.6.0"
+    "react-mixin": "^3.1.0",
+    "react-timer-mixin": "^0.13.3"
   },
   "devDependencies": {
     "babel-eslint": "^6.1.2",

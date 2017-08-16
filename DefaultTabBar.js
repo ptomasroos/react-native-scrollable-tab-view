@@ -1,6 +1,5 @@
 const React = require('react');
 const PropTypes = require('prop-types');
-const createReactClass = require('create-react-class');
 const { ViewPropTypes } = ReactNative = require('react-native');
 const {
   StyleSheet,
@@ -10,8 +9,8 @@ const {
 } = ReactNative;
 const Button = require('./Button');
 
-const DefaultTabBar = createReactClass({
-  propTypes: {
+class DefaultTabBar extends React.Component {
+  static propTypes = {
     goToPage: PropTypes.func,
     activeTab: PropTypes.number,
     tabs: PropTypes.array,
@@ -22,18 +21,13 @@ const DefaultTabBar = createReactClass({
     tabStyle: ViewPropTypes.style,
     renderTab: PropTypes.func,
     underlineStyle: ViewPropTypes.style,
-  },
+  }
 
-  getDefaultProps() {
-    return {
-      activeTextColor: 'navy',
-      inactiveTextColor: 'black',
-      backgroundColor: null,
-    };
-  },
-
-  renderTabOption(name, page) {
-  },
+  static defaultProps = {
+    activeTextColor: 'navy',
+    inactiveTextColor: 'black',
+    backgroundColor: null,
+  }
 
   renderTab(name, page, isTabActive, onPressHandler) {
     const { activeTextColor, inactiveTextColor, textStyle, } = this.props;
@@ -54,7 +48,7 @@ const DefaultTabBar = createReactClass({
         </Text>
       </View>
     </Button>;
-  },
+  }
 
   render() {
     const containerWidth = this.props.containerWidth;
@@ -80,8 +74,8 @@ const DefaultTabBar = createReactClass({
         <Animated.View style={[tabUnderlineStyle, { left, }, this.props.underlineStyle, ]} />
       </View>
     );
-  },
-});
+  }
+};
 
 const styles = StyleSheet.create({
   tab: {
