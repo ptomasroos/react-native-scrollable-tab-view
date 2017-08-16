@@ -59,6 +59,7 @@ class ScrollableTabView extends Component {
       containerWidth: width,
       sceneKeys: this.newSceneKeys({ currentPage: this.props.initialPage, }),
     };
+    this.bindFunctions()
   }
 
   componentDidMount() {
@@ -85,6 +86,12 @@ class ScrollableTabView extends Component {
     if (props.page >= 0 && props.page !== this.state.currentPage) {
       this.goToPage(props.page);
     }
+  }
+
+  bindFunctions() {
+    this._handleLayout = this._handleLayout.bind(this)
+    this._onMomentumScrollBeginAndEnd = this._onMomentumScrollBeginAndEnd.bind(this)
+    this.goToPage = this.goToPage.bind(this)
   }
 
   goToPage(pageNumber, animated = !this.props.scrollWithoutAnimation) {
@@ -263,11 +270,16 @@ class ScrollableTabView extends Component {
       };
     }
 
-    return <View style={[styles.container, this.props.style, ]} onLayout={this._handleLayout}>
-      {this.props.tabBarPosition === 'top' && this.renderTabBar(tabBarProps)}
-      {this.renderScrollableContent()}
-      {(this.props.tabBarPosition === 'bottom' || overlayTabs) && this.renderTabBar(tabBarProps)}
-    </View>;
+    return (
+      <View
+        style={[styles.container, this.props.style, ]}
+        onLayout={this._handleLayout}
+      >
+        {this.props.tabBarPosition === 'top' && this.renderTabBar(tabBarProps)}
+        {this.renderScrollableContent()}
+        {(this.props.tabBarPosition === 'bottom' || overlayTabs) && this.renderTabBar(tabBarProps)}
+      </View>
+    );
   }
 };
 
