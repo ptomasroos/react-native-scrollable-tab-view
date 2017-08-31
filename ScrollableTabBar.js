@@ -1,5 +1,5 @@
 const React = require('react');
-const { ViewPropTypes } = ReactNative = require('react-native');
+const ReactNative = require('react-native');
 const {
   View,
   Animated,
@@ -8,7 +8,6 @@ const {
   Text,
   Platform,
   Dimensions,
-  I18nManager
 } = ReactNative;
 const Button = require('./Button');
 
@@ -23,13 +22,12 @@ const ScrollableTabBar = React.createClass({
     activeTextColor: React.PropTypes.string,
     inactiveTextColor: React.PropTypes.string,
     scrollOffset: React.PropTypes.number,
-    style: ViewPropTypes.style,
-    tabStyle: ViewPropTypes.style,
-    tabsContainerStyle: ViewPropTypes.style,
+    style: View.propTypes.style,
+    tabStyle: View.propTypes.style,
+    tabsContainerStyle: View.propTypes.style,
     textStyle: Text.propTypes.style,
     renderTab: React.PropTypes.func,
-    underlineStyle: ViewPropTypes.style,
-    onScroll:React.PropTypes.func,
+    underlineStyle: View.propTypes.style,
   },
 
   getDefaultProps() {
@@ -169,13 +167,11 @@ const ScrollableTabBar = React.createClass({
       onLayout={this.onContainerLayout}
     >
       <ScrollView
-        automaticallyAdjustContentInsets={false}
         ref={(scrollView) => { this._scrollView = scrollView; }}
         horizontal={true}
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
         directionalLockEnabled={true}
-        onScroll={this.props.onScroll}
         bounces={false}
         scrollsToTop={false}
       >

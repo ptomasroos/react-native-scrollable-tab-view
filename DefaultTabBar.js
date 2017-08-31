@@ -1,5 +1,5 @@
 const React = require('react');
-const { ViewPropTypes } = ReactNative = require('react-native');
+const ReactNative = require('react-native');
 const {
   StyleSheet,
   Text,
@@ -17,9 +17,9 @@ const DefaultTabBar = React.createClass({
     activeTextColor: React.PropTypes.string,
     inactiveTextColor: React.PropTypes.string,
     textStyle: Text.propTypes.style,
-    tabStyle: ViewPropTypes.style,
+    tabStyle: View.propTypes.style,
     renderTab: React.PropTypes.func,
-    underlineStyle: ViewPropTypes.style,
+    underlineStyle: View.propTypes.style,
   },
 
   getDefaultProps() {
@@ -39,7 +39,7 @@ const DefaultTabBar = React.createClass({
     const fontWeight = isTabActive ? 'bold' : 'normal';
 
     return <Button
-      style={styles.flexOne}
+      style={{flex: 1, }}
       key={name}
       accessible={true}
       accessibilityLabel={name}
@@ -87,9 +87,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingBottom: 10,
-  },
-  flexOne: {
-    flex: 1,
   },
   tabs: {
     height: 50,
