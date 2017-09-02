@@ -1,38 +1,19 @@
-const React = require('react');
-const { ViewPropTypes, } = ReactNative = require('react-native');
-const PropTypes = require( 'prop-types');
-const {
+import React, {Component, } from 'react';
+import PropTypes from 'prop-types';
+import {
   StyleSheet,
   Text,
   View,
   Animated,
-} = ReactNative;
-const Button = require('./Button');
+} from 'react-native';
+import Button from './Button';
 
-const DefaultTabBar = React.createClass({
-  propTypes: {
-    goToPage: PropTypes.func,
-    activeTab: PropTypes.number,
-    tabs: PropTypes.array,
-    backgroundColor: PropTypes.string,
-    activeTextColor: PropTypes.string,
-    inactiveTextColor: PropTypes.string,
-    textStyle: Text.propTypes.style,
-    tabStyle: ViewPropTypes.style,
-    renderTab: PropTypes.func,
-    underlineStyle: ViewPropTypes.style,
-  },
+class DefaultTabBar extends  Component {
 
-  getDefaultProps() {
-    return {
-      activeTextColor: 'navy',
-      inactiveTextColor: 'black',
-      backgroundColor: null,
-    };
-  },
 
   renderTabOption(name, page) {
-  },
+
+  }
 
   renderTab(name, page, isTabActive, onPressHandler) {
     const { activeTextColor, inactiveTextColor, textStyle, } = this.props;
@@ -53,7 +34,7 @@ const DefaultTabBar = React.createClass({
         </Text>
       </View>
     </Button>;
-  },
+  }
 
   render() {
     const containerWidth = this.props.containerWidth;
@@ -79,8 +60,8 @@ const DefaultTabBar = React.createClass({
         <Animated.View style={[tabUnderlineStyle, { left, }, this.props.underlineStyle, ]} />
       </View>
     );
-  },
-});
+  }
+}
 
 const styles = StyleSheet.create({
   tab: {
@@ -104,4 +85,25 @@ const styles = StyleSheet.create({
   },
 });
 
-module.exports = DefaultTabBar;
+
+DefaultTabBar.PropTypes = {
+  goToPage: PropTypes.func,
+  activeTab: PropTypes.number,
+  tabs: PropTypes.array,
+  backgroundColor: PropTypes.string,
+  activeTextColor: PropTypes.string,
+  inactiveTextColor: PropTypes.string,
+  textStyle: Text.propTypes.style,
+  tabStyle: View.propTypes.style,
+  renderTab: PropTypes.func,
+  underlineStyle: View.propTypes.style,
+};
+
+
+DefaultTabBar.defaultProps = {
+  activeTextColor: 'navy',
+  inactiveTextColor: 'black',
+  backgroundColor: null,
+};
+
+export default DefaultTabBar;
