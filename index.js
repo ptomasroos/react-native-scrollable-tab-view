@@ -32,10 +32,11 @@ const ScrollableTabView = React.createClass({
     initialPage: PropTypes.number,
     page: PropTypes.number,
     onChangeTab: PropTypes.func,
-    onScroll: PropTypes.func,
+    onScroll: PropTypes.func, 
     renderTabBar: PropTypes.any,
-    style: View.propTypes.style,
+    style: View.propTypes.style,    
     contentProps: PropTypes.object,
+    tabBarHeight: PropTypes.object,
     scrollWithoutAnimation: PropTypes.bool,
     locked: PropTypes.bool,
     prerenderingSiblingsNumber: PropTypes.number,
@@ -46,6 +47,7 @@ const ScrollableTabView = React.createClass({
       tabBarPosition: 'top',
       initialPage: 0,
       page: -1,
+      tabBarHeight: new Animated.Value(100),      
       onChangeTab: () => {},
       onScroll: () => {},
       contentProps: {},
@@ -108,11 +110,17 @@ const ScrollableTabView = React.createClass({
   renderTabBar(props) {
     if (this.props.renderTabBar === false) {
       return null;
-    } else if (this.props.renderTabBar) {
-      return React.cloneElement(this.props.renderTabBar(props), props);
     } else {
-      return <DefaultTabBar {...props} />;
-    }
+      const tabBarComponent = (this.props.renderTabBar) ? 
+      React.cloneElement(this.props.renderTabBar(props), props) : 
+      <DefaultTabBar {...props} />
+
+      return (
+        <Animated.View style={{ maxHeight: props.tabBarHeight }}>
+          {tabBarComponent}
+        </Animated.View>
+      );
+    } 
   },
 
   updateSceneKeys({ page, children = this.props.children, callback = () => {}, }) {
@@ -242,6 +250,7 @@ const ScrollableTabView = React.createClass({
       scrollX: this.state.scrollX,
       scrollValue: this.state.scrollValue,
       containerWidth: this.state.containerWidth,
+      tabBarHeight: this.props.tabBarHeight,      
     };
 
     if (this.props.tabBarBackgroundColor) {
