@@ -1,4 +1,5 @@
 import React from 'react';
+const PropTypes = require('prop-types');
 import {
   StyleSheet,
   Text,
@@ -11,9 +12,9 @@ const FacebookTabBar = React.createClass({
   tabIcons: [],
 
   propTypes: {
-    goToPage: React.PropTypes.func,
-    activeTab: React.PropTypes.number,
-    tabs: React.PropTypes.array,
+    goToPage: PropTypes.func,
+    activeTab: PropTypes.number,
+    tabs: PropTypes.array,
   },
 
   componentDidMount() {
@@ -22,7 +23,7 @@ const FacebookTabBar = React.createClass({
 
   setAnimationValue({ value, }) {
     this.tabIcons.forEach((icon, i) => {
-      const progress = Math.min(1, Math.abs(value - i))
+      const progress = Math.min(1, Math.abs(value - i));
       icon.setNativeProps({
         style: {
           color: this.iconColor(progress),
