@@ -156,7 +156,7 @@ class ScrollableTabView extends Component {
     });
   }
 
-  _onMomentumScrollBeginAndEnd(e) {
+  _onMomentumScrollBeginAndEnd = (e) => {
     const offsetX = e.nativeEvent.contentOffset.x;
     const page = Math.round(offsetX / this.state.containerWidth);
     if (this.state.currentPage !== page) {
