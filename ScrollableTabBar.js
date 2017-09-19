@@ -26,7 +26,7 @@ const ScrollableTabBar = React.createClass({
     style: View.propTypes.style,
     tabStyle: View.propTypes.style,
     tabsContainerStyle: View.propTypes.style,
-    textStyle: Text.propTypes.propTypes.style,
+    textStyle: Text.propTypes.style,
     renderTab: React.PropTypes.func,
     underlineStyle: View.propTypes.style,
     onScroll:React.PropTypes.func,
