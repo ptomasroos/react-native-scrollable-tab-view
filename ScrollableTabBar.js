@@ -146,8 +146,14 @@ const ScrollableTabBar = React.createClass({
 
   measureTab(page, event) {
     const { x, width, height, } = event.nativeEvent.layout;
-    this._tabsMeasurements[page] = {left: x, right: x + width, width, height, };
-    this.updateView({value: this.props.scrollValue._value, });
+    let margin = 0;
+    if (this.props.underlineStyle.width) {
+      margin = (width - this.props.underlineStyle.width) / 2;
+    }
+
+    this._tabsMeasurements[page] = {left: x + margin, right: x + width - margin, width, height, };
+
+    this.updateView({value: this.props.scrollValue._a._value, });
   },
 
   render() {
