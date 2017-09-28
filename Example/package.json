@@ -10,7 +10,7 @@
 		"create-react-class": "^15.6.2",
 		"react": "16.0.0",
 		"react-native": "0.48.4",
-		"react-native-scrollable-tab-view": "file:../src",
+		"react-native-scrollable-tab-view": "file:../",
 		"react-native-vector-icons": "^4.4.0",
 		"react-navigation": "^1.0.0-beta.13"
 	},

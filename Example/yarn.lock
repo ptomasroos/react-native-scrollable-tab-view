@@ -3465,7 +3465,7 @@ react-native-drawer-layout@1.3.2:
   dependencies:
     react-native-dismiss-keyboard "1.0.0"
 
-"react-native-scrollable-tab-view@file:../src":
+"react-native-scrollable-tab-view@file:../":
   version "0.6.7"
   dependencies:
     create-react-class "^15.6.2"
