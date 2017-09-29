@@ -59,7 +59,7 @@ const ScrollableTabBar = React.createClass({
   },
 
   updateView(offset) {
-    if (offset.value === undefined) {
+    if (!offset.value) {
       offset.value = 0;
     }
     const position = Math.floor(offset.value);
