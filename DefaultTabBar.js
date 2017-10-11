@@ -5,8 +5,7 @@ const createReactClass = require('create-react-class');
 const {
   StyleSheet,
   Text,
-  View,
-  Animated,
+  View
 } = ReactNative;
 const Button = require('./Button');
 
@@ -78,14 +77,9 @@ const DefaultTabBar = createReactClass({
           const renderTab = this.props.renderTab || this.renderTab;
           return renderTab(name, page, isTabActive, this.props.goToPage);
         })}
-        <Animated.View
+        <View
           style={[
             tabUnderlineStyle,
-            {
-              transform: [
-                { translateX },
-              ]
-            },
             this.props.underlineStyle,
           ]}
         />
