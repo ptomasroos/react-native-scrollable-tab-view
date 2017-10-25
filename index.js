@@ -329,21 +329,23 @@ const ScrollableTabView = createReactClass({
   _handleLayout(e) {
     const { width, } = e.nativeEvent.layout;
 
-    if (Math.round(width) !== Math.round(this.state.containerWidth)) {
-      if (Platform.OS === 'ios') {
-        const containerWidthAnimatedValue = new Animated.Value(width);
-        // Need to call __makeNative manually to avoid a native animated bug. See
-        // https://github.com/facebook/react-native/pull/14435
-        containerWidthAnimatedValue.__makeNative();
-        scrollValue = Animated.divide(this.state.scrollXIOS, containerWidthAnimatedValue);
-        this.setState({ containerWidth: width, scrollValue, });
-      } else {
-        this.setState({ containerWidth: width, });
-      }
-      this.requestAnimationFrame(() => {
-        this.goToPage(this.state.currentPage);
-      });
+    if (!width || width <= 0 || Math.round(width) === Math.round(this.state.containerWidth)) {
+      return;
     }
+    
+    if (Platform.OS === 'ios') {
+      const containerWidthAnimatedValue = new Animated.Value(width);
+      // Need to call __makeNative manually to avoid a native animated bug. See
+      // https://github.com/facebook/react-native/pull/14435
+      containerWidthAnimatedValue.__makeNative();
+      scrollValue = Animated.divide(this.state.scrollXIOS, containerWidthAnimatedValue);
+      this.setState({ containerWidth: width, scrollValue, });
+    } else {
+      this.setState({ containerWidth: width, });
+    }
+    this.requestAnimationFrame(() => {
+      this.goToPage(this.state.currentPage);
+    });
   },
 
   _children(children = this.props.children) {
