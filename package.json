@@ -1,10 +1,6 @@
 {
   "name": "react-native-scrollable-tab-view",
-<<<<<<< HEAD
-  "version": "0.7.4",
-=======
   "version": "0.8.0",
->>>>>>> 74a0b3fc3f5b69b49b93e0e5f9b0d9089da757c5
   "description": "",
   "main": "index.js",
   "scripts": {
