@@ -1,7 +1,6 @@
 import React, {Component, } from 'react';
 import ReactNative from 'react-native';
 import {View, StyleSheet, } from 'react-native';
-
 import StaticContainer from './StaticContainer';
 
 const SceneComponent = (Props) => {

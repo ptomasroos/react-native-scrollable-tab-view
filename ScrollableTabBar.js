@@ -16,7 +16,6 @@ import Button from './Button';
 const WINDOW_WIDTH = Dimensions.get('window').width;
 
 class ScrollableTabBar extends Component {
-
   constructor(props) {
     super(props);
     this._tabsMeasurements = [];
@@ -191,7 +190,7 @@ class ScrollableTabBar extends Component {
   }
 }
 
-const styles = StyleSheet.create({
+let styles = StyleSheet.create({
   tab: {
     height: 49,
     alignItems: 'center',
@@ -240,4 +239,3 @@ ScrollableTabBar.defaultProps = {
 };
 
 export default ScrollableTabBar;
-// module.exports = ScrollableTabBar;

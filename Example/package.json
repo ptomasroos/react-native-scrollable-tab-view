@@ -1,0 +1,26 @@
+{
+	"name": "Example",
+	"version": "0.0.1",
+	"private": true,
+	"scripts": {
+		"start": "node node_modules/react-native/local-cli/cli.js start",
+		"test": "jest"
+	},
+	"dependencies": {
+		"create-react-class": "^15.6.2",
+		"react": "16.0.0",
+		"react-native": "0.48.4",
+		"react-native-scrollable-tab-view": "file:../",
+		"react-native-vector-icons": "^4.4.0",
+		"react-navigation": "^1.0.0-beta.13"
+	},
+	"devDependencies": {
+		"babel-jest": "21.2.0",
+		"babel-preset-react-native": "4.0.0",
+		"jest": "21.2.1",
+		"react-test-renderer": "16.0.0"
+	},
+	"jest": {
+		"preset": "react-native"
+	}
+}
