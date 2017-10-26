@@ -78,22 +78,6 @@ class ScrollableTabView extends Component {
     };
   }
 
-  componentDidMount() {
-    setTimeout(() => {
-      InteractionManager.runAfterInteractions(() => {
-        if (Platform.OS === 'android') {
-          this.goToPage(this.props.initialPage, false);
-        }
-      });
-    }, 0);
-
-    this.state.scrollX.addListener(({ value, }) => {
-      const scrollValue = value / this.state.containerWidth;
-      this.state.scrollValue.setValue(scrollValue);
-      this.props.onScroll(scrollValue);
-    });
-  }
-
   componentWillReceiveProps(props) {
     if (props.children !== this.props.children) {
       this.updateSceneKeys({ page: this.state.currentPage, children: props.children, });
@@ -114,7 +98,7 @@ class ScrollableTabView extends Component {
     TimerMixin.componentWillUnmount();
   }
 
-  goToPage(pageNumber) {
+  goToPage = (pageNumber) => {
     if (Platform.OS === 'ios') {
       const offset = pageNumber * this.state.containerWidth;
       if (this.scrollView) {
@@ -300,7 +284,7 @@ class ScrollableTabView extends Component {
     });
   }
 
-  _onScroll(e) {
+  _onScroll= (e) => {
     if (Platform.OS === 'ios') {
       const offsetX = e.nativeEvent.contentOffset.x;
       if (offsetX === 0 && !this.scrollOnMountCalled) {
