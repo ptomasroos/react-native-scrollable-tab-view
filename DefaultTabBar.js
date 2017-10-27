@@ -5,8 +5,7 @@ const createReactClass = require('create-react-class');
 const {
   StyleSheet,
   Text,
-  View,
-  Animated,
+  View
 } = ReactNative;
 const Button = require('./Button');
 
@@ -40,8 +39,13 @@ const DefaultTabBar = createReactClass({
     const textColor = isTabActive ? activeTextColor : inactiveTextColor;
     const fontWeight = isTabActive ? 'bold' : 'normal';
 
+    activeButtonStyles = {
+      borderBottomWidth: 4,
+      borderColor: this.props.borderColor
+    };
+
     return <Button
-      style={{flex: 1, }}
+      style={[{flex: 1}, isTabActive && activeButtonStyles]}
       key={name}
       accessible={true}
       accessibilityLabel={name}
@@ -78,17 +82,6 @@ const DefaultTabBar = createReactClass({
           const renderTab = this.props.renderTab || this.renderTab;
           return renderTab(name, page, isTabActive, this.props.goToPage);
         })}
-        <Animated.View
-          style={[
-            tabUnderlineStyle,
-            {
-              transform: [
-                { translateX },
-              ]
-            },
-            this.props.underlineStyle,
-          ]}
-        />
       </View>
     );
   },

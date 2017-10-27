@@ -1,18 +1,14 @@
 const React = require('react');
 const ReactNative = require('react-native');
 const {
-  TouchableNativeFeedback,
+ TouchableOpacity,
   View,
 } = ReactNative;
 
 const Button = (props) => {
-  return <TouchableNativeFeedback
-    delayPressIn={0}
-    background={TouchableNativeFeedback.SelectableBackground()} // eslint-disable-line new-cap
-    {...props}
-  >
+  return <TouchableOpacity {...props}>
     {props.children}
-  </TouchableNativeFeedback>;
+  </TouchableOpacity>;
 };
 
 module.exports = Button;
