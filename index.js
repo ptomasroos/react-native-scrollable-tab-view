@@ -263,7 +263,7 @@ class ScrollableTabView extends Component {
     }
   }
 
-  _updateSelectedPage(nextPage) {
+  _updateSelectedPage = (nextPage) => {
     let localNextPage = nextPage;
     if (typeof localNextPage === 'object') {
       localNextPage = nextPage.nativeEvent.position;

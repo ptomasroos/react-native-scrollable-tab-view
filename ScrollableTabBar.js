@@ -164,7 +164,7 @@ class ScrollableTabBar extends Component {
                     <Animated.View style={[tabUnderlineStyle, dynamicTabUnderline, this.props.underlineStyle, ]} />
                 </View>
             </ScrollView>
-        </View>;
+    </View>;     
   }
 
   componentWillReceiveProps(nextProps) {
@@ -181,12 +181,12 @@ class ScrollableTabBar extends Component {
       width = WINDOW_WIDTH;
     }
     this.setState({ _containerWidth: width, });
-    this.updateView({ value: this.props.scrollValue._value, });
+    this.updateView({ value: this.props.scrollValue.__getValue(), });
   }
 
   onContainerLayout = (e) => {
     this._containerMeasurements = e.nativeEvent.layout;
-    this.updateView({ value: this.props.scrollValue._value, });
+    this.updateView({ value: this.props.scrollValue.__getValue(), });
   }
 }
 
