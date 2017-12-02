@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/brentvatne/react-native-scrollable-tab-view.git"
+    "url": "git+https://github.com/davyuu/react-native-scrollable-tab-view"
   },
   "keywords": [
     "react-native-component",
@@ -22,12 +22,12 @@
   "author": "Brent Vatne",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/brentvatne/react-native-scrollable-tab-view/issues"
+    "url": "https://github.com/davyuu/react-native-scrollable-tab-view/issues"
   },
   "peerDependencies": {
     "react-native": ">=0.20.0"
   },
-  "homepage": "https://github.com/brentvatne/react-native-scrollable-tab-view#readme",
+  "homepage": "https://github.com/davyuu/react-native-scrollable-tab-view#readme",
   "dependencies": {
     "react-static-container": "^1.0.1",
     "react-timer-mixin": "^0.13.3"
