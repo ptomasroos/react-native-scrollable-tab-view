@@ -8,6 +8,7 @@ const {
   View,
   Animated,
   I18nManager,
+  Platform
 } = ReactNative;
 const Button = require('./Button');
 
@@ -75,11 +76,13 @@ const DefaultTabBar = createReactClass({
     });
     return (
       <View style={[styles.tabs, {backgroundColor: this.props.backgroundColor, }, this.props.style, ]}>
-        {this.props.tabs.map((name, page) => {
+        {
+          this.props.tabs.map((name, page) => {
           const isTabActive = this.props.activeTab === page;
           const renderTab = this.props.renderTab || this.renderTab;
           return renderTab(name, page, isTabActive, this.props.goToPage);
-        })}
+        })
+        }
         <Animated.View
           style={[
             tabUnderlineStyle,

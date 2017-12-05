@@ -1,27 +1,25 @@
 const React = require('react');
-const { Component } = React;
-const { ViewPropTypes } = ReactNative = require('react-native');
-const createReactClass = require('create-react-class');
-const PropTypes = require('prop-types');
+const {
+  Component,
+} = React;
+const ReactNative = require('react-native');
 const {
   Dimensions,
   View,
   Animated,
   ScrollView,
-  Platform,
   StyleSheet,
-  ViewPagerAndroid,
   InteractionManager,
+  I18nManager,
+  Platform
 } = ReactNative;
 const TimerMixin = require('react-timer-mixin');
-
+const createReactClass = require('create-react-class');
+const PropTypes = require('prop-types');
 const SceneComponent = require('./SceneComponent');
 const DefaultTabBar = require('./DefaultTabBar');
 const ScrollableTabBar = require('./ScrollableTabBar');
 
-const AnimatedViewPagerAndroid = Platform.OS === 'android' ?
-  Animated.createAnimatedComponent(ViewPagerAndroid) :
-  undefined;
 
 const ScrollableTabView = createReactClass({
   mixins: [TimerMixin, ],
@@ -29,7 +27,6 @@ const ScrollableTabView = createReactClass({
     DefaultTabBar,
     ScrollableTabBar,
   },
-  scrollOnMountCalled: false,
 
   propTypes: {
     tabBarPosition: PropTypes.oneOf(['top', 'bottom', 'overlayTop', 'overlayBottom', ]),
@@ -38,7 +35,7 @@ const ScrollableTabView = createReactClass({
     onChangeTab: PropTypes.func,
     onScroll: PropTypes.func,
     renderTabBar: PropTypes.any,
-    style: ViewPropTypes.style,
+    style: View.propTypes.style,
     contentProps: PropTypes.object,
     scrollWithoutAnimation: PropTypes.bool,
     locked: PropTypes.bool,
@@ -60,49 +57,10 @@ const ScrollableTabView = createReactClass({
   },
 
   getInitialState() {
-    const containerWidth = Dimensions.get('window').width;
-    let scrollValue;
-    let scrollXIOS;
-    let positionAndroid;
-    let offsetAndroid;
-
-    if (Platform.OS === 'ios') {
-      scrollXIOS = new Animated.Value(this.props.initialPage * containerWidth);
-      const containerWidthAnimatedValue = new Animated.Value(containerWidth);
-      // Need to call __makeNative manually to avoid a native animated bug. See
-      // https://github.com/facebook/react-native/pull/14435
-      containerWidthAnimatedValue.__makeNative();
-      scrollValue = Animated.divide(scrollXIOS, containerWidthAnimatedValue);
-
-      const callListeners = this._polyfillAnimatedValue(scrollValue);
-      scrollXIOS.addListener(
-        ({ value, }) => callListeners(value / this.state.containerWidth)
-      );
-    } else {
-      positionAndroid = new Animated.Value(this.props.initialPage);
-      offsetAndroid = new Animated.Value(0);
-      scrollValue = Animated.add(positionAndroid, offsetAndroid);
-
-      const callListeners = this._polyfillAnimatedValue(scrollValue);
-      let positionAndroidValue = this.props.initialPage;
-      let offsetAndroidValue = 0;
-      positionAndroid.addListener(({ value, }) => {
-        positionAndroidValue = value;
-        callListeners(positionAndroidValue + offsetAndroidValue);
-      });
-      offsetAndroid.addListener(({ value, }) => {
-        offsetAndroidValue = value;
-        callListeners(positionAndroidValue + offsetAndroidValue);
-      });
-    }
-
     return {
       currentPage: this.props.initialPage,
-      scrollValue,
-      scrollXIOS,
-      positionAndroid,
-      offsetAndroid,
-      containerWidth,
+      scrollValue: new Animated.Value(this.props.initialPage),
+      containerWidth: Dimensions.get('window').width,
       sceneKeys: this.newSceneKeys({ currentPage: this.props.initialPage, }),
     };
   },
@@ -117,29 +75,10 @@ const ScrollableTabView = createReactClass({
     }
   },
 
-  componentWillUnmount() {
-    if (Platform.OS === 'ios') {
-      this.state.scrollXIOS.removeAllListeners();
-    } else {
-      this.state.positionAndroid.removeAllListeners();
-      this.state.offsetAndroid.removeAllListeners();
-    }
-  },
-
   goToPage(pageNumber) {
-    if (Platform.OS === 'ios') {
-      const offset = pageNumber * this.state.containerWidth;
-      if (this.scrollView) {
-        this.scrollView.getNode().scrollTo({x: offset, y: 0, animated: !this.props.scrollWithoutAnimation, });
-      }
-    } else {
-      if (this.scrollView) {
-        if (this.props.scrollWithoutAnimation) {
-          this.scrollView.getNode().setPageWithoutAnimation(pageNumber);
-        } else {
-          this.scrollView.getNode().setPage(pageNumber);
-        }
-      }
+    const offset = this._getContentOffset(pageNumber);
+    if (this.scrollView) {
+      this.scrollView.scrollTo({x: offset, y: 0, animated: !this.props.scrollWithoutAnimation, });
     }
 
     const currentPage = this.state.currentPage;
@@ -176,31 +115,6 @@ const ScrollableTabView = createReactClass({
     return newKeys;
   },
 
-  // Animated.add and Animated.divide do not currently support listeners so
-  // we have to polyfill it here since a lot of code depends on being able
-  // to add a listener to `scrollValue`. See https://github.com/facebook/react-native/pull/12620.
-  _polyfillAnimatedValue(animatedValue) {
-
-    const listeners = new Set();
-    const addListener = (listener) => {
-      listeners.add(listener);
-    };
-
-    const removeListener = (listener) => {
-      listeners.delete(listener);
-    };
-
-    const removeAllListeners = () => {
-      listeners.clear();
-    };
-
-    animatedValue.addListener = addListener;
-    animatedValue.removeListener = removeListener;
-    animatedValue.removeAllListeners = removeAllListeners;
-
-    return (value) => listeners.forEach(listener => listener({ value, }));
-  },
-
   _shouldRenderSceneKey(idx, currentPageKey) {
     let numOfSibling = this.props.prerenderingSiblingsNumber;
     return (idx < (currentPageKey + numOfSibling + 1) &&
@@ -216,58 +130,31 @@ const ScrollableTabView = createReactClass({
   },
 
   renderScrollableContent() {
-    if (Platform.OS === 'ios') {
-      const scenes = this._composeScenes();
-      return <Animated.ScrollView
-        horizontal
-        pagingEnabled
-        automaticallyAdjustContentInsets={false}
-        contentOffset={{ x: this.props.initialPage * this.state.containerWidth, }}
-        ref={(scrollView) => { this.scrollView = scrollView; }}
-        onScroll={Animated.event(
-          [{ nativeEvent: { contentOffset: { x: this.state.scrollXIOS, }, }, }, ],
-          { useNativeDriver: true, listener: this._onScroll, }
-        )}
-        onMomentumScrollBegin={this._onMomentumScrollBeginAndEnd}
-        onMomentumScrollEnd={this._onMomentumScrollBeginAndEnd}
-        scrollEventThrottle={16}
-        scrollsToTop={false}
-        showsHorizontalScrollIndicator={false}
-        scrollEnabled={!this.props.locked}
-        directionalLockEnabled
-        alwaysBounceVertical={false}
-        keyboardDismissMode="on-drag"
-        {...this.props.contentProps}
+    const scenes = this._composeScenes();
+    return <ScrollView
+      horizontal
+      pagingEnabled
+      automaticallyAdjustContentInsets={false}
+      contentOffset={{ x: this._getContentOffset(this.props.initialPage) }}
+      ref={(scrollView) => { this.scrollView = scrollView; }}
+      onScroll={(e) => {
+        const offsetX = e.nativeEvent.contentOffset.x;
+        const scrollValue = this._getScrollValue(offsetX);
+        this._updateScrollValue(scrollValue);
+      }}
+      onMomentumScrollBegin={this._onMomentumScrollBeginAndEnd}
+      onMomentumScrollEnd={this._onMomentumScrollBeginAndEnd}
+      scrollEventThrottle={16}
+      scrollsToTop={false}
+      showsHorizontalScrollIndicator={false}
+      scrollEnabled={!this.props.locked}
+      directionalLockEnabled
+      alwaysBounceVertical={false}
+      keyboardDismissMode="on-drag"
+      {...this.props.contentProps}
       >
-          {scenes}
-      </Animated.ScrollView>;
-    } else {
-      const scenes = this._composeScenes();
-      return <AnimatedViewPagerAndroid
-        key={this._children().length}
-        style={styles.scrollableContentAndroid}
-        initialPage={this.props.initialPage}
-        onPageSelected={this._updateSelectedPage}
-        keyboardDismissMode="on-drag"
-        scrollEnabled={!this.props.locked}
-        onPageScroll={Animated.event(
-          [{
-            nativeEvent: {
-              position: this.state.positionAndroid,
-              offset: this.state.offsetAndroid,
-            },
-          }, ],
-          {
-            useNativeDriver: true,
-            listener: this._onScroll,
-          },
-        )}
-        ref={(scrollView) => { this.scrollView = scrollView; }}
-        {...this.props.contentProps}
-      >
-        {scenes}
-      </AnimatedViewPagerAndroid>;
-    }
+      {scenes}
+    </ScrollView>;
   },
 
   _composeScenes() {
@@ -282,10 +169,25 @@ const ScrollableTabView = createReactClass({
       </SceneComponent>;
     });
   },
+  _getContentOffset(pageNumber) {
+     if (I18nManager.isRTL && Platform.OS === 'android') {
+       const RTLPage = (this.props.children.length - 1) - pageNumber;
+       return RTLPage  * this.state.containerWidth;
+     }
+     return pageNumber * this.state.containerWidth;
+   },
+ 
+   _getScrollValue(offsetX) {
+     if (I18nManager.isRTL && Platform.OS === 'android')  {
+       const RTLOffset = ((this.props.children.length - 1) * this.state.containerWidth) - offsetX;
+       return  RTLOffset / this.state.containerWidth;
+     }
+     return offsetX / this.state.containerWidth;
+   },
 
   _onMomentumScrollBeginAndEnd(e) {
     const offsetX = e.nativeEvent.contentOffset.x;
-    const page = Math.round(offsetX / this.state.containerWidth);
+    const page = Math.round(this._getScrollValue(offsetX));
     if (this.state.currentPage !== page) {
       this._updateSelectedPage(page);
     }
@@ -312,40 +214,20 @@ const ScrollableTabView = createReactClass({
     });
   },
 
-  _onScroll(e) {
-    if (Platform.OS === 'ios') {
-      const offsetX = e.nativeEvent.contentOffset.x;
-      if (offsetX === 0 && !this.scrollOnMountCalled) {
-        this.scrollOnMountCalled = true;
-      } else {
-        this.props.onScroll(offsetX / this.state.containerWidth);
-      }
-    } else {
-      const { position, offset, } = e.nativeEvent;
-      this.props.onScroll(position + offset);
-    }
+  _updateScrollValue(value) {
+    this.state.scrollValue.setValue(value);
+    this.props.onScroll(value);
   },
 
   _handleLayout(e) {
     const { width, } = e.nativeEvent.layout;
 
-    if (!width || width <= 0 || Math.round(width) === Math.round(this.state.containerWidth)) {
-      return;
-    }
-    
-    if (Platform.OS === 'ios') {
-      const containerWidthAnimatedValue = new Animated.Value(width);
-      // Need to call __makeNative manually to avoid a native animated bug. See
-      // https://github.com/facebook/react-native/pull/14435
-      containerWidthAnimatedValue.__makeNative();
-      scrollValue = Animated.divide(this.state.scrollXIOS, containerWidthAnimatedValue);
-      this.setState({ containerWidth: width, scrollValue, });
-    } else {
+    if (Math.round(width) !== Math.round(this.state.containerWidth)) {
       this.setState({ containerWidth: width, });
+      this.requestAnimationFrame(() => {
+        this.goToPage(this.state.currentPage);
+      });
     }
-    this.requestAnimationFrame(() => {
-      this.goToPage(this.state.currentPage);
-    });
   },
 
   _children(children = this.props.children) {
