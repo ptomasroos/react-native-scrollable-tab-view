@@ -1,5 +1,5 @@
 const React = require('react');
-const { ViewPropTypes } = ReactNative = require('react-native');
+const { ViewPropTypes, } = ReactNative = require('react-native');
 const PropTypes = require('prop-types');
 const createReactClass = require('create-react-class');
 const {
@@ -68,7 +68,6 @@ const ScrollableTabBar = createReactClass({
     if (tabCount === 0 || offset.value < 0 || offset.value > lastTabPosition) {
       return;
     }
-
     if (this.necessarilyMeasurementsCompleted(position, position === lastTabPosition)) {
       this.updateTabPanel(position, pageOffset);
       this.updateTabUnderline(position, pageOffset, tabCount);
@@ -148,7 +147,12 @@ const ScrollableTabBar = createReactClass({
   measureTab(page, event) {
     const { x, width, height, } = event.nativeEvent.layout;
     this._tabsMeasurements[page] = {left: x, right: x + width, width, height, };
-    this.updateView({value: this.props.scrollValue._value, });
+    /*console.log({
+      measureTab: '______________________',
+      _tabsMeasurements: this._tabsMeasurements,
+      scrollView: this.props.scrollValue.__getValue(),
+    })*/
+    this.updateView({value: this.props.scrollValue.__getValue(), });
   },
 
   render() {
@@ -207,12 +211,12 @@ const ScrollableTabBar = createReactClass({
       width = WINDOW_WIDTH;
     }
     this.setState({ _containerWidth: width, });
-    this.updateView({value: this.props.scrollValue._value, });
+    this.updateView({value: this.props.scrollValue.__getValue(), });
   },
 
   onContainerLayout(e) {
     this._containerMeasurements = e.nativeEvent.layout;
-    this.updateView({value: this.props.scrollValue._value, });
+    this.updateView({value: this.props.scrollValue.__getValue(), });
   },
 });
 

@@ -9,7 +9,7 @@ import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-ta
 export default () => {
   return <ScrollableTabView
     style={{marginTop: 20, }}
-    initialPage={0}
+    initialPage={2}
     renderTabBar={() => <ScrollableTabBar />}
   >
     <Text tabLabel='Tab #1'>My</Text>
