@@ -148,7 +148,11 @@ const ScrollableTabBar = createReactClass({
   measureTab(page, event) {
     const { x, width, height, } = event.nativeEvent.layout;
     this._tabsMeasurements[page] = {left: x, right: x + width, width, height, };
-    this.updateView({value: this.props.scrollValue._value, });
+    if(this.props.scrollValue._value === undefined){
+      this.updateView({value:this.props.activeTab});
+    }else{
+      this.updateView({value: this.props.scrollValue._value, });
+    }
   },
 
   render() {
@@ -207,12 +211,20 @@ const ScrollableTabBar = createReactClass({
       width = WINDOW_WIDTH;
     }
     this.setState({ _containerWidth: width, });
-    this.updateView({value: this.props.scrollValue._value, });
+    if(this.props.scrollValue._value === undefined){
+      this.updateView({value:this.props.activeTab});
+    }else{
+      this.updateView({value: this.props.scrollValue._value, });
+    }
   },
 
   onContainerLayout(e) {
     this._containerMeasurements = e.nativeEvent.layout;
-    this.updateView({value: this.props.scrollValue._value, });
+    if(this.props.scrollValue._value === undefined){
+      this.updateView({value:this.props.activeTab});
+    }else{
+      this.updateView({value: this.props.scrollValue._value, });
+    }
   },
 });
 
