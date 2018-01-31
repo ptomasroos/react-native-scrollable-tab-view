@@ -5,6 +5,7 @@ import {
   Text,
   View,
   Animated,
+  ViewPropTypes,
 } from 'react-native';
 import Button from './Button';
 
@@ -105,9 +106,9 @@ DefaultTabBar.PropTypes = {
   activeTextColor: PropTypes.string,
   inactiveTextColor: PropTypes.string,
   textStyle: Text.propTypes.style,
-  tabStyle: View.propTypes.style,
+  tabStyle: ViewPropTypes.style,
   renderTab: PropTypes.func,
-  underlineStyle: View.propTypes.style,
+  underlineStyle: ViewPropTypes.style,
 };
 
 

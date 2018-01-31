@@ -9,6 +9,7 @@ import {
     Platform,
     Dimensions,
     I18nManager,
+    ViewPropTypes,
 } from 'react-native';
 
 import Button from './Button';
@@ -219,12 +220,12 @@ ScrollableTabBar.propTypes = {
   activeTextColor: PropTypes.string,
   inactiveTextColor: PropTypes.string,
   scrollOffset: PropTypes.number,
-  style: View.propTypes.style,
-  tabStyle: View.propTypes.style,
-  tabsContainerStyle: View.propTypes.style,
+  style: ViewPropTypes.style,
+  tabStyle: ViewPropTypes.style,
+  tabsContainerStyle: ViewPropTypes.style,
   textStyle: Text.propTypes.style,
   renderTab: PropTypes.func,
-  underlineStyle: View.propTypes.style,
+  underlineStyle: ViewPropTypes.style,
   onScroll: PropTypes.func,
 };
 ScrollableTabBar.defaultProps = {

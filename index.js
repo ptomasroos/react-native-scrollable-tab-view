@@ -9,6 +9,7 @@ import {
   StyleSheet,
   ViewPagerAndroid,
   InteractionManager,
+  ViewPropTypes,
 } from 'react-native';
 
 import TimerMixin from 'react-timer-mixin';
@@ -257,11 +258,9 @@ class ScrollableTabView extends Component {
 
   _onMomentumScrollBeginAndEnd = (e) => {
     const offsetX = e.nativeEvent.contentOffset.x;
-    if ((offsetX / 2) === this.state.containerWidth) {
-      const page = Math.round(offsetX / this.state.containerWidth);
-      if (this.state.currentPage !== page) {
-        this._updateSelectedPage(page);
-      }
+    const page = Math.round(offsetX / this.state.containerWidth);
+    if (this.state.currentPage !== page) {
+      this._updateSelectedPage(page);
     }
   }
 
@@ -379,7 +378,7 @@ ScrollableTabView.propTypes = {
   onChangeTab: PropTypes.func,
   onScroll: PropTypes.func,
   renderTabBar: PropTypes.any,
-  style: View.propTypes.style,
+  style: ViewPropTypes.style,
   contentProps: PropTypes.object,
   scrollWithoutAnimation: PropTypes.bool,
   locked: PropTypes.bool,
