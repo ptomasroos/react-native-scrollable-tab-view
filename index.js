@@ -39,6 +39,7 @@ const ScrollableTabView = createReactClass({
     onScroll: PropTypes.func,
     renderTabBar: PropTypes.any,
     style: ViewPropTypes.style,
+    contentStyle: ViewPropTypes.style,
     contentProps: PropTypes.object,
     scrollWithoutAnimation: PropTypes.bool,
     locked: PropTypes.bool,
@@ -237,6 +238,7 @@ const ScrollableTabView = createReactClass({
         directionalLockEnabled
         alwaysBounceVertical={false}
         keyboardDismissMode="on-drag"
+        style={[this.props.contentStyle]}
         {...this.props.contentProps}
       >
           {scenes}
@@ -245,7 +247,7 @@ const ScrollableTabView = createReactClass({
       const scenes = this._composeScenes();
       return <AnimatedViewPagerAndroid
         key={this._children().length}
-        style={styles.scrollableContentAndroid}
+        style={[styles.scrollableContentAndroid, this.props.contentStyle]}
         initialPage={this.props.initialPage}
         onPageSelected={this._updateSelectedPage}
         keyboardDismissMode="on-drag"
@@ -332,7 +334,7 @@ const ScrollableTabView = createReactClass({
     if (!width || width <= 0 || Math.round(width) === Math.round(this.state.containerWidth)) {
       return;
     }
-    
+
     if (Platform.OS === 'ios') {
       const containerWidthAnimatedValue = new Animated.Value(width);
       // Need to call __makeNative manually to avoid a native animated bug. See
