@@ -349,7 +349,7 @@ const ScrollableTabView = createReactClass({
   },
 
   _children(children = this.props.children) {
-    return React.Children.map(children, (child) => child);
+    return React.Children.map(children, (child, i) => React.cloneElement(child, {tabIndex: i}));
   },
 
   render() {
