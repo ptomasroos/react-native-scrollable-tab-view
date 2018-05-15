@@ -38,7 +38,7 @@ class ScrollableTabView extends Component{
   
 
   componentDidMount() {
-    this.setTimeout(() => {
+     setTimeout(() => {
       InteractionManager.runAfterInteractions(() => {
         if (Platform.OS === 'android') {
           this.goToPage(this.props.initialPage, false);
