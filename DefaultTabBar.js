@@ -5,9 +5,9 @@ const PropTypes = require('prop-types');
 const Button = require('./Button');
 
 class DefaultTabBar extends Component {
-  renderTabOption(name, page) {}
+  renderTabOption=(name, page)=> {}
 
-  renderTab(name, page, isTabActive, onPressHandler) {
+  renderTab=(name, page, isTabActive, onPressHandler) =>{
     const { activeTextColor, inactiveTextColor, textStyle, } = this.props;
     const textColor = isTabActive ? activeTextColor : inactiveTextColor;
     const fontWeight = isTabActive ? 'bold' : 'normal';
