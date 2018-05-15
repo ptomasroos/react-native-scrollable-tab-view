@@ -25,16 +25,17 @@ class ScrollableTabView extends Component{
 
   
 
-  getInitialState=()=> {
-    const width = Dimensions.get('window').width;
-    return {
-      currentPage: this.props.initialPage,
-      scrollX: new Animated.Value(this.props.initialPage * width),
-      scrollValue: new Animated.Value(this.props.initialPage),
-      containerWidth: width,
-      sceneKeys: this.newSceneKeys({ currentPage: this.props.initialPage, }),
-    };
+  constructor(props){
+    super(props)
+    this.state= {
+      currentPage: props.initialPage,
+      scrollX: new Animated.Value(props.initialPage * Dimensions.get('window').width),
+      scrollValue: new Animated.Value(props.initialPage),
+      containerWidth: Dimensions.get('window').width,
+      sceneKeys: this.newSceneKeys({ currentPage: props.initialPage, }),
+    }
   }
+  
 
   componentDidMount() {
     this.setTimeout(() => {
