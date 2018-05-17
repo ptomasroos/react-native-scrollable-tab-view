@@ -98,7 +98,7 @@ DefaultTabBar.propTypes = {
   textStyle: PropTypes.object,
   tabStyle: PropTypes.object,
   renderTab: PropTypes.func,
-  underlineStyle: PropTypes.style,
+  underlineStyle: PropTypes.object,
 };
 DefaultTabBar.defaultProps = {
   activeTextColor: 'navy',
