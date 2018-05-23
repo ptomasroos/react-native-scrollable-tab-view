@@ -9,6 +9,7 @@ import {
   StyleSheet,
   InteractionManager,
   Platform,
+  Keyboard
 } from 'react-native';
 const TimerMixin = require('react-timer-mixin');
 
@@ -49,6 +50,7 @@ class ScrollableTabView extends Component{
     this.state.scrollX.addListener(({ value, }) => {
       const scrollValue = value / this.state.containerWidth;
       this.state.scrollValue.setValue(scrollValue);
+      Keyboard.dismiss();
       this.props.onScroll(scrollValue);
     });
   }
