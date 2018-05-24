@@ -142,6 +142,15 @@ class ScrollableTabView extends Component{
       directionalLockEnabled
       alwaysBounceVertical={false}
       keyboardDismissMode="on-drag"
+
+      onStartShouldSetResponder={() => true}
+      onMoveShouldSetResponder={() => true}
+      onResponderTerminationRequest={() => true}
+      onResponderGrant={this.props.onScrollBeginDrag}
+      onResponderRelease={this.props.onScrollEndDrag}
+      onPanResponderTerminate={this.props.onScrollEndDrag}
+
+
       {...this.props.contentProps}
       >
       {scenes}
@@ -259,18 +268,22 @@ ScrollableTabView.propTypes={
   scrollWithoutAnimation: PropTypes.bool,
   locked: PropTypes.bool,
   prerenderingSiblingsNumber: PropTypes.number,
+  onScrollBeginDrag: PropTypes.func,
+  onScrollEndDrag: PropTypes.func
 }
 
 ScrollableTabView.defaultProps = {
   tabBarPosition: 'top',
-      initialPage: 0,
-      page: -1,
-      onChangeTab: () => {},
-      onScroll: () => {},
-      contentProps: {},
-      scrollWithoutAnimation: false,
-      locked: false,
-      prerenderingSiblingsNumber: 0,
+  initialPage: 0,
+  page: -1,
+  onChangeTab: () => {},
+  onScroll: () => {},
+  contentProps: {},
+  scrollWithoutAnimation: false,
+  locked: false,
+  prerenderingSiblingsNumber: 0,
+  onScrollBeginDrag: () => null,
+  onScrollEndDrag: () => null,
 };
 module.exports = ScrollableTabView;
 
