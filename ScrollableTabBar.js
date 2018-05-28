@@ -25,10 +25,10 @@ class ScrollableTabBar extends React.Component {
     activeTextColor: PropTypes.string,
     inactiveTextColor: PropTypes.string,
     scrollOffset: PropTypes.number,
-    style: View.propTypes.style,
-    tabStyle: View.propTypes.style,
-    tabsContainerStyle: View.propTypes.style,
-    textStyle: Text.propTypes.style,
+    style: PropTypes.object,
+    tabStyle: PropTypes.object,
+    tabsContainerStyle: PropTypes.object,
+    textStyle: PropTypes.object,
     renderTabName: PropTypes.func,
   };
 
