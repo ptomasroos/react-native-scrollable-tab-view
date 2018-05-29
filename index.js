@@ -280,9 +280,9 @@ class ScrollableTabView extends React.Component {
 
     if (width !== this.state.containerWidth) {
       this.setState({ containerWidth: width });
-      this.requestAnimationFrame(() => {
-        this.goToPage(this.state.currentPage);
-      });
+      if(this.requestAnimationFrame != null && typeof this.requestAnimationFrame != 'undefined'){
+        this.requestAnimationFrame(() => this.goToPage(this.state.currentPage));
+      }
     }
   };
 
