@@ -22,7 +22,7 @@ class DefaultTabBar extends React.Component {
   static defaultProps = {
     activeTextColor: 'navy',
     inactiveTextColor: 'black',
-    underlineColor: 'navy',
+    underlineColor: '#FF6600',
     backgroundColor: null,
     underlineHeight: 4,
     renderTabName: this.renderTabName,
