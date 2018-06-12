@@ -14,7 +14,7 @@ class DefaultTabBar extends React.Component {
     backgroundColor: PropTypes.string,
     activeTextColor: PropTypes.string,
     inactiveTextColor: PropTypes.string,
-    textStyle: PropTypes.style,
+    textStyle: PropTypes.object,
     tabStyle: PropTypes.object,
     renderTabName: PropTypes.func,
   };
