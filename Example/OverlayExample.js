@@ -28,7 +28,7 @@ export default () => {
       <Icon name='logo-android' color='brown' size={300} style={styles.icon} />
     </ScrollView>
   </ScrollableTabView>;
-}
+};
 
 const styles = StyleSheet.create({
   container: {

@@ -28,7 +28,7 @@ export default createReactClass({
 
   getInitialState() {
     return {
-      tabs: [1, 2],
+      tabs: [1, 2, ],
     };
   },
 

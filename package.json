@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint -c .eslintrc . --ignore-path .gitignore",
+    "fix": "eslint ./ --fix",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

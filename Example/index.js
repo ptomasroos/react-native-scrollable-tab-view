@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import createReactClass from 'create-react-class';
-import { StackNavigator } from 'react-navigation';
+import { StackNavigator as stackNavigator, } from 'react-navigation';
 import SimpleExample from './SimpleExample';
 import ScrollableTabsExample from './ScrollableTabsExample';
 import OverlayExample from './OverlayExample';
@@ -20,7 +20,7 @@ const HomeScreen = createReactClass({
   },
 
   render() {
-    const { navigate } = this.props.navigation;
+    const { navigate, } = this.props.navigation;
 
     return <View style={styles.container}>
       <TouchableOpacity
@@ -61,13 +61,13 @@ const HomeScreen = createReactClass({
   },
 });
 
-const App = StackNavigator({
-  Home: { screen: HomeScreen },
-  Simple: { screen: SimpleExample },
-  Scrollable: { screen: ScrollableTabsExample },
-  Overlay: { screen: OverlayExample },
-  Facebook: { screen: FacebookExample },
-  Dynamic: { screen: DynamicExample },
+const App = stackNavigator({
+  Home: { screen: HomeScreen, },
+  Simple: { screen: SimpleExample, },
+  Scrollable: { screen: ScrollableTabsExample, },
+  Overlay: { screen: OverlayExample, },
+  Facebook: { screen: FacebookExample, },
+  Dynamic: { screen: DynamicExample, },
 });
 
 export default App;

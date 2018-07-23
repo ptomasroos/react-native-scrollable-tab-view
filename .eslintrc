@@ -6,6 +6,7 @@
     "jasmine": true
   },
   "ecmaFeatures": {
+    "impliedStrict": true,
     "arrowFunctions": true,
     "blockBindings": true,
     "classes": true,

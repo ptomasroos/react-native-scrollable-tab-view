@@ -1,9 +1,10 @@
 const React = require('react');
-const { ViewPropTypes } = ReactNative = require('react-native');
+const ReactNative = require('react-native');
 const PropTypes = require('prop-types');
 const createReactClass = require('create-react-class');
 const {
   View,
+  ViewPropTypes,
   Animated,
   StyleSheet,
   ScrollView,

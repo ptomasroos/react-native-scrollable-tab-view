@@ -41,7 +41,7 @@ export default () => {
       </View>
     </ScrollView>
   </ScrollableTabView>;
-}
+};
 
 const styles = StyleSheet.create({
   tabView: {
