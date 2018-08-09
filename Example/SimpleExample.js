@@ -15,4 +15,4 @@ export default () => {
     <Text tabLabel='Tab #2'>favorite</Text>
     <Text tabLabel='Tab #3'>project</Text>
   </ScrollableTabView>;
-}
+};

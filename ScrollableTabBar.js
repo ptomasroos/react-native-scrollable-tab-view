@@ -1,5 +1,5 @@
 const React = require('react');
-const { ViewPropTypes } = ReactNative = require('react-native');
+const { ViewPropTypes, } = ReactNative = require('react-native');
 const PropTypes = require('prop-types');
 const createReactClass = require('create-react-class');
 const {
@@ -31,6 +31,7 @@ const ScrollableTabBar = createReactClass({
     renderTab: PropTypes.func,
     underlineStyle: ViewPropTypes.style,
     onScroll: PropTypes.func,
+    locked: PropTypes.bool,
   },
 
   getDefaultProps() {
@@ -43,6 +44,7 @@ const ScrollableTabBar = createReactClass({
       tabStyle: {},
       tabsContainerStyle: {},
       underlineStyle: {},
+      locked: false,
     };
   },
 
@@ -176,6 +178,7 @@ const ScrollableTabBar = createReactClass({
         directionalLockEnabled={true}
         bounces={false}
         scrollsToTop={false}
+        scrollEnabled={!this.props.locked}
       >
         <View
           style={[styles.tabs, {width: this.state._containerWidth, }, this.props.tabsContainerStyle, ]}

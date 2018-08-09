@@ -1,5 +1,5 @@
 const React = require('react');
-const { ViewPropTypes } = ReactNative = require('react-native');
+const { ViewPropTypes, } = ReactNative = require('react-native');
 const PropTypes = require('prop-types');
 const createReactClass = require('create-react-class');
 const {
@@ -68,8 +68,8 @@ const DefaultTabBar = createReactClass({
     };
 
     const translateX = this.props.scrollValue.interpolate({
-      inputRange: [0, 1],
-      outputRange: [0,  containerWidth / numberOfTabs],
+      inputRange: [0, 1, ],
+      outputRange: [0,  containerWidth / numberOfTabs, ],
     });
     return (
       <View style={[styles.tabs, {backgroundColor: this.props.backgroundColor, }, this.props.style, ]}>
@@ -83,8 +83,8 @@ const DefaultTabBar = createReactClass({
             tabUnderlineStyle,
             {
               transform: [
-                { translateX },
-              ]
+                { translateX, },
+              ],
             },
             this.props.underlineStyle,
           ]}
