@@ -1,6 +1,6 @@
 {
-  "name": "react-native-scrollable-tab-view",
-  "version": "0.8.0",
+  "name": "@esteemapp/react-native-scrollable-tab-view",
+  "version": "0.8.2",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/brentvatne/react-native-scrollable-tab-view.git"
+    "url": "git+https://github.com/esteemapp/react-native-scrollable-tab-view.git"
   },
   "keywords": [
     "react-native-component",
@@ -22,12 +22,12 @@
   "author": "Brent Vatne",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/brentvatne/react-native-scrollable-tab-view/issues"
+    "url": "https://github.com/esteemapp/react-native-scrollable-tab-view/issues"
   },
   "peerDependencies": {
     "react-native": ">=0.20.0"
   },
-  "homepage": "https://github.com/brentvatne/react-native-scrollable-tab-view#readme",
+  "homepage": "https://github.com/esteemapp/react-native-scrollable-tab-view#readme",
   "dependencies": {
     "react-timer-mixin": "^0.13.3",
     "prop-types": "^15.6.0",
