@@ -18,6 +18,7 @@ const TimerMixin = require('react-timer-mixin');
 const SceneComponent = require('./SceneComponent');
 const DefaultTabBar = require('./DefaultTabBar');
 const ScrollableTabBar = require('./ScrollableTabBar');
+const Tab = require('./Tab');
 
 const AnimatedViewPagerAndroid = Platform.OS === 'android' ?
   Animated.createAnimatedComponent(ViewPagerAndroid) :
@@ -28,6 +29,7 @@ const ScrollableTabView = createReactClass({
   statics: {
     DefaultTabBar,
     ScrollableTabBar,
+    Tab,
   },
   scrollOnMountCalled: false,
 
@@ -39,6 +41,7 @@ const ScrollableTabView = createReactClass({
     onScroll: PropTypes.func,
     renderTabBar: PropTypes.any,
     style: ViewPropTypes.style,
+    tabBarIconStyle: ViewPropTypes.style,
     contentProps: PropTypes.object,
     scrollWithoutAnimation: PropTypes.bool,
     locked: PropTypes.bool,
@@ -356,7 +359,7 @@ const ScrollableTabView = createReactClass({
     let overlayTabs = (this.props.tabBarPosition === 'overlayTop' || this.props.tabBarPosition === 'overlayBottom');
     let tabBarProps = {
       goToPage: this.goToPage,
-      tabs: this._children().map((child) => child.props.tabLabel),
+      tabs: this._children().map((child) => ({label: child.props.tabLabel, icon: child.props.icon, activeIcon: child.props.activeIcon})),
       activeTab: this.state.currentPage,
       scrollValue: this.state.scrollValue,
       containerWidth: this.state.containerWidth,
@@ -373,6 +376,9 @@ const ScrollableTabView = createReactClass({
     }
     if (this.props.tabBarTextStyle) {
       tabBarProps.textStyle = this.props.tabBarTextStyle;
+    }
+    if (this.props.tabBarIconStyle) {
+      tabBarProps.iconStyle = this.props.tabBarIconStyle;
     }
     if (this.props.tabBarUnderlineStyle) {
       tabBarProps.underlineStyle = this.props.tabBarUnderlineStyle;
