@@ -69,9 +69,7 @@ const ScrollableTabView = React.createClass({
   componentDidMount() {
     this.setTimeout(() => {
       InteractionManager.runAfterInteractions(() => {
-        if (Platform.OS === 'android') {
-          this.goToPage(this.props.initialPage, false);
-        }
+         this.goToPage(this.props.initialPage, false);
       });
     }, 0);
 
