@@ -1,4 +1,3 @@
-import React from "react";
 import { TouchableNativeFeedback } from "react";
 
 const Button = props => {
