@@ -1,10 +1,10 @@
 {
   "name": "react-native-scrollable-tab-view",
-  "version": "0.9.0",
+  "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint -c .eslintrc . --ignore-path .gitignore",
+    "prettier": "prettier --write \"**/*.js\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -19,22 +19,34 @@
     "tab",
     "scrollable"
   ],
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }  
+  },
+  "lint-staged": {
+    "*.js": [
+      "./node_modules/.bin/prettier --write",
+      "git add"
+    ]
+  },  
   "author": "Brent Vatne",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/brentvatne/react-native-scrollable-tab-view/issues"
+    "url": "https://github.com/happypancake/react-native-scrollable-tab-view/issues"
   },
   "peerDependencies": {
     "react-native": ">=0.20.0"
   },
-  "homepage": "https://github.com/brentvatne/react-native-scrollable-tab-view#readme",
+  "homepage": "https://github.com/happypancake/react-native-scrollable-tab-view#readme",
   "dependencies": {
-    "react-timer-mixin": "^0.13.3",
+    "create-react-class": "^15.6.2",
     "prop-types": "^15.6.0",
-    "create-react-class": "^15.6.2"
+    "react-timer-mixin": "^0.13.3"
   },
   "devDependencies": {
-    "babel-eslint": "^6.1.2",
-    "eslint": "^3.1.1"
+    "husky": "^1.1.2",
+    "lint-staged": "^7.3.0",
+    "prettier": "^1.14.3"
   }
 }
