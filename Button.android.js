@@ -1,4 +1,4 @@
-import { TouchableNativeFeedback } from "react";
+import { TouchableNativeFeedback } from 'react';
 
 const Button = props => {
   return (
