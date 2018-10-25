@@ -1,8 +1,8 @@
-import React from "react";
-import { StyleSheet, Text, View, Animated, ViewPropTypes } from "react-native";
-import PropTypes from "prop-types";
+import React from 'react';
+import { StyleSheet, Text, View, Animated, ViewPropTypes } from 'react-native';
+import PropTypes from 'prop-types';
 
-import Button from "./Button";
+import Button from './Button';
 
 class DefaultTabBar extends React.Component {
   static propTypes = {
@@ -16,13 +16,13 @@ class DefaultTabBar extends React.Component {
     textStyle: Text.propTypes.style,
     tabStyle: ViewPropTypes.style,
     renderTab: PropTypes.func,
-    underlineStyle: ViewPropTypes.style
+    underlineStyle: ViewPropTypes.style,
   };
 
   static defaultProps = {
-    activeTextColor: "navy",
-    inactiveTextColor: "black",
-    backgroundColor: null
+    activeTextColor: 'navy',
+    inactiveTextColor: 'black',
+    backgroundColor: null,
   };
 
   renderTabOption(name, page) {}
@@ -30,7 +30,7 @@ class DefaultTabBar extends React.Component {
   renderTab(name, page, isTabActive, onPressHandler) {
     const { activeTextColor, inactiveTextColor, textStyle } = this.props;
     const textColor = isTabActive ? activeTextColor : inactiveTextColor;
-    const fontWeight = isTabActive ? "bold" : "normal";
+    const fontWeight = isTabActive ? 'bold' : 'normal';
 
     return (
       <Button
@@ -54,16 +54,16 @@ class DefaultTabBar extends React.Component {
     const containerWidth = this.props.containerWidth;
     const numberOfTabs = this.props.tabs.length;
     const tabUnderlineStyle = {
-      position: "absolute",
+      position: 'absolute',
       width: containerWidth / numberOfTabs,
       height: 4,
-      backgroundColor: "navy",
-      bottom: 0
+      backgroundColor: 'navy',
+      bottom: 0,
     };
 
     const translateX = this.props.scrollValue.interpolate({
       inputRange: [0, 1],
-      outputRange: [0, containerWidth / numberOfTabs]
+      outputRange: [0, containerWidth / numberOfTabs],
     });
 
     return (
@@ -71,7 +71,7 @@ class DefaultTabBar extends React.Component {
         style={[
           styles.tabs,
           { backgroundColor: this.props.backgroundColor },
-          this.props.style
+          this.props.style,
         ]}
       >
         {this.props.tabs.map((name, page) => {
@@ -83,9 +83,9 @@ class DefaultTabBar extends React.Component {
           style={[
             tabUnderlineStyle,
             {
-              transform: [{ translateX }]
+              transform: [{ translateX }],
             },
-            this.props.underlineStyle
+            this.props.underlineStyle,
           ]}
         />
       </View>
@@ -96,20 +96,20 @@ class DefaultTabBar extends React.Component {
 const styles = StyleSheet.create({
   tab: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    paddingBottom: 10
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingBottom: 10,
   },
   tabs: {
     height: 50,
-    flexDirection: "row",
-    justifyContent: "space-around",
+    flexDirection: 'row',
+    justifyContent: 'space-around',
     borderWidth: 1,
     borderTopWidth: 0,
     borderLeftWidth: 0,
     borderRightWidth: 0,
-    borderColor: "#ccc"
-  }
+    borderColor: '#ccc',
+  },
 });
 
 export default DefaultTabBar;
