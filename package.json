@@ -36,7 +36,7 @@
     "url": "https://github.com/happypancake/react-native-scrollable-tab-view/issues"
   },
   "peerDependencies": {
-    "react-native": ">=0.20.0"
+    "react-native": ">=0.56.0"
   },
   "homepage": "https://github.com/happypancake/react-native-scrollable-tab-view#readme",
   "dependencies": {
