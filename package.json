@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/brentvatne/react-native-scrollable-tab-view.git"
+    "url": "git+https://github.com/happypancake/react-native-scrollable-tab-view.git"
   },
   "keywords": [
     "react-native-component",
