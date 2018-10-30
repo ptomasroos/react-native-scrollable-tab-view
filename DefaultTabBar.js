@@ -78,8 +78,8 @@ class DefaultTabBar extends React.Component<Props> {
       scrollValue,
       underlineStyle,
     } = this.props;
-    const numberOfTabs = tabs.length;
 
+    const numberOfTabs = tabs.length;
     const translateX = scrollValue.interpolate({
       inputRange: [0, 1],
       outputRange: [0, containerWidth / numberOfTabs],
@@ -87,7 +87,7 @@ class DefaultTabBar extends React.Component<Props> {
 
     return (
       <View style={[styles.tabs, { backgroundColor }, style]}>
-        {this.props.tabs.map((name, page) => {
+        {tabs.map((name, page) => {
           const isTabActive = activeTab === page;
           const renderTab = renderTab || this.renderTab;
           return renderTab(name, page, isTabActive, goToPage);
