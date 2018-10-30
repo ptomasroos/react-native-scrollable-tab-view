@@ -46,9 +46,9 @@ class ScrollableTabBar extends React.Component<Props> {
     this._tabsMeasurements = [];
 
     this.state = {
-      _leftTabUnderline: new Animated.Value(0),
-      _widthTabUnderline: new Animated.Value(0),
-      _containerWidth: null,
+      leftTabUnderline: new Animated.Value(0),
+      widthTabUnderline: new Animated.Value(0),
+      containerWidth: null,
     };
   }
 
@@ -143,11 +143,11 @@ class ScrollableTabBar extends React.Component<Props> {
       const newLineRight =
         pageOffset * nextTabRight + (1 - pageOffset) * lineRight;
 
-      this.state._leftTabUnderline.setValue(newLineLeft);
-      this.state._widthTabUnderline.setValue(newLineRight - newLineLeft);
+      this.state.leftTabUnderline.setValue(newLineLeft);
+      this.state.widthTabUnderline.setValue(newLineRight - newLineLeft);
     } else {
-      this.state._leftTabUnderline.setValue(lineLeft);
-      this.state._widthTabUnderline.setValue(lineRight - lineLeft);
+      this.state.leftTabUnderline.setValue(lineLeft);
+      this.state.widthTabUnderline.setValue(lineRight - lineLeft);
     }
   }
 
@@ -183,11 +183,11 @@ class ScrollableTabBar extends React.Component<Props> {
   componentDidUpdate(prevProps) {
     const { tabs: prevTabs } = prevProps;
     const { tabs } = this.props;
-    const { _containerWidth } = this.state;
+    const { containerWidth } = this.state;
 
-    if (!_.isEqual(tabs, prevTabs) && _containerWidth) {
+    if (!_.isEqual(tabs, prevTabs) && containerWidth) {
       this.containerRef.measure((x, y, width, height, pageX, pageY) => {
-        this.setState({ _containerWidth: width });
+        this.setState({ containerWidth: width });
       });
     }
   }
@@ -198,7 +198,7 @@ class ScrollableTabBar extends React.Component<Props> {
     if (width < WINDOW_WIDTH) {
       width = WINDOW_WIDTH;
     }
-    this.setState({ _containerWidth: width });
+    this.setState({ containerWidth: width });
     this.updateView({ value: this.props.scrollValue.__getValue() });
   }
 
@@ -216,8 +216,8 @@ class ScrollableTabBar extends React.Component<Props> {
     };
 
     const dynamicTabUnderline = {
-      left: this.state._leftTabUnderline,
-      width: this.state._widthTabUnderline,
+      left: this.state.leftTabUnderline,
+      width: this.state.widthTabUnderline,
     };
 
     return (
@@ -244,7 +244,7 @@ class ScrollableTabBar extends React.Component<Props> {
           <View
             style={[
               styles.tabs,
-              { width: this.state._containerWidth },
+              { width: this.state.containerWidth },
               this.props.tabsContainerStyle,
             ]}
             ref={'tabContainer'}
