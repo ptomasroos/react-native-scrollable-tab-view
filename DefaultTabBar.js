@@ -1,34 +1,49 @@
+// @flow
 import React from 'react';
 import { StyleSheet, Text, View, Animated, ViewPropTypes } from 'react-native';
-import PropTypes from 'prop-types';
 
 import Button from './Button';
 
-class DefaultTabBar extends React.Component {
-  static propTypes = {
-    ...ViewPropTypes,
-    goToPage: PropTypes.func,
-    activeTab: PropTypes.number,
-    tabs: PropTypes.array,
-    backgroundColor: PropTypes.string,
-    activeTextColor: PropTypes.string,
-    inactiveTextColor: PropTypes.string,
-    textStyle: Text.propTypes.style,
-    tabStyle: ViewPropTypes.style,
-    renderTab: PropTypes.func,
-    underlineStyle: ViewPropTypes.style,
-  };
+type ViewProps = React.ElementProps<typeof View>;
+type ViewStyleProp = $PropertyType<ViewProps, 'style'>;
 
+type TextProps = React.ElementProps<typeof Text>;
+type TextStyleProp = $PropertyType<TextProps, 'style'>;
+
+export type Props = {
+  goToPage?: Function,
+  activeTab?: number,
+  tabs: Array<any>, // TODO what is this actually
+  backgroundColor: string,
+  activeTextColor: string,
+  inactiveTextColor: string,
+  textStyle: TextStyleProp,
+  tabStyle: ViewStyleProp,
+  renderTab: Function,
+  underlineStyle: ViewStyleProp,
+};
+
+class DefaultTabBar extends React.Component<Props> {
   static defaultProps = {
     activeTextColor: 'navy',
     inactiveTextColor: 'black',
     backgroundColor: null,
   };
 
-  renderTabOption(name, page) {}
+  renderTabOption(name: string, page: string) {}
 
-  renderTab(name, page, isTabActive, onPressHandler) {
-    const { activeTextColor, inactiveTextColor, textStyle } = this.props;
+  renderTab(
+    name: string,
+    page: string,
+    isTabActive: boolean,
+    onPressHandler: Function,
+  ) {
+    const {
+      activeTextColor,
+      inactiveTextColor,
+      textStyle,
+      tabStyle,
+    } = this.props;
     const textColor = isTabActive ? activeTextColor : inactiveTextColor;
     const fontWeight = isTabActive ? 'bold' : 'normal';
 
@@ -41,7 +56,7 @@ class DefaultTabBar extends React.Component {
         accessibilityTraits="button"
         onPress={() => onPressHandler(page)}
       >
-        <View style={[styles.tab, this.props.tabStyle]}>
+        <View style={[styles.tab, tabStyle]}>
           <Text style={[{ color: textColor, fontWeight }, textStyle]}>
             {name}
           </Text>
@@ -51,41 +66,39 @@ class DefaultTabBar extends React.Component {
   }
 
   render() {
-    const containerWidth = this.props.containerWidth;
-    const numberOfTabs = this.props.tabs.length;
-    const tabUnderlineStyle = {
-      position: 'absolute',
-      width: containerWidth / numberOfTabs,
-      height: 4,
-      backgroundColor: 'navy',
-      bottom: 0,
-    };
+    const {
+      activeTab,
+      containerWidth,
+      tabs,
+      renderTab,
+      goToPage,
+      backgroundColor,
+      style,
+      scrollValue,
+      underlineStyle,
+    } = this.props;
+    const numberOfTabs = tabs.length;
 
-    const translateX = this.props.scrollValue.interpolate({
+    const translateX = scrollValue.interpolate({
       inputRange: [0, 1],
       outputRange: [0, containerWidth / numberOfTabs],
     });
 
     return (
-      <View
-        style={[
-          styles.tabs,
-          { backgroundColor: this.props.backgroundColor },
-          this.props.style,
-        ]}
-      >
+      <View style={[styles.tabs, { backgroundColor }, style]}>
         {this.props.tabs.map((name, page) => {
-          const isTabActive = this.props.activeTab === page;
-          const renderTab = this.props.renderTab || this.renderTab;
-          return renderTab(name, page, isTabActive, this.props.goToPage);
+          const isTabActive = activeTab === page;
+          const renderTab = renderTab || this.renderTab;
+          return renderTab(name, page, isTabActive, goToPage);
         })}
         <Animated.View
           style={[
-            tabUnderlineStyle,
+            styles.tabUnderline,
             {
+              width: containerWidth / numberOfTabs,
               transform: [{ translateX }],
             },
-            this.props.underlineStyle,
+            underlineStyle,
           ]}
         />
       </View>
@@ -109,6 +122,12 @@ const styles = StyleSheet.create({
     borderLeftWidth: 0,
     borderRightWidth: 0,
     borderColor: '#ccc',
+  },
+  tabUnderline: {
+    position: 'absolute',
+    height: 4,
+    backgroundColor: 'navy',
+    bottom: 0,
   },
 });
 
