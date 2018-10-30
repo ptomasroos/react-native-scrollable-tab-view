@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 import {
   View,
@@ -9,13 +10,36 @@ import {
   Dimensions,
   ViewPropTypes,
 } from 'react-native';
-import PropTypes from 'prop-types';
+import _ from 'underscore';
 
 import Button from './Button';
 
 const WINDOW_WIDTH = Dimensions.get('window').width;
 
-class ScrollableTabBar extends React.Component {
+type ViewProps = React.ElementProps<typeof View>;
+type ViewStyleProp = $PropertyType<ViewProps, 'style'>;
+
+type TextProps = React.ElementProps<typeof Text>;
+type TextStyleProp = $PropertyType<TextProps, 'style'>;
+
+type Props = {
+  goToPage?: Function,
+  activeTab?: number,
+  tabs: Array<string>,
+  backgroundColor: string,
+  activeTextColor: string,
+  inactiveTextColor: string,
+  scrollOffset: number,
+  style: ViewStyleProp,
+  tabStyle: ViewStyleProp,
+  tabsContainerStyle: ViewStyleProp,
+  textStyle: TextStyleProp,
+  renderTab: Function,
+  underlineStyle: ViewStyleProp,
+  onScroll: Function,
+};
+
+class ScrollableTabBar extends React.Component<Props> {
   constructor(props) {
     super(props);
     this._tabsMeasurements = [];
@@ -26,23 +50,6 @@ class ScrollableTabBar extends React.Component {
       _containerWidth: null,
     };
   }
-
-  static propTypes = {
-    goToPage: PropTypes.func,
-    activeTab: PropTypes.number,
-    tabs: PropTypes.array,
-    backgroundColor: PropTypes.string,
-    activeTextColor: PropTypes.string,
-    inactiveTextColor: PropTypes.string,
-    scrollOffset: PropTypes.number,
-    style: ViewPropTypes.style,
-    tabStyle: ViewPropTypes.style,
-    tabsContainerStyle: ViewPropTypes.style,
-    textStyle: Text.propTypes.style,
-    renderTab: PropTypes.func,
-    underlineStyle: ViewPropTypes.style,
-    onScroll: PropTypes.func,
-  };
 
   static defaultProps = {
     scrollOffset: 52,
@@ -56,13 +63,16 @@ class ScrollableTabBar extends React.Component {
   };
 
   componentDidMount() {
-    this.props.scrollValue.addListener(this.updateView);
+    const { scrollValue } = this.props;
+    scrollValue.addListener(this.updateView);
   }
 
-  updateView(offset) {
+  updateView = offset => {
+    const { tabs } = this.props;
+
     const position = Math.floor(offset.value);
     const pageOffset = offset.value % 1;
-    const tabCount = this.props.tabs.length;
+    const tabCount = tabs.length;
     const lastTabPosition = tabCount - 1;
 
     if (tabCount === 0 || offset.value < 0 || offset.value > lastTabPosition) {
@@ -78,9 +88,9 @@ class ScrollableTabBar extends React.Component {
       this.updateTabPanel(position, pageOffset);
       this.updateTabUnderline(position, pageOffset, tabCount);
     }
-  }
+  };
 
-  necessarilyMeasurementsCompleted(position, isLastTab) {
+  necessarilyMeasurementsCompleted(position: number, isLastTab: boolean) {
     return (
       this._tabsMeasurements[position] &&
       (isLastTab || this._tabsMeasurements[position + 1]) &&
@@ -169,13 +179,13 @@ class ScrollableTabBar extends React.Component {
     this.updateView({ value: this.props.scrollValue.__getValue() });
   }
 
-  componentWillReceiveProps(nextProps) {
-    // If the tabs change, force the width of the tabs container to be recalculated
-    if (
-      JSON.stringify(this.props.tabs) !== JSON.stringify(nextProps.tabs) &&
-      this.state._containerWidth
-    ) {
-      this.setState({ _containerWidth: null });
+  componentDidUpdate(prevProps) {
+    const { tabs: prevTabs } = prevProps;
+    const { tabs } = this.props;
+    const { _containerWidth } = this.state;
+
+    if (!_.isEqual(tabs, prevTabs) && _containerWidth) {
+      // this.setState({ _containerWidth: null }); // TODO use MEASURE instead of this hack
     }
   }
 
