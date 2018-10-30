@@ -16,6 +16,30 @@ import SceneComponent from './SceneComponent';
 import DefaultTabBar from './DefaultTabBar';
 import ScrollableTabBar from './ScrollableTabBar';
 
+// Animated.add and Animated.divide do not currently support listeners so
+// we have to polyfill it here since a lot of code depends on being able
+// to add a listener to `scrollValue`. See https://github.com/facebook/react-native/pull/12620.
+function polyfillAnimatedValue(animatedValue) {
+  const listeners = new Set();
+  const addListener = listener => {
+    listeners.add(listener);
+  };
+
+  const removeListener = listener => {
+    listeners.delete(listener);
+  };
+
+  const removeAllListeners = () => {
+    listeners.clear();
+  };
+
+  animatedValue.addListener = addListener;
+  animatedValue.removeListener = removeListener;
+  animatedValue.removeAllListeners = removeAllListeners;
+
+  return value => listeners.forEach(listener => listener({ value }));
+}
+
 const AnimatedViewPagerAndroid =
   Platform.OS === 'android'
     ? Animated.createAnimatedComponent(ViewPagerAndroid)
@@ -59,7 +83,7 @@ class ScrollableTabView extends React.Component<Props> {
         containerWidthAnimatedValue,
       );
 
-      const callListeners = this._polyfillAnimatedValue(scrollValue);
+      const callListeners = polyfillAnimatedValue(scrollValue);
       scrollXIOS.addListener(({ value }) =>
         callListeners(value / this.state.containerWidth),
       );
@@ -75,7 +99,7 @@ class ScrollableTabView extends React.Component<Props> {
       const offsetAndroid = new Animated.Value(0);
       const scrollValue = Animated.add(positionAndroid, offsetAndroid);
 
-      const callListeners = this._polyfillAnimatedValue(scrollValue);
+      const callListeners = polyfillAnimatedValue(scrollValue);
       const positionAndroidValue = initialPage;
       const offsetAndroidValue = 0;
 
@@ -203,30 +227,6 @@ class ScrollableTabView extends React.Component<Props> {
       }
     });
     return newKeys;
-  }
-
-  // Animated.add and Animated.divide do not currently support listeners so
-  // we have to polyfill it here since a lot of code depends on being able
-  // to add a listener to `scrollValue`. See https://github.com/facebook/react-native/pull/12620.
-  _polyfillAnimatedValue(animatedValue) {
-    const listeners = new Set();
-    const addListener = listener => {
-      listeners.add(listener);
-    };
-
-    const removeListener = listener => {
-      listeners.delete(listener);
-    };
-
-    const removeAllListeners = () => {
-      listeners.clear();
-    };
-
-    animatedValue.addListener = addListener;
-    animatedValue.removeListener = removeListener;
-    animatedValue.removeAllListeners = removeAllListeners;
-
-    return value => listeners.forEach(listener => listener({ value }));
   }
 
   _shouldRenderSceneKey(idx, currentPageKey) {
@@ -387,7 +387,7 @@ class ScrollableTabView extends React.Component<Props> {
     }
   }
 
-  _handleLayout = e => {
+  onContainerLayout = e => {
     const { width } = e.nativeEvent.layout;
     const { containerWidth, scrollXIOS, currentPage } = this.state;
 
@@ -428,6 +428,7 @@ class ScrollableTabView extends React.Component<Props> {
       tabBarActiveTextColor,
     } = this.props;
     const { currentPage, scrollValue, containerWidth } = this.state;
+
     const isTabBarPositionOverlay =
       tabBarPosition === 'overlayTop' || tabBarPosition === 'overlayBottom';
 
@@ -455,7 +456,7 @@ class ScrollableTabView extends React.Component<Props> {
     return (
       <View
         style={[styles.container, this.props.style]}
-        onLayout={this._handleLayout}
+        onLayout={this.onContainerLayout}
       >
         {tabBarPosition === 'top' && this.renderTabBar(tabBarProps)}
         {this.renderScrollableContent()}
