@@ -1,7 +1,7 @@
 {
   "name": "react-native-scrollable-tab-view",
   "version": "1.0.0",
-  "description": "",
+  "description": "React Native scrollable tab view for Android and IOS",
   "main": "index.js",
   "scripts": {
     "prettier": "prettier --single-quote --trailing-comma all --bracket-spacing --write \"**/*.js\""
