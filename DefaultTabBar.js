@@ -30,11 +30,11 @@ class DefaultTabBar extends React.Component<Props> {
     backgroundColor: null,
   };
 
-  renderTabOption(name: string, page: string) {}
+  renderTabOption(name: string, page: number) {}
 
   renderTab(
     name: string,
-    page: string,
+    page: number,
     isTabActive: boolean,
     onPressHandler: Function,
   ) {
