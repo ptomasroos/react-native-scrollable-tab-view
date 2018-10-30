@@ -8,7 +8,7 @@ type Props = typeof TouchableNativeFeedback.props & {
 class Button extends React.Component<Props> {
   render() {
     const { children, ...props } = this.props;
-    
+
     return (
       <TouchableNativeFeedback
         delayPressIn={0}
