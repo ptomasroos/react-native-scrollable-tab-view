@@ -39,10 +39,10 @@
     "react-native": ">=0.56.0"
   },
   "homepage": "https://github.com/happypancake/react-native-scrollable-tab-view#readme",
-  "dependencies": {
-    "prop-types": "^15.6.0"
-  },
   "devDependencies": {
+    "react": "16.6.0-alpha.8af6728",
+    "react-native": "0.57.4",
+    "flow-bin": "^0.78.0",
     "husky": "^1.1.2",
     "lint-staged": "^7.3.0",
     "prettier": "^1.14.3"
