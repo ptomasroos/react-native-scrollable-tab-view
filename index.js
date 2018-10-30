@@ -354,7 +354,7 @@ class ScrollableTabView extends React.Component<Props> {
   _updateSelectedPage(nextPage) {
     let localNextPage = nextPage;
     if (typeof localNextPage === 'object') {
-      // what is this actually
+      // TODO what is this actually
       localNextPage = nextPage.nativeEvent.position;
     }
 
