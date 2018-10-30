@@ -44,6 +44,7 @@ class DefaultTabBar extends React.Component<Props> {
       textStyle,
       tabStyle,
     } = this.props;
+
     const textColor = isTabActive ? activeTextColor : inactiveTextColor;
     const fontWeight = isTabActive ? 'bold' : 'normal';
 
