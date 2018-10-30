@@ -9,6 +9,7 @@ import {
   Platform,
   Dimensions,
   ViewPropTypes,
+  findNodeHandle,
 } from 'react-native';
 import _ from 'underscore';
 
@@ -185,7 +186,9 @@ class ScrollableTabBar extends React.Component<Props> {
     const { _containerWidth } = this.state;
 
     if (!_.isEqual(tabs, prevTabs) && _containerWidth) {
-      // this.setState({ _containerWidth: null }); // TODO use MEASURE instead of this hack
+      this.containerRef.measure((x, y, width, height, pageX, pageY) => {
+        this.setState({ _containerWidth: width });
+      });
     }
   }
 
@@ -199,10 +202,10 @@ class ScrollableTabBar extends React.Component<Props> {
     this.updateView({ value: this.props.scrollValue.__getValue() });
   }
 
-  onContainerLayout(e) {
+  onContainerLayout = e => {
     this._containerMeasurements = e.nativeEvent.layout;
     this.updateView({ value: this.props.scrollValue.__getValue() });
-  }
+  };
 
   render() {
     const tabUnderlineStyle = {
@@ -219,6 +222,7 @@ class ScrollableTabBar extends React.Component<Props> {
 
     return (
       <View
+        ref={ref => (this.containerRef = ref)}
         style={[
           styles.container,
           { backgroundColor: this.props.backgroundColor },
