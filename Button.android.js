@@ -1,15 +1,24 @@
-import { TouchableNativeFeedback } from 'react';
+import React from 'react';
+import { TouchableNativeFeedback } from 'react-native';
 
-const Button = props => {
-  return (
-    <TouchableNativeFeedback
-      delayPressIn={0}
-      background={TouchableNativeFeedback.SelectableBackground()}
-      {...props}
-    >
-      {props.children}
-    </TouchableNativeFeedback>
-  );
+type Props = typeof TouchableNativeFeedback.props & {
+  children?: React.Node,
 };
+
+class Button extends React.Component<Props> {
+  render() {
+    const { children, ...props } = this.props;
+    
+    return (
+      <TouchableNativeFeedback
+        delayPressIn={0}
+        background={TouchableNativeFeedback.SelectableBackground()}
+        {...props}
+      >
+        {children}
+      </TouchableNativeFeedback>
+    );
+  }
+}
 
 export default Button;
