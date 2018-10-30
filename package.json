@@ -22,7 +22,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
-    }  
+    }
   },
   "lint-staged": {
     "*.js": [
@@ -35,16 +35,19 @@
   "bugs": {
     "url": "https://github.com/happypancake/react-native-scrollable-tab-view/issues"
   },
+  "dependencies": {
+    "underscore": "^1.9.1"
+  },
   "peerDependencies": {
     "react-native": ">=0.56.0"
   },
   "homepage": "https://github.com/happypancake/react-native-scrollable-tab-view#readme",
   "devDependencies": {
-    "react": "16.6.0-alpha.8af6728",
-    "react-native": "0.57.4",
     "flow-bin": "^0.78.0",
     "husky": "^1.1.2",
     "lint-staged": "^7.3.0",
-    "prettier": "^1.14.3"
+    "prettier": "^1.14.3",
+    "react": "16.6.0-alpha.8af6728",
+    "react-native": "0.57.4"
   }
 }
