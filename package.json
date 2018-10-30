@@ -1,15 +1,14 @@
 {
   "name": "react-native-scrollable-tab-view",
-  "version": "0.10.0",
+  "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "prettier": "prettier --single-quote --trailing-comma all --bracket-spacing --write \"**/*.js\"",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prettier": "prettier --single-quote --trailing-comma all --bracket-spacing --write \"**/*.js\""
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/happypancake/react-native-scrollable-tab-view.git"
+    "url": "git+https://github.com/ptomasroos/react-native-scrollable-tab-view.git"
   },
   "keywords": [
     "react-native-component",
@@ -30,18 +29,14 @@
       "git add"
     ]
   },
-  "author": "Brent Vatne",
+  "author": "Tomas Roos <ptomasroos@gmail.com>",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/happypancake/react-native-scrollable-tab-view/issues"
-  },
   "dependencies": {
     "underscore": "^1.9.1"
   },
   "peerDependencies": {
     "react-native": ">=0.56.0"
   },
-  "homepage": "https://github.com/happypancake/react-native-scrollable-tab-view#readme",
   "devDependencies": {
     "flow-bin": "^0.78.0",
     "husky": "^1.1.2",
@@ -49,5 +44,9 @@
     "prettier": "^1.14.3",
     "react": "16.6.0-alpha.8af6728",
     "react-native": "0.57.4"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/ptomasroos/react-native-scrollable-tab-view/issues"
+  },
+  "homepage": "https://github.com/ptomasroos/react-native-scrollable-tab-view#readme"
 }
