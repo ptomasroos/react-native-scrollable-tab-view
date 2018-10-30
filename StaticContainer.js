@@ -1,16 +1,24 @@
+// @flow
 import React from 'react';
 
-class StaticContainer extends React.Component {
+type Props = {
+  shouldUpdate?: boolean,
+  children?: React.Node,
+};
+
+class StaticContainer extends React.Component<Props> {
   shouldComponentUpdate(nextProps) {
     return !!nextProps.shouldUpdate;
   }
 
   render() {
-    var child = this.props.children;
-    if (child === null || child === false) {
+    const { children } = this.props;
+
+    if (children === null || children === false) {
       return null;
     }
-    return React.Children.only(child);
+
+    return React.Children.only(children);
   }
 }
 
