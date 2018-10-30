@@ -59,7 +59,7 @@ type Props = typeof DefaultTabBar &
     page: number,
     onChangeTab: Function,
     onScroll: Function,
-    renderTabBar: any,
+    renderTabBar: any, // TODO define better
     style: ViewStyleProp,
     contentProps: Object,
     scrollWithoutAnimation: boolean,
@@ -182,7 +182,7 @@ class ScrollableTabView extends React.Component<Props> {
     const currentPage = this.state.currentPage;
     this.updateSceneKeys({
       page: pageNumber,
-      callback: this._onChangeTab.bind(this, currentPage, pageNumber),
+      callback: () => this.onChangeTab(currentPage, pageNumber),
     });
   };
 
@@ -203,7 +203,7 @@ class ScrollableTabView extends React.Component<Props> {
     children = this.props.children,
     callback = () => {},
   }) {
-    let newKeys = this.newSceneKeys({
+    const newKeys = this.newSceneKeys({
       previousKeys: this.state.sceneKeys,
       currentPage: page,
       children,
@@ -216,9 +216,9 @@ class ScrollableTabView extends React.Component<Props> {
     currentPage = 0,
     children = this.props.children,
   }) {
-    let newKeys = [];
+    const newKeys = [];
     this._children(children).forEach((child, idx) => {
-      let key = this._makeSceneKey(child, idx);
+      const key = this._makeSceneKey(child, idx);
       if (
         this._keyExists(previousKeys, key) ||
         this._shouldRenderSceneKey(idx, currentPage)
@@ -230,7 +230,7 @@ class ScrollableTabView extends React.Component<Props> {
   }
 
   _shouldRenderSceneKey(idx, currentPageKey) {
-    let numOfSibling = this.props.prerenderingSiblingsNumber;
+    const numOfSibling = this.props.prerenderingSiblingsNumber;
     return (
       idx < currentPageKey + numOfSibling + 1 &&
       idx > currentPageKey - numOfSibling - 1
@@ -303,8 +303,8 @@ class ScrollableTabView extends React.Component<Props> {
             listener: this._onScroll,
           },
         )}
-        ref={scrollView => {
-          this.scrollView = scrollView;
+        ref={ref => {
+          this.scrollView = ref;
         }}
         {...this.props.contentProps}
       >

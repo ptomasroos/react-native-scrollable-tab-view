@@ -174,11 +174,11 @@ class ScrollableTabBar extends React.Component<Props> {
     );
   }
 
-  measureTab(page, event) {
+  measureTab = (page, event) => {
     const { x, width, height } = event.nativeEvent.layout;
     this._tabsMeasurements[page] = { left: x, right: x + width, width, height };
     this.updateView({ value: this.props.scrollValue.__getValue() });
-  }
+  };
 
   componentDidUpdate(prevProps) {
     const { tabs: prevTabs } = prevProps;
@@ -258,7 +258,7 @@ class ScrollableTabBar extends React.Component<Props> {
                 page,
                 isTabActive,
                 this.props.goToPage,
-                this.measureTab.bind(this, page),
+                () => this.measureTab(page),
               );
             })}
             <Animated.View
