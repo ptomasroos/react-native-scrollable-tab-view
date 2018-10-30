@@ -13,7 +13,7 @@ type TextStyleProp = $PropertyType<TextProps, 'style'>;
 export type Props = {
   goToPage?: Function,
   activeTab?: number,
-  tabs: Array<any>, // TODO what is this actually
+  tabs: Array<string>,
   backgroundColor: string,
   activeTextColor: string,
   inactiveTextColor: string,
