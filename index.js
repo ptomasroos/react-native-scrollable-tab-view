@@ -137,7 +137,7 @@ class ScrollableTabView extends React.Component<Props> {
 
   componentDidUpdate(prevProps) {
     const { prevChildren } = prevProps;
-    const { children } = this.props;
+    const { children, page } = this.props;
     const { currentPage } = this.state;
 
     if (children !== prevChildren) {
@@ -147,8 +147,8 @@ class ScrollableTabView extends React.Component<Props> {
       });
     }
 
-    if (props.page >= 0 && props.page !== this.state.currentPage) {
-      this.goToPage(props.page);
+    if (page >= 0 && page !== currentPage) {
+      this.goToPage(page);
     }
   }
 
