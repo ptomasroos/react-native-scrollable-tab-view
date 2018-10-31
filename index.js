@@ -135,11 +135,15 @@ class ScrollableTabView extends React.Component<Props> {
     prerenderingSiblingsNumber: 0,
   };
 
-  componentWillReceiveProps(props) {
-    if (props.children !== this.props.children) {
+  componentDidUpdate(prevProps) {
+    const { prevChildren } = prevProps;
+    const { children } = this.props;
+    const { currentPage } = this.state;
+
+    if (children !== prevChildren) {
       this.updateSceneKeys({
-        page: this.state.currentPage,
-        children: props.children,
+        page: currentPage,
+        children,
       });
     }
 
