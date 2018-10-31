@@ -59,7 +59,7 @@ type Props = typeof DefaultTabBar &
     page: number,
     onChangeTab: Function,
     onScroll: Function,
-    renderTabBar: any, // TODO define better
+    renderTabBar: Function,
     style: ViewStyleProp,
     contentProps: Object,
     scrollWithoutAnimation: boolean,
