@@ -182,10 +182,7 @@ class ScrollableTabView extends React.Component<Props, State> {
     const { currentPage } = this.state;
 
     if (children !== prevChildren) {
-      this.updateSceneKeys({
-        page: currentPage,
-        children,
-      });
+      this.updateSceneKeys(currentPage);
     }
 
     if (page >= 0 && page !== currentPage) {
@@ -206,7 +203,7 @@ class ScrollableTabView extends React.Component<Props, State> {
 
   goToPage = (pageNumber: number) => {
     const { scrollWithoutAnimation } = this.props;
-    const { containerWidth } = this.state;
+    const { containerWidth, currentPage } = this.state;
 
     if (Platform.OS === 'ios') {
       const offset = pageNumber * containerWidth;
@@ -227,11 +224,9 @@ class ScrollableTabView extends React.Component<Props, State> {
       }
     }
 
-    const currentPage = this.state.currentPage;
-    this.updateSceneKeys({
-      page: pageNumber,
-      callback: () => this.onChangeTab(currentPage, pageNumber),
-    });
+    this.updateSceneKeys(pageNumber, () =>
+      this.onChangeTab(currentPage, pageNumber),
+    );
   };
 
   renderTabBar(props: Props) {
@@ -247,30 +242,29 @@ class ScrollableTabView extends React.Component<Props, State> {
     }
   }
 
-  updateSceneKeys({
-    page,
-    children = this.props.children,
-    callback = () => {},
-  }) {
-    const newKeys = this.newSceneKeys({
-      previousKeys: this.state.sceneKeys,
-      currentPage: page,
-      children,
-    });
+  updateSceneKeys(
+    page: number,
+    children: React.Node = this.props.children,
+    callback: Function = () => {},
+  ) {
+    const { sceneKeys } = this.state;
+
+    const newKeys = this.newSceneKeys(sceneKeys, page, children);
+
     this.setState({ currentPage: page, sceneKeys: newKeys }, callback);
   }
 
-  newSceneKeys({
-    previousKeys = [],
-    currentPage = 0,
-    children = this.props.children,
-  }) {
+  newSceneKeys(
+    previousKeys: Array<string> = [],
+    currentPage: number = 0,
+    children: React.Node = this.props.children,
+  ) {
     const newKeys = [];
-    this._children(children).forEach((child, idx) => {
-      const key = this.makeSceneKey(child, idx);
+    this._children(children).forEach((child, index) => {
+      const key = this.makeSceneKey(child, index);
       if (
         this.keyExists(previousKeys, key) ||
-        this.shouldRenderSceneKey(idx, currentPage)
+        this.shouldRenderSceneKey(index, currentPage)
       ) {
         newKeys.push(key);
       }
@@ -408,10 +402,9 @@ class ScrollableTabView extends React.Component<Props, State> {
   updateSelectedPage = (nextPage: number) => {
     const { currentPage } = this.state;
 
-    this.updateSceneKeys({
-      page: nextPage,
-      callback: () => this.onChangeTab(currentPage, nextPage),
-    });
+    this.updateSceneKeys(nextPage, () =>
+      this.onChangeTab(currentPage, nextPage),
+    );
   };
 
   onChangeTab = (prevPage: number, currentPage: number) => {
@@ -502,7 +495,7 @@ class ScrollableTabView extends React.Component<Props, State> {
             right: 0,
             [tabBarPosition === 'overlayTop' ? 'top' : 'bottom']: 0,
           }
-        : undefined,
+        : {},
     };
 
     return (
