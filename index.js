@@ -10,16 +10,21 @@ import {
   ViewPagerAndroid,
   InteractionManager,
   ViewPropTypes,
+  Text,
 } from 'react-native';
 
 import SceneComponent from './SceneComponent';
 import DefaultTabBar from './DefaultTabBar';
 import ScrollableTabBar from './ScrollableTabBar';
 
+import type AnimatedValue from 'react-native/Libraries/Animated/src/nodes/AnimatedValue';
+import type AnimatedDivision from 'react-native/Libraries/Animated/src/nodes/AnimatedDivision';
+import type AnimatedAddition from 'react-native/Libraries/Animated/src/nodes/AnimatedAddition';
+
 // Animated.add and Animated.divide do not currently support listeners so
 // we have to polyfill it here since a lot of code depends on being able
 // to add a listener to `scrollValue`. See https://github.com/facebook/react-native/pull/12620.
-function polyfillAnimatedValue(animatedValue) {
+function polyfillAnimatedValue(animatedValue: Object) {
   const listeners = new Set();
   const addListener = listener => {
     listeners.add(listener);
@@ -47,31 +52,36 @@ const AnimatedViewPagerAndroid =
 
 const WINDOW_WIDTH = Dimensions.get('window').width;
 
-import type AnimatedValue from 'react-native/Libraries/Animated/src/nodes/AnimatedValue';
-
 type ViewProps = React.ElementProps<typeof View>;
 type ViewStyleProp = $PropertyType<ViewProps, 'style'>;
 
+type TextProps = React.ElementProps<typeof Text>;
+type TextStyleProp = $PropertyType<TextProps, 'style'>;
+
 type TabBarPosition = 'top' | 'bottom' | 'overlayTop' | 'overlayBottom';
 
-type RefObject = {|
-  current: any,
-|};
+type TabBarProps = {
+  tabBarPosition: TabBarPosition,
+  tabBarBackgroundColor: string,
+  tabBarActiveTextColor: string,
+  tabBarInactiveTextColor: string,
+  tabBarTextStyle: TextStyleProp,
+  tabBarUnderlineStyle: ViewStyleProp,
+};
 
-type Props = typeof DefaultTabBar &
-  typeof ScrollableTabBar & {
-    tabBarPosition: TabBarPosition,
-    initialPage: number,
-    page: number,
-    onChangeTab: Function,
-    onScroll: Function,
-    renderTabBar: Function,
-    style: ViewStyleProp,
-    contentProps: Object,
-    scrollWithoutAnimation: boolean,
-    locked: boolean,
-    prerenderingSiblingsNumber: number,
-  };
+type Props = {
+  initialPage: number,
+  page: number,
+  onChangeTab: Function,
+  onScroll: Function,
+  renderTabBar: Function,
+  style: ViewStyleProp,
+  contentProps: Object,
+  scrollWithoutAnimation: boolean,
+  locked: boolean,
+  prerenderingSiblingsNumber: number,
+  children: React.Node,
+} & TabBarProps;
 
 type State = {
   currentPage: number,
@@ -80,12 +90,12 @@ type State = {
   positionAndroid: AnimatedValue,
   sceneKeys: Array<string>,
   scrollXIOS: AnimatedValue,
-  scrollValue: AnimatedDivision,
+  scrollValue: AnimatedDivision | AnimatedAddition,
 };
 
 class ScrollableTabView extends React.Component<Props, State> {
-  scrollView: RefObject;
-  viewPageAndroid: RefObject;
+  scrollView: Object;
+  viewPageAndroid: Object;
   scrollOnMountCalled: boolean;
 
   constructor(props: Props) {
@@ -105,34 +115,41 @@ class ScrollableTabView extends React.Component<Props, State> {
         containerWidthAnimatedValue,
       );
 
+      // we polyfill a addListener to the Animated.divided
       const callListeners = polyfillAnimatedValue(scrollValue);
-      scrollXIOS.addListener(({ value }) =>
-        callListeners(value / this.state.containerWidth),
-      );
+
+      scrollXIOS.addListener(({ value }) => {
+        callListeners(value / this.state.containerWidth);
+      });
 
       this.state = {
         scrollValue,
         scrollXIOS,
         containerWidth: WINDOW_WIDTH,
         sceneKeys: this.newSceneKeys({ currentPage: initialPage }),
+        currentPage: initialPage,
+        offsetAndroid: new Animated.Value(0),
+        positionAndroid: new Animated.Value(0),
       };
     } else {
       const positionAndroid = new Animated.Value(initialPage);
       const offsetAndroid = new Animated.Value(0);
       const scrollValue = Animated.add(positionAndroid, offsetAndroid);
 
+      // we polyfill a addListener to the Animated.add
       const callListeners = polyfillAnimatedValue(scrollValue);
-      const positionAndroidValue = initialPage;
-      const offsetAndroidValue = 0;
+
+      let positionAndroidValue = initialPage;
+      let offsetAndroidValue = 0;
 
       positionAndroid.addListener(({ value }) => {
         positionAndroidValue = value;
-        callListeners(positionAndroidValue + offsetAndroidValue);
+        callListeners(value + offsetAndroidValue);
       });
 
       offsetAndroid.addListener(({ value }) => {
         offsetAndroidValue = value;
-        callListeners(positionAndroidValue + offsetAndroidValue);
+        callListeners(positionAndroidValue + value);
       });
 
       this.state = {
@@ -141,6 +158,8 @@ class ScrollableTabView extends React.Component<Props, State> {
         offsetAndroid,
         containerWidth: WINDOW_WIDTH,
         sceneKeys: this.newSceneKeys({ currentPage: initialPage }),
+        currentPage: initialPage,
+        scrollXIOS: new Animated.Value(0),
       };
     }
   }
@@ -158,7 +177,7 @@ class ScrollableTabView extends React.Component<Props, State> {
   };
 
   componentDidUpdate(prevProps: Props) {
-    const { prevChildren } = prevProps;
+    const { children: prevChildren } = prevProps;
     const { children, page } = this.props;
     const { currentPage } = this.state;
 
@@ -271,11 +290,12 @@ class ScrollableTabView extends React.Component<Props, State> {
     return sceneKeys.find(sceneKey => key === sceneKey);
   }
 
-  makeSceneKey(child: React.Node, idx: string) {
-    return child.props.tabLabel + '_' + idx;
+  makeSceneKey(child: Object, index: number) {
+    // TODO we should probably force these children to specific type
+    return child.props.tabLabel + '_' + index;
   }
 
-  renderIOS(): any {
+  renderIOS(): React.Node {
     const { initialPage } = this.props; // is this really accurate?
     const { containerWidth } = this.state;
 
@@ -308,7 +328,7 @@ class ScrollableTabView extends React.Component<Props, State> {
     );
   }
 
-  renderAndroid(): any {
+  renderAndroid(): React.Node {
     return (
       <AnimatedViewPagerAndroid
         key={this._children().length}
@@ -348,12 +368,16 @@ class ScrollableTabView extends React.Component<Props, State> {
   }
 
   composeScenes() {
-    return this._children().map((child, idx) => {
-      let key = this.makeSceneKey(child, idx);
+    return this._children().map((child, index) => {
+      const key = this.makeSceneKey(child, index);
       return (
         <SceneComponent
           key={child.key}
-          shouldUpdated={this.shouldRenderSceneKey(idx, this.state.currentPage)}
+          shouldUpdated={true}
+          shouldUpdated={this.shouldRenderSceneKey(
+            index,
+            this.state.currentPage,
+          )}
           style={{ width: this.state.containerWidth }}
         >
           {this.keyExists(this.state.sceneKeys, key) ? (
@@ -431,7 +455,7 @@ class ScrollableTabView extends React.Component<Props, State> {
         containerWidthAnimatedValue,
       );
 
-      this.setState({ containerWidth: width, scrollValue });
+      this.setState({ containerWidth: width, scrollValue: scrollValue });
     } else {
       this.setState({ containerWidth: width });
     }
