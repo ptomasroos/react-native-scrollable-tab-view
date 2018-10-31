@@ -268,8 +268,8 @@ class ScrollableTabView extends React.Component<Props> {
           [{ nativeEvent: { contentOffset: { x: this.state.scrollXIOS } } }],
           { useNativeDriver: true, listener: this._onScroll },
         )}
-        onMomentumScrollBegin={this._onMomentumScrollBeginAndEnd}
-        onMomentumScrollEnd={this._onMomentumScrollBeginAndEnd}
+        onMomentumScrollBegin={this.onMomentumScrollBeginAndEnd}
+        onMomentumScrollEnd={this.onMomentumScrollBeginAndEnd}
         scrollEventThrottle={16}
         scrollsToTop={false}
         showsHorizontalScrollIndicator={false}
@@ -281,7 +281,7 @@ class ScrollableTabView extends React.Component<Props> {
       >
         {this.composeScenes()}
       </Animated.ScrollView>
-    ); // todo look up flow types for contentprops
+    );
   }
 
   renderAndroid() {
@@ -290,7 +290,7 @@ class ScrollableTabView extends React.Component<Props> {
         key={this._children().length}
         style={styles.scrollableContentAndroid}
         initialPage={this.props.initialPage}
-        onPageSelected={this._updateSelectedPage}
+        onPageSelected={this.onPageSelected}
         keyboardDismissMode="on-drag"
         scrollEnabled={!this.props.locked}
         onPageScroll={Animated.event(
@@ -347,27 +347,29 @@ class ScrollableTabView extends React.Component<Props> {
     });
   }
 
-  _onMomentumScrollBeginAndEnd(e) {
+  onMomentumScrollBeginAndEnd = e => {
+    const { currentPage, containerWidth } = this.state;
     const offsetX = e.nativeEvent.contentOffset.x;
-    const page = Math.round(offsetX / this.state.containerWidth);
-    if (this.state.currentPage !== page) {
-      this._updateSelectedPage(page);
-    }
-  }
+    const page = Math.round(offsetX / containerWidth);
 
-  _updateSelectedPage(nextPage) {
-    let localNextPage = nextPage;
-    if (typeof localNextPage === 'object') {
-      // TODO what is this actually
-      localNextPage = nextPage.nativeEvent.position;
+    if (currentPage !== page) {
+      this.updateSelectedPage(page);
     }
+  };
 
-    const currentPage = this.state.currentPage;
+  onPageSelected = e => {
+    const page = e.nativeEvent.position;
+    this.updateSelectedPage(page);
+  };
+
+  updateSelectedPage = nextPage => {
+    const { currentPage } = this.state;
+
     this.updateSceneKeys({
-      page: localNextPage,
-      callback: () => this.onChangeTab(currentPage, localNextPage),
+      page: nextPage,
+      callback: () => this.onChangeTab(currentPage, nextPage),
     });
-  }
+  };
 
   onChangeTab = (prevPage, currentPage) => {
     this.props.onChangeTab({
