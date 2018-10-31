@@ -29,7 +29,6 @@
       "git add"
     ]
   },
-  "author": "Tomas Roos <ptomasroos@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "underscore": "^1.9.1"
