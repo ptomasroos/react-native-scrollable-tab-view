@@ -1,14 +1,14 @@
 // @flow
-import React from 'react';
+import * as React from 'react';
 
 type Props = {
-  shouldUpdate?: boolean,
+  shouldUpdated?: boolean,
   children?: React.Node,
 };
 
 class StaticContainer extends React.Component<Props> {
-  shouldComponentUpdate(nextProps) {
-    return !!nextProps.shouldUpdate;
+  shouldComponentUpdate(nextProps: Props) {
+    return !!nextProps.shouldUpdated;
   }
 
   render() {

@@ -1,8 +1,10 @@
 // @flow
-import React from 'react';
+import * as React from 'react';
 import { StyleSheet, Text, View, Animated, ViewPropTypes } from 'react-native';
 
 import Button from './Button';
+
+import type AnimatedValue from 'react-native/Libraries/Animated/src/nodes/AnimatedValue';
 
 type ViewProps = React.ElementProps<typeof View>;
 type ViewStyleProp = $PropertyType<ViewProps, 'style'>;
@@ -21,6 +23,9 @@ export type Props = {
   tabStyle: ViewStyleProp,
   renderTab: Function,
   underlineStyle: ViewStyleProp,
+  style: ViewStyleProp,
+  containerWidth: number,
+  scrollValue: AnimatedValue,
 };
 
 class DefaultTabBar extends React.Component<Props> {
@@ -89,8 +94,8 @@ class DefaultTabBar extends React.Component<Props> {
       <View style={[styles.tabs, { backgroundColor }, style]}>
         {tabs.map((name, page) => {
           const isTabActive = activeTab === page;
-          const renderTab = renderTab || this.renderTab;
-          return renderTab(name, page, isTabActive, goToPage);
+          const renderTabToUse = renderTab || this.renderTab;
+          return renderTabToUse(name, page, isTabActive, goToPage);
         })}
         <Animated.View
           style={[
