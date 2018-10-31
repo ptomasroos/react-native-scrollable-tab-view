@@ -126,7 +126,7 @@ class ScrollableTabView extends React.Component<Props, State> {
         scrollValue,
         scrollXIOS,
         containerWidth: WINDOW_WIDTH,
-        sceneKeys: this.newSceneKeys({ currentPage: initialPage }),
+        sceneKeys: this.newSceneKeys(initialPage),
         currentPage: initialPage,
         offsetAndroid: new Animated.Value(0),
         positionAndroid: new Animated.Value(0),
@@ -157,7 +157,7 @@ class ScrollableTabView extends React.Component<Props, State> {
         positionAndroid,
         offsetAndroid,
         containerWidth: WINDOW_WIDTH,
-        sceneKeys: this.newSceneKeys({ currentPage: initialPage }),
+        sceneKeys: this.newSceneKeys(initialPage),
         currentPage: initialPage,
         scrollXIOS: new Animated.Value(0),
       };
@@ -242,23 +242,17 @@ class ScrollableTabView extends React.Component<Props, State> {
     }
   }
 
-  updateSceneKeys(
-    page: number,
-    children: React.Node = this.props.children,
-    callback: Function = () => {},
-  ) {
+  updateSceneKeys(page: number, callback?: Function) {
     const { sceneKeys } = this.state;
 
-    const newKeys = this.newSceneKeys(sceneKeys, page, children);
+    const newKeys = this.newSceneKeys(page, sceneKeys);
 
     this.setState({ currentPage: page, sceneKeys: newKeys }, callback);
   }
 
-  newSceneKeys(
-    previousKeys: Array<string> = [],
-    currentPage: number = 0,
-    children: React.Node = this.props.children,
-  ) {
+  newSceneKeys(currentPage: number = 0, previousKeys?: Array<string> = []) {
+    const { children } = this.props;
+
     const newKeys = [];
     this._children(children).forEach((child, index) => {
       const key = this.makeSceneKey(child, index);
