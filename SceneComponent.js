@@ -4,8 +4,8 @@ import { View } from 'react-native';
 
 import StaticContainer from './StaticContainer';
 
-type Props = React.ElementProps<typeof View> &
-  React.ElementProps<typeof StaticContainer>;
+type Props = React.ElementConfig<typeof View> &
+  React.ElementConfig<typeof StaticContainer>;
 
 class SceneComponent extends React.Component<Props> {
   render() {
