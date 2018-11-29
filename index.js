@@ -43,6 +43,7 @@ const ScrollableTabView = createReactClass({
     scrollWithoutAnimation: PropTypes.bool,
     locked: PropTypes.bool,
     prerenderingSiblingsNumber: PropTypes.number,
+    AnimatedScrollView: PropTypes.func,
   },
 
   getDefaultProps() {
@@ -56,6 +57,7 @@ const ScrollableTabView = createReactClass({
       scrollWithoutAnimation: false,
       locked: false,
       prerenderingSiblingsNumber: 0,
+      AnimatedScrollView: Animated.ScrollView,
     };
   },
 
@@ -218,7 +220,8 @@ const ScrollableTabView = createReactClass({
   renderScrollableContent() {
     if (Platform.OS === 'ios') {
       const scenes = this._composeScenes();
-      return <Animated.ScrollView
+      const { AnimatedScrollView } = this.props;
+      return <AnimatedScrollView
         horizontal
         pagingEnabled
         automaticallyAdjustContentInsets={false}
@@ -332,7 +335,7 @@ const ScrollableTabView = createReactClass({
     if (!width || width <= 0 || Math.round(width) === Math.round(this.state.containerWidth)) {
       return;
     }
-    
+
     if (Platform.OS === 'ios') {
       const containerWidthAnimatedValue = new Animated.Value(width);
       // Need to call __makeNative manually to avoid a native animated bug. See
