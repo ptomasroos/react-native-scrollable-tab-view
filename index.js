@@ -365,6 +365,12 @@ const ScrollableTabView = createReactClass({
     if (this.props.tabBarBackgroundColor) {
       tabBarProps.backgroundColor = this.props.tabBarBackgroundColor;
     }
+    if (this.props.tabBarActiveBackgroundColor) {
+      tabBarProps.activeBackgroundColor = this.props.tabBarActiveBackgroundColor;
+    }
+    if (this.props.tabBarInactiveBackgroundColor) {
+      tabBarProps.inactiveBackgroundColor = this.props.tabBarInactiveBackgroundColor;
+    }
     if (this.props.tabBarActiveTextColor) {
       tabBarProps.activeTextColor = this.props.tabBarActiveTextColor;
     }
