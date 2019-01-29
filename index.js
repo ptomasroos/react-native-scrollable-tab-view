@@ -215,6 +215,14 @@ const ScrollableTabView = createReactClass({
     return child.props.tabLabel + '_' + idx;
   },
 
+  _getAllSceneKey() {
+    let keys = [];
+    this._children().map((child, idx) => {
+      keys = keys.concat(child.props.tabLabel + '_' + idx);
+    });
+    return keys.join(',');
+  },
+
   renderScrollableContent() {
     if (Platform.OS === 'ios') {
       const scenes = this._composeScenes();
@@ -243,8 +251,9 @@ const ScrollableTabView = createReactClass({
       </Animated.ScrollView>;
     } else {
       const scenes = this._composeScenes();
+      const keys = this._getAllSceneKey();
       return <AnimatedViewPagerAndroid
-        key={this._children().length}
+        key={keys}
         style={styles.scrollableContentAndroid}
         initialPage={this.props.initialPage}
         onPageSelected={this._updateSelectedPage}
