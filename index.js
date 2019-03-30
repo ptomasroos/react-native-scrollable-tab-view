@@ -97,6 +97,7 @@ const ScrollableTabView = createReactClass({
       });
     }
 
+    console.warn('inip', this.props.initialPage)
     return {
       currentPage: this.props.initialPage,
       scrollValue,
@@ -227,7 +228,7 @@ const ScrollableTabView = createReactClass({
         horizontal
         pagingEnabled
         automaticallyAdjustContentInsets={false}
-        contentOffset={{ x: this._getInitialPage() * this.state.containerWidth, }}
+        contentOffset={{ x: this._getScrollableContentInitialPage() * this.state.containerWidth, }}
         ref={(scrollView) => { this.scrollView = scrollView; }}
         onScroll={Animated.event(
           [{ nativeEvent: { contentOffset: { x: this.state.scrollXIOS, }, }, }, ],
@@ -251,7 +252,7 @@ const ScrollableTabView = createReactClass({
       return <AnimatedViewPagerAndroid
         key={this._children().length}
         style={styles.scrollableContentAndroid}
-        initialPage={this._getInitialPage()}
+        initialPage={this._getScrollableContentInitialPage()}
         onPageSelected={this._updateSelectedPage}
         keyboardDismissMode="on-drag"
         scrollEnabled={!this.props.locked}
@@ -367,7 +368,7 @@ const ScrollableTabView = createReactClass({
     return React.Children.map(children, (child) => child);
   },
 
-  _getInitialPage() {
+  _getScrollableContentInitialPage() {
     const { initialPage } = this.props;
     if (I18nManager.isRTL && Platform.OS === 'android') {
       return (this._children().length - 1) - (initialPage || 0);
