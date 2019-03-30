@@ -12,6 +12,7 @@ const {
   StyleSheet,
   ViewPagerAndroid,
   InteractionManager,
+  I18nManager,
 } = ReactNative;
 const TimerMixin = require('react-timer-mixin');
 
@@ -113,7 +114,11 @@ const ScrollableTabView = createReactClass({
     }
 
     if (props.page >= 0 && props.page !== this.state.currentPage) {
-      this.goToPage(props.page);
+      if (I18nManager.isRTL && Platform.OS === 'android') {
+        this.goToPage((this._children(props.children).length - 1) - props.page);
+      } else {
+        this.goToPage(props.page);
+      }
     }
   },
 
@@ -222,7 +227,7 @@ const ScrollableTabView = createReactClass({
         horizontal
         pagingEnabled
         automaticallyAdjustContentInsets={false}
-        contentOffset={{ x: this.props.initialPage * this.state.containerWidth, }}
+        contentOffset={{ x: this._getInitialPage() * this.state.containerWidth, }}
         ref={(scrollView) => { this.scrollView = scrollView; }}
         onScroll={Animated.event(
           [{ nativeEvent: { contentOffset: { x: this.state.scrollXIOS, }, }, }, ],
@@ -246,7 +251,7 @@ const ScrollableTabView = createReactClass({
       return <AnimatedViewPagerAndroid
         key={this._children().length}
         style={styles.scrollableContentAndroid}
-        initialPage={this.props.initialPage}
+        initialPage={this._getInitialPage()}
         onPageSelected={this._updateSelectedPage}
         keyboardDismissMode="on-drag"
         scrollEnabled={!this.props.locked}
@@ -271,7 +276,7 @@ const ScrollableTabView = createReactClass({
   },
 
   _composeScenes() {
-    return this._children().map((child, idx) => {
+    const scenes = this._children().map((child, idx) => {
       let key = this._makeSceneKey(child, idx);
       return <SceneComponent
         key={child.key}
@@ -281,6 +286,12 @@ const ScrollableTabView = createReactClass({
         {this._keyExists(this.state.sceneKeys, key) ? child : <View tabLabel={child.props.tabLabel}/>}
       </SceneComponent>;
     });
+
+    if (I18nManager.isRTL && Platform.OS === 'android') {
+      return scenes.reverse();
+    } else {
+      return scenes;
+    }
   },
 
   _onMomentumScrollBeginAndEnd(e) {
@@ -295,6 +306,10 @@ const ScrollableTabView = createReactClass({
     let localNextPage = nextPage;
     if (typeof localNextPage === 'object') {
       localNextPage = nextPage.nativeEvent.position;
+    }
+
+    if (I18nManager.isRTL && Platform.OS === 'android') {
+      localNextPage = (this._children().length - 1) - localNextPage;
     }
 
     const currentPage = this.state.currentPage;
@@ -332,7 +347,7 @@ const ScrollableTabView = createReactClass({
     if (!width || width <= 0 || Math.round(width) === Math.round(this.state.containerWidth)) {
       return;
     }
-    
+
     if (Platform.OS === 'ios') {
       const containerWidthAnimatedValue = new Animated.Value(width);
       // Need to call __makeNative manually to avoid a native animated bug. See
@@ -350,6 +365,15 @@ const ScrollableTabView = createReactClass({
 
   _children(children = this.props.children) {
     return React.Children.map(children, (child) => child);
+  },
+
+  _getInitialPage() {
+    const { initialPage } = this.props;
+    if (I18nManager.isRTL && Platform.OS === 'android') {
+      return (this._children().length - 1) - (initialPage || 0);
+    } else {
+      return initialPage;
+    }
   },
 
   render() {
