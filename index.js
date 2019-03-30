@@ -97,7 +97,6 @@ const ScrollableTabView = createReactClass({
       });
     }
 
-    console.warn('inip', this.props.initialPage)
     return {
       currentPage: this.props.initialPage,
       scrollValue,
@@ -338,7 +337,12 @@ const ScrollableTabView = createReactClass({
       }
     } else {
       const { position, offset, } = e.nativeEvent;
-      this.props.onScroll(position + offset);
+
+      if (I18nManager.isRTL && Platform.OS === 'android') {
+        this.props.onScroll((this._children().length - 1) - (position + offset));
+      } else {
+        this.props.onScroll(position + offset);
+      }
     }
   },
 
@@ -409,6 +413,12 @@ const ScrollableTabView = createReactClass({
         right: 0,
         [this.props.tabBarPosition === 'overlayTop' ? 'top' : 'bottom']: 0,
       };
+    }
+    if (I18nManager.isRTL && Platform.OS === 'android') {
+      tabBarProps.scrollValue = tabBarProps.scrollValue.interpolate({
+        inputRange: [0, this._children().length - 1],
+        outputRange: [this._children().length - 1,  0],
+      });
     }
 
     return <View style={[styles.container, this.props.style, ]} onLayout={this._handleLayout}>
