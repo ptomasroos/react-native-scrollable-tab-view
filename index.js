@@ -415,10 +415,17 @@ const ScrollableTabView = createReactClass({
       };
     }
     if (I18nManager.isRTL && Platform.OS === 'android') {
+      const { addListener, removeListener, removeAllListeners } = tabBarProps.scrollValue;
+
       tabBarProps.scrollValue = tabBarProps.scrollValue.interpolate({
         inputRange: [0, this._children().length - 1],
         outputRange: [this._children().length - 1,  0],
       });
+
+      // preserving the polyfilled listener funcs.
+      tabBarProps.scrollValue.addListener = addListener;
+      tabBarProps.scrollValue.removeListener = removeListener;
+      tabBarProps.scrollValue.removeAllListeners = removeAllListeners;
     }
 
     return <View style={[styles.container, this.props.style, ]} onLayout={this._handleLayout}>
