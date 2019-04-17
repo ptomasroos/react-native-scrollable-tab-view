@@ -112,13 +112,9 @@ const ScrollableTabView = createReactClass({
     if (props.children !== this.props.children) {
       this.updateSceneKeys({ page: this.state.currentPage, children: props.children, });
     }
-
+  
     if (props.page >= 0 && props.page !== this.state.currentPage) {
-      if (I18nManager.isRTL && Platform.OS === 'android') {
-        this.goToPage((this._children(props.children).length - 1) - props.page);
-      } else {
-        this.goToPage(props.page);
-      }
+      this.handlePageChange(props.page, this._children(props.children).length);
     }
   },
 
@@ -128,6 +124,14 @@ const ScrollableTabView = createReactClass({
     } else {
       this.state.positionAndroid.removeAllListeners();
       this.state.offsetAndroid.removeAllListeners();
+    }
+  },
+
+  handlePageChange(pageNumber, childrenLength = this._children().length) {
+    if (I18nManager.isRTL && Platform.OS === 'android') {
+      this.goToPage((childrenLength - 1) - pageNumber);
+    } else {
+      this.goToPage(pageNumber);
     }
   },
 
@@ -384,7 +388,7 @@ const ScrollableTabView = createReactClass({
   render() {
     let overlayTabs = (this.props.tabBarPosition === 'overlayTop' || this.props.tabBarPosition === 'overlayBottom');
     let tabBarProps = {
-      goToPage: this.goToPage,
+      goToPage: this.handlePageChange,
       tabs: this._children().map((child) => child.props.tabLabel),
       activeTab: this.state.currentPage,
       scrollValue: this.state.scrollValue,
