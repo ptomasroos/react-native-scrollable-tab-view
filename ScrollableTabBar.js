@@ -181,6 +181,7 @@ const ScrollableTabBar = createReactClass({
         bounces={false}
         scrollsToTop={false}
         onScroll={onScroll}
+        scrollEventThrottle={16}
       >
         <View
           style={[styles.tabs, {width: this.state._containerWidth, }, this.props.tabsContainerStyle, ]}
