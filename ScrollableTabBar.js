@@ -3,6 +3,7 @@ const { ViewPropTypes } = ReactNative = require('react-native');
 const PropTypes = require('prop-types');
 const createReactClass = require('create-react-class');
 const {
+  Alert,
   View,
   Animated,
   StyleSheet,
@@ -12,6 +13,9 @@ const {
   Dimensions,
 } = ReactNative;
 const Button = require('./Button');
+import { Icon } from 'expo';
+import { ActionSheet, Button as ButtonNb, Content } from 'native-base';
+import Colors from '../../constants/Colors';
 
 const WINDOW_WIDTH = Dimensions.get('window').width;
 
@@ -151,7 +155,15 @@ const ScrollableTabBar = createReactClass({
     this.updateView({value: this.props.scrollValue.__getValue(), });
   },
 
+
   render() {
+    // MY CUSTOMIZE ACTION SHEET BUTTON DI KIRI
+    let BUTTONS = [];
+    this.props.tabs.map((name, page) => {
+      BUTTONS.push(name)
+    });
+    // MY CUSTOMIZE ACTION SHEET BUTTON DI KIRI
+
     const tabUnderlineStyle = {
       position: 'absolute',
       height: 4,
@@ -168,6 +180,27 @@ const ScrollableTabBar = createReactClass({
       style={[styles.container, {backgroundColor: this.props.backgroundColor, }, this.props.style, ]}
       onLayout={this.onContainerLayout}
     >
+
+      <Content style={styles.ASContent} contentContainerStyle={styles.ASContainer}>
+        <ButtonNb
+          style={styles.ASButton}
+          onPress={() =>
+            ActionSheet.show(
+              {
+                options: BUTTONS,
+                title: "Kategori Produk"
+              },
+              buttonIndex => {
+                const index = BUTTONS.indexOf(BUTTONS[buttonIndex]);
+                this.props.goToPage(index);
+              }
+            )
+          }
+        >
+          <Icon.Ionicons name="ios-list" size={24} color={Colors.corporateColorRed} />
+        </ButtonNb>
+      </Content>
+
       <ScrollView
         ref={(scrollView) => { this._scrollView = scrollView; }}
         horizontal={true}
@@ -177,6 +210,7 @@ const ScrollableTabBar = createReactClass({
         bounces={false}
         scrollsToTop={false}
       >
+
         <View
           style={[styles.tabs, {width: this.state._containerWidth, }, this.props.tabsContainerStyle, ]}
           ref={'tabContainer'}
@@ -211,6 +245,7 @@ const ScrollableTabBar = createReactClass({
   },
 
   onContainerLayout(e) {
+    e.nativeEvent.layout.width = e.nativeEvent.layout.width - 100; // CUSTOMIZE STYLE UNTUK ACTION SHEET DI KIRI
     this._containerMeasurements = e.nativeEvent.layout;
     this.updateView({value: this.props.scrollValue.__getValue(), });
   },
@@ -233,9 +268,46 @@ const styles = StyleSheet.create({
     borderLeftWidth: 0,
     borderRightWidth: 0,
     borderColor: '#ccc',
+    paddingLeft: 50, // CUSTOMIZE STYLE UNTUK ACTION SHEET DI KIRI
   },
   tabs: {
     flexDirection: 'row',
     justifyContent: 'space-around',
   },
+
+  // MY CUSTOMIZE STYLE
+  ASContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  ASContent: {
+    position: 'absolute',
+    left: 0,
+    height: '100%',
+    width: 50,
+    zIndex: 99,
+    backgroundColor: Colors.colorLevel2,
+    ...Platform.select({
+      android: { // FOR SHADOW ANDROID 5.0+
+        elevation: 20,
+      },
+      ios: {
+        shadowColor: '#000', 
+        shadowOffset: {
+          width: 0,
+          height: 10,
+        },
+        shadowOpacity: 0.51,
+        shadowRadius: 13.16,
+      }
+    }),
+  },
+  ASButton: {
+    flex: 1,
+    width: 50,
+    borderRadius: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: Colors.colorLevel2,
+  }
 });
