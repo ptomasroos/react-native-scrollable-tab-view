@@ -13,7 +13,7 @@ const {
   Dimensions,
 } = ReactNative;
 const Button = require('./Button');
-import { Icon } from 'expo';
+import * as Icon from '@expo/vector-icons';
 import { ActionSheet, Button as ButtonNb, Content } from 'native-base';
 import Colors from '../../constants/Colors';
 
