@@ -1,6 +1,6 @@
 {
-  "name": "@esteemapp/react-native-scrollable-tab-view",
-  "version": "0.8.2",
+  "name": "react-native-scrollable-tab-view",
+  "version": "0.10.0",
   "description": "",
   "main": "index.js",
   "scripts": {
