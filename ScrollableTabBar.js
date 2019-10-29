@@ -158,11 +158,19 @@ const ScrollableTabBar = createReactClass({
       backgroundColor: 'navy',
       bottom: 0,
     };
-
-    const dynamicTabUnderline = {
-      left: this.state._leftTabUnderline,
-      width: this.state._widthTabUnderline,
-    };
+      const {
+          underlineStyle: { width }
+      } = this.props;
+      const underLineWidth = width || 20;
+      const dynamicTabUnderline = {
+          left: this.state._leftTabUnderline,
+          width: this.state._widthTabUnderline
+        };
+      let fixUnderLine = {};
+      fixUnderLine = {
+        left: Animated.add(dynamicTabUnderline.left,Animated.divide(Animated.add(dynamicTabUnderline.width,new Animated.Value(-underLineWidth)),2)),
+          width: new Animated.Value(underLineWidth)
+        };
 
     return <View
       style={[styles.container, {backgroundColor: this.props.backgroundColor, }, this.props.style, ]}
@@ -187,7 +195,7 @@ const ScrollableTabBar = createReactClass({
             const renderTab = this.props.renderTab || this.renderTab;
             return renderTab(name, page, isTabActive, this.props.goToPage, this.measureTab.bind(this, page));
           })}
-          <Animated.View style={[tabUnderlineStyle, dynamicTabUnderline, this.props.underlineStyle, ]} />
+          <Animated.View style={[tabUnderlineStyle, dynamicTabUnderline, this.props.underlineStyle,fixUnderLine ]} />
         </View>
       </ScrollView>
     </View>;
