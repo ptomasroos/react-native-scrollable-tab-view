@@ -10,17 +10,19 @@ const {
   ScrollView,
   Platform,
   StyleSheet,
-  ViewPagerAndroid,
   InteractionManager,
 } = ReactNative;
+
+const ViewPagerAndroid = require('@react-native-community/viewpager');
 const TimerMixin = require('react-timer-mixin');
+const ViewPager = require('@react-native-community/viewpager');
 
 const SceneComponent = require('./SceneComponent');
 const DefaultTabBar = require('./DefaultTabBar');
 const ScrollableTabBar = require('./ScrollableTabBar');
 
 const AnimatedViewPagerAndroid = Platform.OS === 'android' ?
-  Animated.createAnimatedComponent(ViewPagerAndroid) :
+  Animated.createAnimatedComponent(ViewPager) :
   undefined;
 
 const ScrollableTabView = createReactClass({
@@ -38,6 +40,11 @@ const ScrollableTabView = createReactClass({
     onChangeTab: PropTypes.func,
     onScroll: PropTypes.func,
     renderTabBar: PropTypes.any,
+    tabBarUnderlineStyle: ViewPropTypes.style,
+    tabBarBackgroundColor: PropTypes.string,
+    tabBarActiveTextColor: PropTypes.string,
+    tabBarInactiveTextColor: PropTypes.string,
+    tabBarTextStyle: PropTypes.object,
     style: ViewPropTypes.style,
     contentProps: PropTypes.object,
     scrollWithoutAnimation: PropTypes.bool,
@@ -107,13 +114,13 @@ const ScrollableTabView = createReactClass({
     };
   },
 
-  componentWillReceiveProps(props) {
-    if (props.children !== this.props.children) {
-      this.updateSceneKeys({ page: this.state.currentPage, children: props.children, });
+  componentDidUpdate(prevProps) {
+    if (this.props.children !== prevProps.children) {
+      this.updateSceneKeys({ page: this.state.currentPage, children: this.props.children, });
     }
 
-    if (props.page >= 0 && props.page !== this.state.currentPage) {
-      this.goToPage(props.page);
+    if (this.props.page >= 0 && this.props.page !== this.state.currentPage) {
+      this.goToPage(this.props.page);
     }
   },
 

@@ -4,11 +4,11 @@ import {
   View,
 } from 'react-native';
 
-import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view';
+import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab-view';
 
 export default () => {
   return <ScrollableTabView
-    style={{marginTop: 20, }}
+    style={{ marginTop: 20 }}
     initialPage={0}
     renderTabBar={() => <ScrollableTabBar />}
   >
