@@ -7,7 +7,8 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import createReactClass from 'create-react-class';
-import { StackNavigator } from 'react-navigation';
+import {createAppContainer} from 'react-navigation';
+import {createStackNavigator} from 'react-navigation-stack';
 import SimpleExample from './SimpleExample';
 import ScrollableTabsExample from './ScrollableTabsExample';
 import OverlayExample from './OverlayExample';
@@ -61,7 +62,7 @@ const HomeScreen = createReactClass({
   },
 });
 
-const App = StackNavigator({
+const App = createStackNavigator({
   Home: { screen: HomeScreen },
   Simple: { screen: SimpleExample },
   Scrollable: { screen: ScrollableTabsExample },
@@ -70,7 +71,7 @@ const App = StackNavigator({
   Dynamic: { screen: DynamicExample },
 });
 
-export default App;
+export default createAppContainer(App);
 
 const styles = StyleSheet.create({
   container: {
