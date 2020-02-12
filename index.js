@@ -22,7 +22,7 @@ const DefaultTabBar = require('./DefaultTabBar');
 const ScrollableTabBar = require('./ScrollableTabBar');
 
 const AnimatedViewPagerAndroid = Platform.OS === 'android' ?
-  Animated.createAnimatedComponent(ViewPager) :
+  (ViewPager) :
   undefined;
 
 const ScrollableTabView = createReactClass({
@@ -141,10 +141,13 @@ const ScrollableTabView = createReactClass({
       }
     } else {
       if (this.scrollView) {
+        const offset = pageNumber * this.state.containerWidth;
+
         if (this.props.scrollWithoutAnimation) {
           this.scrollView.getNode().setPageWithoutAnimation(pageNumber);
         } else {
-          this.scrollView.getNode().setPage(pageNumber);
+          this.scrollView.getNode().scrollTo({x: offset, y: 0, animated: !this.props.scrollWithoutAnimation, });
+          // this.scrollView.getNode().setPage(pageNumber);
         }
       }
     }
@@ -223,7 +226,7 @@ const ScrollableTabView = createReactClass({
   },
 
   renderScrollableContent() {
-    if (Platform.OS === 'ios') {
+    if (true) {
       const scenes = this._composeScenes();
       return <Animated.ScrollView
         horizontal
@@ -249,31 +252,31 @@ const ScrollableTabView = createReactClass({
           {scenes}
       </Animated.ScrollView>;
     } else {
-      const scenes = this._composeScenes();
-      return <AnimatedViewPagerAndroid
-        key={this._children().length}
-        style={styles.scrollableContentAndroid}
-        initialPage={this.props.initialPage}
-        onPageSelected={this._updateSelectedPage}
-        keyboardDismissMode="on-drag"
-        scrollEnabled={!this.props.locked}
-        onPageScroll={Animated.event(
-          [{
-            nativeEvent: {
-              position: this.state.positionAndroid,
-              offset: this.state.offsetAndroid,
-            },
-          }, ],
-          {
-            useNativeDriver: true,
-            listener: this._onScroll,
-          },
-        )}
-        ref={(scrollView) => { this.scrollView = scrollView; }}
-        {...this.props.contentProps}
-      >
-        {scenes}
-      </AnimatedViewPagerAndroid>;
+      // const scenes = this._composeScenes();
+      // return <AnimatedViewPagerAndroid
+      //   key={this._children().length}
+      //   style={styles.scrollableContentAndroid}
+      //   initialPage={this.props.initialPage}
+      //   onPageSelected={this._updateSelectedPage}
+      //   keyboardDismissMode="on-drag"
+      //   scrollEnabled={!this.props.locked}
+      //   onPageScroll={Animated.event(
+      //     [{
+      //       nativeEvent: {
+      //         position: this.state.positionAndroid,
+      //         offset: this.state.offsetAndroid,
+      //       },
+      //     }, ],
+      //     {
+      //       useNativeDriver: true,
+      //       listener: this._onScroll,
+      //     },
+      //   )}
+      //   ref={(scrollView) => { this.scrollView = scrollView; }}
+      //   {...this.props.contentProps}
+      // >
+      //   {scenes}
+      // </AnimatedViewPagerAndroid>;
     }
   },
 
@@ -411,3 +414,4 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
+
