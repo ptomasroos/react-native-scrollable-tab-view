@@ -32,6 +32,7 @@ const ScrollableTabView = createReactClass({
     ScrollableTabBar,
   },
   scrollOnMountCalled: false,
+  tabWillChangeWithoutGesture: false,
 
   propTypes: {
     tabBarPosition: PropTypes.oneOf(['top', 'bottom', 'overlayTop', 'overlayBottom', ]),
@@ -141,6 +142,7 @@ const ScrollableTabView = createReactClass({
       }
     } else {
       if (this.scrollView) {
+        this.tabWillChangeWithoutGesture = true;
         if (this.props.scrollWithoutAnimation) {
           this.scrollView.getNode().setPageWithoutAnimation(pageNumber);
         } else {
@@ -305,10 +307,11 @@ const ScrollableTabView = createReactClass({
     }
 
     const currentPage = this.state.currentPage;
-    this.updateSceneKeys({
+    !this.tabWillChangeWithoutGesture && this.updateSceneKeys({
       page: localNextPage,
       callback: this._onChangeTab.bind(this, currentPage, localNextPage),
     });
+    this.tabWillChangeWithoutGesture = false;
   },
 
   _onChangeTab(prevPage, currentPage) {
