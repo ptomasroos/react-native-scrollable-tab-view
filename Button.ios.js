@@ -1,7 +1,7 @@
 const React = require('react');
 const ReactNative = require('react-native');
 const {
- TouchableOpacity,
+  TouchableOpacity,
   View,
 } = ReactNative;
 
