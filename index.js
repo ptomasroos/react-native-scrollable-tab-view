@@ -9,6 +9,7 @@ const {
   Platform,
   StyleSheet,
   InteractionManager,
+  ViewPropTypes
 } = ReactNative;
 
 const TimerMixin = require('react-timer-mixin');
