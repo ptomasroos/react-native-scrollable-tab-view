@@ -1,6 +1,6 @@
 const React = require('react');
 const { Component } = React;
-const { ViewPropTypes } = ReactNative = require('react-native');
+const { ViewPropTypes } = ReactNative = require('deprecated-react-native-prop-types');
 const createReactClass = require('create-react-class');
 const PropTypes = require('prop-types');
 const {
@@ -342,7 +342,7 @@ const ScrollableTabView = createReactClass({
     if (!width || width <= 0 || Math.round(width) === Math.round(this.state.containerWidth)) {
       return;
     }
-    
+
     if (Platform.OS === 'ios') {
       const containerWidthAnimatedValue = new Animated.Value(width);
       // Need to call __makeNative manually to avoid a native animated bug. See
