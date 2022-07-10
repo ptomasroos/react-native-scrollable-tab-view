@@ -1,6 +1,6 @@
 const React = require('react');
 const { Component } = React;
-const { ViewPropTypes } = ReactNative = require('deprecated-react-native-prop-types');
+const { ViewPropTypes } = require('deprecated-react-native-prop-types');
 const createReactClass = require('create-react-class');
 const PropTypes = require('prop-types');
 const {
@@ -11,7 +11,7 @@ const {
   Platform,
   StyleSheet,
   InteractionManager,
-} = ReactNative;
+} = require('react-native');
 
 const ViewPagerAndroid = require('@react-native-community/viewpager');
 const TimerMixin = require('react-timer-mixin');

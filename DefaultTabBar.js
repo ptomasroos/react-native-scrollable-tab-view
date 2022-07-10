@@ -1,5 +1,5 @@
 const React = require('react');
-const { ViewPropTypes } = ReactNative = require('deprecated-react-native-prop-types');
+const { ViewPropTypes } = require('deprecated-react-native-prop-types');
 const PropTypes = require('prop-types');
 const createReactClass = require('create-react-class');
 const {
@@ -7,7 +7,7 @@ const {
   Text,
   View,
   Animated,
-} = ReactNative;
+} = require('react-native');;
 const Button = require('./Button');
 
 const DefaultTabBar = createReactClass({
