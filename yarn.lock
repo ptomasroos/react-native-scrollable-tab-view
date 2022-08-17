@@ -2,11 +2,6 @@
 # yarn lockfile v1
 
 
-"@react-native-community/viewpager@^1.1.7":
-  version "1.1.7"
-  resolved "https://registry.yarnpkg.com/@react-native-community/viewpager/-/viewpager-1.1.7.tgz#7d3b1631f1ec91145db92a8e25c80d53027e96ba"
-  integrity sha512-k9v2KJtAprNPq7IZmedD2VLMePvPW+ohX3uDnkpoKritBji+/RtRmTKrdtPi3Uvp0toq/KtPttAds1dr7AZNpw==
-
 acorn-jsx@^3.0.0:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/acorn-jsx/-/acorn-jsx-3.0.1.tgz#afdf9488fb1ecefc8348f6fb22f464e32a58b36b"
@@ -863,6 +858,11 @@ react-is@^16.8.1:
   version "16.9.0"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.9.0.tgz#21ca9561399aad0ff1a7701c01683e8ca981edcb"
   integrity sha512-tJBzzzIgnnRfEm046qRcURvwQnZVXmuCbscxUO5RWrGTXpon2d4c8mI0D8WE6ydVIm29JiLB6+RslkIvym9Rjw==
+
+react-native-pager-view@^5.4.25:
+  version "5.4.25"
+  resolved "http://git.coolkit.cn:4873/react-native-pager-view/-/react-native-pager-view-5.4.25.tgz#cd639d5387a7f3d5581b55a33c5faa1cbc200f97"
+  integrity sha512-3drrYwaLat2fYszymZe3nHMPASJ4aJMaxiejfA1V5SK3OygYmdtmV2u5prX7TnjueJzGSyyaCYEr2JlrRt4YPg==
 
 react-timer-mixin@^0.13.3:
   version "0.13.4"
