@@ -342,7 +342,7 @@ const ScrollableTabView = createReactClass({
     if (!width || width <= 0 || Math.round(width) === Math.round(this.state.containerWidth)) {
       return;
     }
-    
+
     if (Platform.OS === 'ios') {
       const containerWidthAnimatedValue = new Animated.Value(width);
       // Need to call __makeNative manually to avoid a native animated bug. See
@@ -385,7 +385,7 @@ const ScrollableTabView = createReactClass({
       tabBarProps.textStyle = this.props.tabBarTextStyle;
     }
     if (this.props.tabBarUnderlineStyle) {
-      tabBarProps.underlineStyle = this.props.tabBarUnderlineStyle;
+      tabBarProps.tabBarUnderlineStyle = this.props.tabBarUnderlineStyle
     }
     if (overlayTabs) {
       tabBarProps.style = {
