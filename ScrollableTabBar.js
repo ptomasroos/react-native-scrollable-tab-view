@@ -1,5 +1,6 @@
 const React = require('react');
-const { ViewPropTypes } = ReactNative = require('react-native');
+const ReactNative = require('react-native');
+const DeprecatedPropTypes = require('deprecated-react-native-prop-types');
 const PropTypes = require('prop-types');
 const createReactClass = require('create-react-class');
 const {
@@ -24,12 +25,12 @@ const ScrollableTabBar = createReactClass({
     activeTextColor: PropTypes.string,
     inactiveTextColor: PropTypes.string,
     scrollOffset: PropTypes.number,
-    style: ViewPropTypes.style,
-    tabStyle: ViewPropTypes.style,
-    tabsContainerStyle: ViewPropTypes.style,
-    textStyle: Text.propTypes.style,
+    style: DeprecatedPropTypes.ViewPropTypes.style,
+    tabStyle: DeprecatedPropTypes.ViewPropTypes.style,
+    tabsContainerStyle: DeprecatedPropTypes.ViewPropTypes.style,
+    textStyle: DeprecatedPropTypes.TextPropTypes.style,
     renderTab: PropTypes.func,
-    underlineStyle: ViewPropTypes.style,
+    underlineStyle: DeprecatedPropTypes.ViewPropTypes.style,
     onScroll: PropTypes.func,
   },
 
