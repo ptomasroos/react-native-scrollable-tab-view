@@ -29,7 +29,7 @@
   },
   "homepage": "https://github.com/brentvatne/react-native-scrollable-tab-view#readme",
   "dependencies": {
-    "@react-native-community/viewpager": "3.3.0",
+    "react-native-pager-view": "^5.4.9",
     "create-react-class": "^15.6.2",
     "deprecated-react-native-prop-types": "^2.3.0",
     "prop-types": "^15.6.0",
