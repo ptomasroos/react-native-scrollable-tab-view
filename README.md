@@ -2,6 +2,14 @@
 ## react-native-scrollable-tab-view
 [![npm version](https://badge.fury.io/js/react-native-scrollable-tab-view.svg)](https://badge.fury.io/js/react-native-scrollable-tab-view)
 
+//Hi Tomas. 
+My name is Vitaliy Drugak, I hope you are doing well. First thanks for merging my PR to your react-native-scrollable-tab-view. 
+May I ask you to publish the new version to the npm?
+
+P.S.: Thanks for your great ReactNative component! Have a good day and take care.
+P.S.S: Please close this PR :-) I was trying to connect with you by email.
+//
+
 This is probably my favorite navigation pattern on Android, I wish it
 were more common on iOS! This is a very simple JavaScript-only
 implementation of it for React Native. For more information about how
