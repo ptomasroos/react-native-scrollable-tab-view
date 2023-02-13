@@ -7,18 +7,25 @@
 		"test": "jest"
 	},
 	"dependencies": {
-		"create-react-class": "^15.6.2",
-		"react": "16.0.0",
-		"react-native": "0.48.4",
-		"react-native-scrollable-tab-view": "file:../",
-		"react-native-vector-icons": "^4.4.0",
-		"react-navigation": "^1.0.0-beta.13"
+		"@react-native-community/viewpager": "^3.3.0",
+		"create-react-class": "^15.6.3",
+		"react": "16.12.0",
+		"react-native": "0.61.5",
+		"react-native-gesture-handler": "^1.5.2",
+		"react-native-scrollable-tab-view": "^1.0.0",
+		"react-native-vector-icons": "^6.6.0",
+		"react-navigation": "^4.0.10",
+		"react-navigation-stack": "^1.10.3"
 	},
 	"devDependencies": {
-		"babel-jest": "21.2.0",
-		"babel-preset-react-native": "4.0.0",
-		"jest": "21.2.1",
-		"react-test-renderer": "16.0.0"
+		"@babel/core": "^7.7.5",
+		"@babel/preset-env": "^7.7.6",
+		"babel-jest": "24.9.0",
+		"babel-preset-react-native": "4.0.1",
+		"gulp-babel": "^8.0.0-beta.2",
+		"jest": "24.9.0",
+		"metro-react-native-babel-preset": "^0.57.0",
+		"react-test-renderer": "16.12.0"
 	},
 	"jest": {
 		"preset": "react-native"
