@@ -51,6 +51,7 @@ const ScrollableTabView = createReactClass({
     scrollWithoutAnimation: PropTypes.bool,
     locked: PropTypes.bool,
     prerenderingSiblingsNumber: PropTypes.number,
+    collapsableBar: PropTypes.node,
   },
 
   getDefaultProps() {
@@ -166,6 +167,13 @@ const ScrollableTabView = createReactClass({
     } else {
       return <DefaultTabBar {...props} />;
     }
+  },
+
+  renderCollapsableBar() {
+    if (!this.props.collapsableBar) {
+      return null
+    }
+    return this.props.collapsableBar
   },
 
   updateSceneKeys({ page, children = this.props.children, callback = () => {}, }) {
@@ -396,11 +404,14 @@ const ScrollableTabView = createReactClass({
       };
     }
 
-    return <View style={[styles.container, this.props.style, ]} onLayout={this._handleLayout}>
+    const ContainerView = this.props.collapsableBar ? ScrollView : View
+
+    return <ContainerView style={[styles.container, this.props.style, ]} onLayout={this._handleLayout} stickyHeaderIndices={[1]}>
+      {this.renderCollapsableBar()}
       {this.props.tabBarPosition === 'top' && this.renderTabBar(tabBarProps)}
       {this.renderScrollableContent()}
       {(this.props.tabBarPosition === 'bottom' || overlayTabs) && this.renderTabBar(tabBarProps)}
-    </View>;
+    </ContainerView>;
   },
 });
 
