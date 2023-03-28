@@ -51,6 +51,7 @@ const ScrollableTabView = createReactClass({
     scrollWithoutAnimation: PropTypes.bool,
     locked: PropTypes.bool,
     prerenderingSiblingsNumber: PropTypes.number,
+    AnimatedScrollView: PropTypes.func,
   },
 
   getDefaultProps() {
@@ -64,6 +65,7 @@ const ScrollableTabView = createReactClass({
       scrollWithoutAnimation: false,
       locked: false,
       prerenderingSiblingsNumber: 0,
+      AnimatedScrollView: Animated.ScrollView,
     };
   },
 
@@ -227,7 +229,8 @@ const ScrollableTabView = createReactClass({
   renderScrollableContent() {
     if (Platform.OS === 'ios') {
       const scenes = this._composeScenes();
-      return <Animated.ScrollView
+      const { AnimatedScrollView } = this.props;
+      return <AnimatedScrollView
         horizontal
         pagingEnabled
         automaticallyAdjustContentInsets={false}
