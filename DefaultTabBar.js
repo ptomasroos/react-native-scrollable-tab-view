@@ -17,6 +17,8 @@ const DefaultTabBar = createReactClass({
     activeTab: PropTypes.number,
     tabs: PropTypes.array,
     backgroundColor: PropTypes.string,
+    activeBackgroundColor: PropTypes.string,
+    inactiveBackgroundColor: PropTypes.string,
     activeTextColor: PropTypes.string,
     inactiveTextColor: PropTypes.string,
     textStyle: DeprecatedPropTypes.TextPropTypes.style,
@@ -27,6 +29,8 @@ const DefaultTabBar = createReactClass({
 
   getDefaultProps() {
     return {
+      activeBackgroundColor: 'white',
+      inactiveBackgroundColor: 'white',
       activeTextColor: 'navy',
       inactiveTextColor: 'black',
       backgroundColor: null,
@@ -37,7 +41,8 @@ const DefaultTabBar = createReactClass({
   },
 
   renderTab(name, page, isTabActive, onPressHandler) {
-    const { activeTextColor, inactiveTextColor, textStyle, } = this.props;
+    const { activeBackgroundColor, inactiveBackgroundColor, activeTextColor, inactiveTextColor, textStyle, } = this.props;
+    const backgroundColor = isTabActive ? activeBackgroundColor : inactiveBackgroundColor;
     const textColor = isTabActive ? activeTextColor : inactiveTextColor;
     const fontWeight = isTabActive ? 'bold' : 'normal';
 
@@ -49,7 +54,7 @@ const DefaultTabBar = createReactClass({
       accessibilityTraits='button'
       onPress={() => onPressHandler(page)}
     >
-      <View style={[styles.tab, this.props.tabStyle, ]}>
+      <View style={[styles.tab, {backgroundColor, }, this.props.tabStyle, ]}>
         <Text style={[{color: textColor, fontWeight, }, textStyle, ]}>
           {name}
         </Text>
