@@ -186,7 +186,7 @@ const ScrollableTabBar = createReactClass({
       >
         <View
           style={[styles.tabs, {width: this.state._containerWidth, }, this.props.tabsContainerStyle, ]}
-          ref={'tabContainer'}
+//           ref={'tabContainer'}
           onLayout={this.onTabContainerLayout}
         >
           {this.props.tabs.map((name, page) => {
