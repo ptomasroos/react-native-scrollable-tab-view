@@ -63,6 +63,7 @@ const ScrollableTabView = createReactClass({
       contentProps: {},
       scrollWithoutAnimation: false,
       locked: false,
+      style:{},
       prerenderingSiblingsNumber: 0,
     };
   },
@@ -387,8 +388,13 @@ const ScrollableTabView = createReactClass({
     if (this.props.tabBarUnderlineStyle) {
       tabBarProps.underlineStyle = this.props.tabBarUnderlineStyle;
     }
+    /** add style  */
+    if (this.props.style) {
+      tabBarProps.style = this.props.style;
+    }
     if (overlayTabs) {
       tabBarProps.style = {
+        ...tabBarProps.style,
         position: 'absolute',
         left: 0,
         right: 0,
